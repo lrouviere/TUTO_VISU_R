@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.3.353">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -17,9 +17,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -46,43 +47,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -123,12 +94,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-submit-button-title": "Envoyer"
   }
 }</script>
-<script src="site_libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
 <script src="site_libs/amcharts-3.21.13/amcharts.js"></script>
 <script src="site_libs/ramcharts_base-binding-2.1.15/ramcharts_base.js"></script>
 <script src="site_libs/amcharts_type_serial-3.20.18/serial.js"></script>
 <script src="site_libs/amcharts_themes_light.js-3.20.18/light.js"></script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="style.css">
@@ -138,11 +110,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Visualisation avec ggplot2</span></h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ggplot.html">Visualisation</a></li><li class="breadcrumb-item"><a href="./04-ggplot.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Visualisation avec ggplot2</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Recherche" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
       </button>
     </div>
   </nav>
@@ -150,42 +127,46 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Visualisation avec R</a> 
         <div class="sidebar-tools-main tools-wide">
-    <a href="" title="Download" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-download"></i></a>
-    <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
-        <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="./Visualisation-avec-R.pdf">
-            <i class="bi bi-bi-file-pdf pe-1"></i>
-          Download PDF
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="./Visualisation-avec-R.epub">
-            <i class="bi bi-bi-journal pe-1"></i>
-          Download ePub
-          </a>
-        </li>
-    </ul>
-    <a href="" title="Share" id="sidebar-tool-dropdown-1" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-share"></i></a>
-    <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-1">
-        <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
-            <i class="bi bi-bi-twitter pe-1"></i>
-          Twitter
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
-            <i class="bi bi-bi-facebook pe-1"></i>
-          Facebook
-          </a>
-        </li>
-    </ul>
-  <a href="" class="quarto-reader-toggle sidebar-tool" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Visualisation-avec-R.pdf">
+              <i class="bi bi-bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Visualisation-avec-R.epub">
+              <i class="bi bi-bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-1" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-1">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+              <i class="bi bi-bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Basculer en mode lecteur">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
   </div>
@@ -193,129 +174,145 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
     </div>
       </div>
-      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
+        <div id="quarto-search" class="" title="Recherche"></div>
         </div>
-      </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">Présentation</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Présentation</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Logiciel R</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Logiciel R</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Basculer la section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01-intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a>
+  <a href="./01-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02-objetsR.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Les objets R</span></a>
+  <a href="./02-objetsR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Les objets R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-dplyr.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Manipuler les données avec dplyr</span></a>
+  <a href="./03-dplyr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Manipuler les données avec dplyr</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./031-programmer.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Programmer</span></a>
+  <a href="./031-programmer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Programmer</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Visualisation</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Visualisation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Basculer la section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-ggplot.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Visualisation avec ggplot2</span></a>
+  <a href="./04-ggplot.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Visualisation avec ggplot2</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05-carto.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Faire des cartes avec R</span></a>
+  <a href="./05-carto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Faire des cartes avec R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./06-interactif.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Quelques outils de visualisation dynamique/interactive</span></a>
+  <a href="./06-interactif.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Quelques outils de visualisation dynamique/interactive</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./07-shiny.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Applications web avec Shiny</span></a>
+  <a href="./07-shiny.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Applications web avec Shiny</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Statistique avec R</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Statistique avec R</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Basculer la section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./08-estimation.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></a>
+  <a href="./08-estimation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./09-regression.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Régression avec R</span></a>
+  <a href="./09-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Régression avec R</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">Références</a>
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Références</span></a>
   </div>
 </li>
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table des matières</h2>
    
   <ul>
-  <li><a href="#fonctions-graphiques-conventionnelles" id="toc-fonctions-graphiques-conventionnelles" class="nav-link active" data-scroll-target="#fonctions-graphiques-conventionnelles"><span class="toc-section-number">5.1</span>  Fonctions graphiques conventionnelles</a>
+  <li><a href="#fonctions-graphiques-conventionnelles" id="toc-fonctions-graphiques-conventionnelles" class="nav-link active" data-scroll-target="#fonctions-graphiques-conventionnelles"><span class="header-section-number">5.1</span> Fonctions graphiques conventionnelles</a>
   <ul class="collapse">
-  <li><a href="#la-fonction-plot" id="toc-la-fonction-plot" class="nav-link" data-scroll-target="#la-fonction-plot"><span class="toc-section-number">5.1.1</span>  La fonction <strong>plot</strong></a></li>
-  <li><a href="#graphes-interactifs-avec-ramcharts" id="toc-graphes-interactifs-avec-ramcharts" class="nav-link" data-scroll-target="#graphes-interactifs-avec-ramcharts"><span class="toc-section-number">5.1.2</span>  Graphes interactifs avec rAmCharts</a></li>
-  <li><a href="#quelques-exercices" id="toc-quelques-exercices" class="nav-link" data-scroll-target="#quelques-exercices"><span class="toc-section-number">5.1.3</span>  Quelques exercices</a></li>
+  <li><a href="#la-fonction-plot" id="toc-la-fonction-plot" class="nav-link" data-scroll-target="#la-fonction-plot"><span class="header-section-number">5.1.1</span> La fonction <strong>plot</strong></a></li>
+  <li><a href="#graphes-interactifs-avec-ramcharts" id="toc-graphes-interactifs-avec-ramcharts" class="nav-link" data-scroll-target="#graphes-interactifs-avec-ramcharts"><span class="header-section-number">5.1.2</span> Graphes interactifs avec rAmCharts</a></li>
+  <li><a href="#quelques-exercices" id="toc-quelques-exercices" class="nav-link" data-scroll-target="#quelques-exercices"><span class="header-section-number">5.1.3</span> Quelques exercices</a></li>
   </ul></li>
-  <li><a href="#la-grammaire-ggplot2" id="toc-la-grammaire-ggplot2" class="nav-link" data-scroll-target="#la-grammaire-ggplot2"><span class="toc-section-number">5.2</span>  La grammaire <strong>ggplot2</strong></a>
+  <li><a href="#la-grammaire-ggplot2" id="toc-la-grammaire-ggplot2" class="nav-link" data-scroll-target="#la-grammaire-ggplot2"><span class="header-section-number">5.2</span> La grammaire <strong>ggplot2</strong></a>
   <ul class="collapse">
-  <li><a href="#premiers-graphes-ggplot2" id="toc-premiers-graphes-ggplot2" class="nav-link" data-scroll-target="#premiers-graphes-ggplot2"><span class="toc-section-number">5.2.1</span>  Premiers graphes <code>ggplot2</code></a></li>
-  <li><a href="#data-et-aesthetics" id="toc-data-et-aesthetics" class="nav-link" data-scroll-target="#data-et-aesthetics"><span class="toc-section-number">5.2.2</span>  Data et aesthetics</a></li>
-  <li><a href="#geometrics" id="toc-geometrics" class="nav-link" data-scroll-target="#geometrics"><span class="toc-section-number">5.2.3</span>  Geometrics</a></li>
-  <li><a href="#statistics" id="toc-statistics" class="nav-link" data-scroll-target="#statistics"><span class="toc-section-number">5.2.4</span>  Statistics</a></li>
-  <li><a href="#scales" id="toc-scales" class="nav-link" data-scroll-target="#scales"><span class="toc-section-number">5.2.5</span>  Scales</a></li>
-  <li><a href="#group-et-facets" id="toc-group-et-facets" class="nav-link" data-scroll-target="#group-et-facets"><span class="toc-section-number">5.2.6</span>  Group et facets</a></li>
+  <li><a href="#premiers-graphes-ggplot2" id="toc-premiers-graphes-ggplot2" class="nav-link" data-scroll-target="#premiers-graphes-ggplot2"><span class="header-section-number">5.2.1</span> Premiers graphes <code>ggplot2</code></a></li>
+  <li><a href="#data-et-aesthetics" id="toc-data-et-aesthetics" class="nav-link" data-scroll-target="#data-et-aesthetics"><span class="header-section-number">5.2.2</span> Data et aesthetics</a></li>
+  <li><a href="#geometrics" id="toc-geometrics" class="nav-link" data-scroll-target="#geometrics"><span class="header-section-number">5.2.3</span> Geometrics</a></li>
+  <li><a href="#statistics" id="toc-statistics" class="nav-link" data-scroll-target="#statistics"><span class="header-section-number">5.2.4</span> Statistics</a></li>
+  <li><a href="#scales" id="toc-scales" class="nav-link" data-scroll-target="#scales"><span class="header-section-number">5.2.5</span> Scales</a></li>
+  <li><a href="#group-et-facets" id="toc-group-et-facets" class="nav-link" data-scroll-target="#group-et-facets"><span class="header-section-number">5.2.6</span> Group et facets</a></li>
   </ul></li>
-  <li><a href="#compléments" id="toc-compléments" class="nav-link" data-scroll-target="#compléments"><span class="toc-section-number">5.3</span>  Compléments</a></li>
-  <li><a href="#quelques-exercices-supplémentaires" id="toc-quelques-exercices-supplémentaires" class="nav-link" data-scroll-target="#quelques-exercices-supplémentaires"><span class="toc-section-number">5.4</span>  Quelques exercices supplémentaires</a></li>
+  <li><a href="#compléments" id="toc-compléments" class="nav-link" data-scroll-target="#compléments"><span class="header-section-number">5.3</span> Compléments</a></li>
+  <li><a href="#quelques-exercices-supplémentaires" id="toc-quelques-exercices-supplémentaires" class="nav-link" data-scroll-target="#quelques-exercices-supplémentaires"><span class="header-section-number">5.4</span> Quelques exercices supplémentaires</a></li>
   </ul>
 </nav>
     </div>
@@ -324,7 +321,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-ggplot2" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Visualisation avec ggplot2</span></span></h1>
+<h1 class="title"><span id="sec-ggplot2" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Visualisation avec ggplot2</span></span></h1>
 </div>
 
 
@@ -339,7 +336,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<div>
 <div class="cell">
 
 </div>
@@ -356,10 +352,6 @@ div.correction {
   display: none;
 }
 </style>
-</div>
-<div class="cell">
-
-</div>
 <p>Il est souvent nécessaire d’utiliser des techniques de visualisation au cours des différentes étapes d’un projet en science des données. Un des avantages de <strong>R</strong> est qu’il est relativement simple de mettre en œuvre tous les types de graphes généralement utilisés. Dans cette partie, nous présentons tout d’abord les fonctions classiques qui permettent de tracer des figures. Nous proposons ensuite une introduction aux graphes <strong>ggplot</strong> qui sont de plus en plus utilisés pour faire de la visualisation.</p>
 <section id="fonctions-graphiques-conventionnelles" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="fonctions-graphiques-conventionnelles"><span class="header-section-number">5.1</span> Fonctions graphiques conventionnelles</h2>
@@ -459,18 +451,18 @@ div.correction {
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rAmCharts)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">amHist</span>(ozone<span class="sc">$</span>maxO3)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="htmlwidget-adcc01a189a1e93db3f8" style="width:100%;height:500px;" class="ramcharts_base html-widget "></div>
-<script type="application/json" data-for="htmlwidget-adcc01a189a1e93db3f8">{"x":{"chartData":{"columnSpacing":0,"columnWidth":1,"fillAlphas":1,"lineAlpha":1,"categoryAxis":{"title":"ozone$maxO3"},"categoryField":"x","creditsPosition":"bottom-right","dataProvider":[{"x":50,"y":10,"cut":"(from 40 to 60)","color":"#1e90ff"},{"x":70,"y":43,"cut":"(from 60 to 80)","color":"#1e90ff"},{"x":90,"y":27,"cut":"(from 80 to 100)","color":"#1e90ff"},{"x":110,"y":16,"cut":"(from 100 to 120)","color":"#1e90ff"},{"x":130,"y":5,"cut":"(from 120 to 140)","color":"#1e90ff"},{"x":150,"y":10,"cut":"(from 140 to 160)","color":"#1e90ff"},{"x":170,"y":1,"cut":"(from 160 to 180)","color":"#1e90ff"}],"graphs":[{"animationPlayed":false,"fillAlphas":0.8,"lineAlpha":1,"fillColorsField":"color","lineColor":"#1e90ff","labelText":"","balloonText":"<b>[[value]]<\/b> <br/> [[cut]] ","type":"column","valueField":"y"}],"theme":"light","type":"serial","valueAxes":[{"minimum":0,"maximum":45.15,"title":"Frequency"}]},"background":"#ffffff","listeners":null,"axes_listeners":null,"axes_listenersIndices":null,"categoryAxis_listeners":null,"chartCursor_listeners":null,"dataSetSelector_listeners":null,"legend_listeners":null,"panels_listeners":null,"panels_listenersIndices":null,"periodSelector_listeners":null,"valueAxes_listeners":null,"valueAxes_listenersIndices":[],"stockLegend_listeners":null,"group":null,"is_ts_module":false},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-26e0a3774472a9f94db3" style="width:100%;height:500px;" class="ramcharts_base html-widget "></div>
+<script type="application/json" data-for="htmlwidget-26e0a3774472a9f94db3">{"x":{"chartData":{"columnSpacing":0,"columnWidth":1,"fillAlphas":1,"lineAlpha":1,"categoryAxis":{"title":"ozone$maxO3"},"categoryField":"x","creditsPosition":"bottom-right","dataProvider":[{"x":50,"y":10,"cut":"(from 40 to 60)","color":"#1e90ff"},{"x":70,"y":43,"cut":"(from 60 to 80)","color":"#1e90ff"},{"x":90,"y":27,"cut":"(from 80 to 100)","color":"#1e90ff"},{"x":110,"y":16,"cut":"(from 100 to 120)","color":"#1e90ff"},{"x":130,"y":5,"cut":"(from 120 to 140)","color":"#1e90ff"},{"x":150,"y":10,"cut":"(from 140 to 160)","color":"#1e90ff"},{"x":170,"y":1,"cut":"(from 160 to 180)","color":"#1e90ff"}],"graphs":[{"animationPlayed":false,"fillAlphas":0.8,"lineAlpha":1,"fillColorsField":"color","lineColor":"#1e90ff","labelText":"","balloonText":"<b>[[value]]<\/b> <br/> [[cut]] ","type":"column","valueField":"y"}],"theme":"light","type":"serial","valueAxes":[{"minimum":0,"maximum":45.15,"title":"Frequency"}]},"background":"#ffffff","listeners":null,"axes_listeners":null,"axes_listenersIndices":null,"categoryAxis_listeners":null,"chartCursor_listeners":null,"dataSetSelector_listeners":null,"legend_listeners":null,"panels_listeners":null,"panels_listenersIndices":null,"periodSelector_listeners":null,"valueAxes_listeners":null,"valueAxes_listenersIndices":[],"stockLegend_listeners":null,"group":null,"is_ts_module":false},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">amPlot</span>(ozone,<span class="at">col=</span><span class="fu">c</span>(<span class="st">"T9"</span>,<span class="st">"T12"</span>))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="htmlwidget-844e020ad0c2251b3de7" style="width:100%;height:500px;" class="ramcharts_base html-widget "></div>
-<script type="application/json" data-for="htmlwidget-844e020ad0c2251b3de7">{"x":{"chartData":{"precision":2,"categoryAxis":{"title":"index","position":"bottom","id":"x"},"categoryField":"amCategory","dataProvider":[{"T9":15.6,"T12":18.5,"amCategory":"Obs. 1"},{"T9":17,"T12":18.4,"amCategory":"Obs. 2"},{"T9":15.3,"T12":17.6,"amCategory":"Obs. 3"},{"T9":16.2,"T12":19.7,"amCategory":"Obs. 4"},{"T9":17.4,"T12":20.5,"amCategory":"Obs. 5"},{"T9":17.7,"T12":19.8,"amCategory":"Obs. 6"},{"T9":16.8,"T12":15.6,"amCategory":"Obs. 7"},{"T9":14.9,"T12":17.5,"amCategory":"Obs. 8"},{"T9":16.1,"T12":19.6,"amCategory":"Obs. 9"},{"T9":18.3,"T12":21.9,"amCategory":"Obs. 10"},{"T9":17.3,"T12":19.3,"amCategory":"Obs. 11"},{"T9":17.6,"T12":20.3,"amCategory":"Obs. 12"},{"T9":18.3,"T12":19.6,"amCategory":"Obs. 13"},{"T9":17.1,"T12":18.2,"amCategory":"Obs. 14"},{"T9":15.4,"T12":17.4,"amCategory":"Obs. 15"},{"T9":15.9,"T12":19.1,"amCategory":"Obs. 16"},{"T9":21,"T12":24.6,"amCategory":"Obs. 17"},{"T9":16.2,"T12":22.4,"amCategory":"Obs. 18"},{"T9":19.7,"T12":24.2,"amCategory":"Obs. 19"},{"T9":23.6,"T12":28.6,"amCategory":"Obs. 20"},{"T9":20.4,"T12":25.2,"amCategory":"Obs. 21"},{"T9":27,"T12":32.7,"amCategory":"Obs. 22"},{"T9":24,"T12":23.5,"amCategory":"Obs. 23"},{"T9":19.7,"T12":22.9,"amCategory":"Obs. 24"},{"T9":20.1,"T12":22.4,"amCategory":"Obs. 25"},{"T9":19.6,"T12":25.1,"amCategory":"Obs. 26"},{"T9":19.5,"T12":23.4,"amCategory":"Obs. 27"},{"T9":18.8,"T12":22.7,"amCategory":"Obs. 28"},{"T9":24.1,"T12":28.4,"amCategory":"Obs. 29"},{"T9":26.6,"T12":30.1,"amCategory":"Obs. 30"},{"T9":19.5,"T12":18.8,"amCategory":"Obs. 31"},{"T9":16.8,"T12":18.2,"amCategory":"Obs. 32"},{"T9":20.8,"T12":23.7,"amCategory":"Obs. 33"},{"T9":17.5,"T12":18.2,"amCategory":"Obs. 34"},{"T9":18.1,"T12":21.2,"amCategory":"Obs. 35"},{"T9":19.2,"T12":22,"amCategory":"Obs. 36"},{"T9":19.4,"T12":20.7,"amCategory":"Obs. 37"},{"T9":19.2,"T12":21,"amCategory":"Obs. 38"},{"T9":13.8,"T12":17.3,"amCategory":"Obs. 39"},{"T9":14.3,"T12":14.5,"amCategory":"Obs. 40"},{"T9":15.6,"T12":18.6,"amCategory":"Obs. 41"},{"T9":16.9,"T12":19.1,"amCategory":"Obs. 42"},{"T9":17.4,"T12":20.4,"amCategory":"Obs. 43"},{"T9":15.1,"T12":20.5,"amCategory":"Obs. 44"},{"T9":15.1,"T12":15.6,"amCategory":"Obs. 45"},{"T9":16.7,"T12":19.1,"amCategory":"Obs. 46"},{"T9":16.9,"T12":20.3,"amCategory":"Obs. 47"},{"T9":18,"T12":21.6,"amCategory":"Obs. 48"},{"T9":18.6,"T12":21.9,"amCategory":"Obs. 49"},{"T9":18.8,"T12":22.5,"amCategory":"Obs. 50"},{"T9":19,"T12":22.5,"amCategory":"Obs. 51"},{"T9":19.9,"T12":26.9,"amCategory":"Obs. 52"},{"T9":23.8,"T12":27.7,"amCategory":"Obs. 53"},{"T9":24,"T12":28.3,"amCategory":"Obs. 54"},{"T9":23.3,"T12":27.6,"amCategory":"Obs. 55"},{"T9":25,"T12":29.6,"amCategory":"Obs. 56"},{"T9":24.9,"T12":30.5,"amCategory":"Obs. 57"},{"T9":20.5,"T12":26.3,"amCategory":"Obs. 58"},{"T9":25.3,"T12":29.5,"amCategory":"Obs. 59"},{"T9":21.3,"T12":23.8,"amCategory":"Obs. 60"},{"T9":20,"T12":18.2,"amCategory":"Obs. 61"},{"T9":18.7,"T12":20.6,"amCategory":"Obs. 62"},{"T9":18.6,"T12":18.7,"amCategory":"Obs. 63"},{"T9":19.2,"T12":23,"amCategory":"Obs. 64"},{"T9":19.9,"T12":21.6,"amCategory":"Obs. 65"},{"T9":18.7,"T12":21.4,"amCategory":"Obs. 66"},{"T9":18.4,"T12":17.1,"amCategory":"Obs. 67"},{"T9":17.1,"T12":20,"amCategory":"Obs. 68"},{"T9":17.8,"T12":22.8,"amCategory":"Obs. 69"},{"T9":20.9,"T12":25.2,"amCategory":"Obs. 70"},{"T9":18.8,"T12":20.5,"amCategory":"Obs. 71"},{"T9":23.5,"T12":29.8,"amCategory":"Obs. 72"},{"T9":20.8,"T12":23.7,"amCategory":"Obs. 73"},{"T9":18.8,"T12":21.1,"amCategory":"Obs. 74"},{"T9":17.8,"T12":21.3,"amCategory":"Obs. 75"},{"T9":20.6,"T12":24.8,"amCategory":"Obs. 76"},{"T9":21.6,"T12":26.9,"amCategory":"Obs. 77"},{"T9":22.7,"T12":28.4,"amCategory":"Obs. 78"},{"T9":19.8,"T12":27.2,"amCategory":"Obs. 79"},{"T9":25,"T12":33.5,"amCategory":"Obs. 80"},{"T9":20.1,"T12":22.9,"amCategory":"Obs. 81"},{"T9":21,"T12":26.3,"amCategory":"Obs. 82"},{"T9":21,"T12":24.4,"amCategory":"Obs. 83"},{"T9":16.9,"T12":17.8,"amCategory":"Obs. 84"},{"T9":17.5,"T12":18.6,"amCategory":"Obs. 85"},{"T9":16.5,"T12":20.3,"amCategory":"Obs. 86"},{"T9":17.7,"T12":20.2,"amCategory":"Obs. 87"},{"T9":17.3,"T12":22.7,"amCategory":"Obs. 88"},{"T9":15.3,"T12":16.8,"amCategory":"Obs. 89"},{"T9":15.9,"T12":19.2,"amCategory":"Obs. 90"},{"T9":16.2,"T12":18.9,"amCategory":"Obs. 91"},{"T9":18.3,"T12":18.3,"amCategory":"Obs. 92"},{"T9":16.9,"T12":20.8,"amCategory":"Obs. 93"},{"T9":17.3,"T12":19.8,"amCategory":"Obs. 94"},{"T9":14.2,"T12":22.2,"amCategory":"Obs. 95"},{"T9":15.8,"T12":18.7,"amCategory":"Obs. 96"},{"T9":15.2,"T12":17.9,"amCategory":"Obs. 97"},{"T9":17.1,"T12":17.7,"amCategory":"Obs. 98"},{"T9":15.4,"T12":17.7,"amCategory":"Obs. 99"},{"T9":13.7,"T12":14,"amCategory":"Obs. 100"},{"T9":12.7,"T12":14.3,"amCategory":"Obs. 101"},{"T9":14.8,"T12":16.3,"amCategory":"Obs. 102"},{"T9":15.5,"T12":18,"amCategory":"Obs. 103"},{"T9":11.3,"T12":19.4,"amCategory":"Obs. 104"},{"T9":15.2,"T12":19.7,"amCategory":"Obs. 105"},{"T9":14.7,"T12":17.6,"amCategory":"Obs. 106"},{"T9":13.3,"T12":17.7,"amCategory":"Obs. 107"},{"T9":13.3,"T12":17.7,"amCategory":"Obs. 108"},{"T9":16.2,"T12":20.8,"amCategory":"Obs. 109"},{"T9":16.9,"T12":23,"amCategory":"Obs. 110"},{"T9":16.9,"T12":19.8,"amCategory":"Obs. 111"},{"T9":15.7,"T12":18.6,"amCategory":"Obs. 112"}],"graphs":[{"animationPlayed":false,"lineAlpha":1,"bullet":"round","fill_alphas":0,"bulletAlpha":0,"maxBulletSize":0,"balloonText":"value: <b>[[value]]<\/b>","title":"T9","type":"line","valueField":"T9"},{"animationPlayed":false,"lineAlpha":1,"bullet":"round","fill_alphas":0,"bulletAlpha":0,"maxBulletSize":0,"balloonText":"value: <b>[[value]]<\/b>","title":"T12","type":"line","valueField":"T12"}],"type":"serial","valueAxes":[{"position":"left","id":"y","title":"ozone"}]},"background":"#ffffff","listeners":null,"axes_listeners":null,"axes_listenersIndices":null,"categoryAxis_listeners":null,"chartCursor_listeners":null,"dataSetSelector_listeners":null,"legend_listeners":null,"panels_listeners":null,"panels_listenersIndices":null,"periodSelector_listeners":null,"valueAxes_listeners":null,"valueAxes_listenersIndices":[],"stockLegend_listeners":null,"group":null,"is_ts_module":false},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-7ce67a2f1382ce3e500a" style="width:100%;height:500px;" class="ramcharts_base html-widget "></div>
+<script type="application/json" data-for="htmlwidget-7ce67a2f1382ce3e500a">{"x":{"chartData":{"precision":2,"categoryAxis":{"title":"index","position":"bottom","id":"x"},"categoryField":"amCategory","dataProvider":[{"T9":15.6,"T12":18.5,"amCategory":"Obs. 1"},{"T9":17,"T12":18.4,"amCategory":"Obs. 2"},{"T9":15.3,"T12":17.6,"amCategory":"Obs. 3"},{"T9":16.2,"T12":19.7,"amCategory":"Obs. 4"},{"T9":17.4,"T12":20.5,"amCategory":"Obs. 5"},{"T9":17.7,"T12":19.8,"amCategory":"Obs. 6"},{"T9":16.8,"T12":15.6,"amCategory":"Obs. 7"},{"T9":14.9,"T12":17.5,"amCategory":"Obs. 8"},{"T9":16.1,"T12":19.6,"amCategory":"Obs. 9"},{"T9":18.3,"T12":21.9,"amCategory":"Obs. 10"},{"T9":17.3,"T12":19.3,"amCategory":"Obs. 11"},{"T9":17.6,"T12":20.3,"amCategory":"Obs. 12"},{"T9":18.3,"T12":19.6,"amCategory":"Obs. 13"},{"T9":17.1,"T12":18.2,"amCategory":"Obs. 14"},{"T9":15.4,"T12":17.4,"amCategory":"Obs. 15"},{"T9":15.9,"T12":19.1,"amCategory":"Obs. 16"},{"T9":21,"T12":24.6,"amCategory":"Obs. 17"},{"T9":16.2,"T12":22.4,"amCategory":"Obs. 18"},{"T9":19.7,"T12":24.2,"amCategory":"Obs. 19"},{"T9":23.6,"T12":28.6,"amCategory":"Obs. 20"},{"T9":20.4,"T12":25.2,"amCategory":"Obs. 21"},{"T9":27,"T12":32.7,"amCategory":"Obs. 22"},{"T9":24,"T12":23.5,"amCategory":"Obs. 23"},{"T9":19.7,"T12":22.9,"amCategory":"Obs. 24"},{"T9":20.1,"T12":22.4,"amCategory":"Obs. 25"},{"T9":19.6,"T12":25.1,"amCategory":"Obs. 26"},{"T9":19.5,"T12":23.4,"amCategory":"Obs. 27"},{"T9":18.8,"T12":22.7,"amCategory":"Obs. 28"},{"T9":24.1,"T12":28.4,"amCategory":"Obs. 29"},{"T9":26.6,"T12":30.1,"amCategory":"Obs. 30"},{"T9":19.5,"T12":18.8,"amCategory":"Obs. 31"},{"T9":16.8,"T12":18.2,"amCategory":"Obs. 32"},{"T9":20.8,"T12":23.7,"amCategory":"Obs. 33"},{"T9":17.5,"T12":18.2,"amCategory":"Obs. 34"},{"T9":18.1,"T12":21.2,"amCategory":"Obs. 35"},{"T9":19.2,"T12":22,"amCategory":"Obs. 36"},{"T9":19.4,"T12":20.7,"amCategory":"Obs. 37"},{"T9":19.2,"T12":21,"amCategory":"Obs. 38"},{"T9":13.8,"T12":17.3,"amCategory":"Obs. 39"},{"T9":14.3,"T12":14.5,"amCategory":"Obs. 40"},{"T9":15.6,"T12":18.6,"amCategory":"Obs. 41"},{"T9":16.9,"T12":19.1,"amCategory":"Obs. 42"},{"T9":17.4,"T12":20.4,"amCategory":"Obs. 43"},{"T9":15.1,"T12":20.5,"amCategory":"Obs. 44"},{"T9":15.1,"T12":15.6,"amCategory":"Obs. 45"},{"T9":16.7,"T12":19.1,"amCategory":"Obs. 46"},{"T9":16.9,"T12":20.3,"amCategory":"Obs. 47"},{"T9":18,"T12":21.6,"amCategory":"Obs. 48"},{"T9":18.6,"T12":21.9,"amCategory":"Obs. 49"},{"T9":18.8,"T12":22.5,"amCategory":"Obs. 50"},{"T9":19,"T12":22.5,"amCategory":"Obs. 51"},{"T9":19.9,"T12":26.9,"amCategory":"Obs. 52"},{"T9":23.8,"T12":27.7,"amCategory":"Obs. 53"},{"T9":24,"T12":28.3,"amCategory":"Obs. 54"},{"T9":23.3,"T12":27.6,"amCategory":"Obs. 55"},{"T9":25,"T12":29.6,"amCategory":"Obs. 56"},{"T9":24.9,"T12":30.5,"amCategory":"Obs. 57"},{"T9":20.5,"T12":26.3,"amCategory":"Obs. 58"},{"T9":25.3,"T12":29.5,"amCategory":"Obs. 59"},{"T9":21.3,"T12":23.8,"amCategory":"Obs. 60"},{"T9":20,"T12":18.2,"amCategory":"Obs. 61"},{"T9":18.7,"T12":20.6,"amCategory":"Obs. 62"},{"T9":18.6,"T12":18.7,"amCategory":"Obs. 63"},{"T9":19.2,"T12":23,"amCategory":"Obs. 64"},{"T9":19.9,"T12":21.6,"amCategory":"Obs. 65"},{"T9":18.7,"T12":21.4,"amCategory":"Obs. 66"},{"T9":18.4,"T12":17.1,"amCategory":"Obs. 67"},{"T9":17.1,"T12":20,"amCategory":"Obs. 68"},{"T9":17.8,"T12":22.8,"amCategory":"Obs. 69"},{"T9":20.9,"T12":25.2,"amCategory":"Obs. 70"},{"T9":18.8,"T12":20.5,"amCategory":"Obs. 71"},{"T9":23.5,"T12":29.8,"amCategory":"Obs. 72"},{"T9":20.8,"T12":23.7,"amCategory":"Obs. 73"},{"T9":18.8,"T12":21.1,"amCategory":"Obs. 74"},{"T9":17.8,"T12":21.3,"amCategory":"Obs. 75"},{"T9":20.6,"T12":24.8,"amCategory":"Obs. 76"},{"T9":21.6,"T12":26.9,"amCategory":"Obs. 77"},{"T9":22.7,"T12":28.4,"amCategory":"Obs. 78"},{"T9":19.8,"T12":27.2,"amCategory":"Obs. 79"},{"T9":25,"T12":33.5,"amCategory":"Obs. 80"},{"T9":20.1,"T12":22.9,"amCategory":"Obs. 81"},{"T9":21,"T12":26.3,"amCategory":"Obs. 82"},{"T9":21,"T12":24.4,"amCategory":"Obs. 83"},{"T9":16.9,"T12":17.8,"amCategory":"Obs. 84"},{"T9":17.5,"T12":18.6,"amCategory":"Obs. 85"},{"T9":16.5,"T12":20.3,"amCategory":"Obs. 86"},{"T9":17.7,"T12":20.2,"amCategory":"Obs. 87"},{"T9":17.3,"T12":22.7,"amCategory":"Obs. 88"},{"T9":15.3,"T12":16.8,"amCategory":"Obs. 89"},{"T9":15.9,"T12":19.2,"amCategory":"Obs. 90"},{"T9":16.2,"T12":18.9,"amCategory":"Obs. 91"},{"T9":18.3,"T12":18.3,"amCategory":"Obs. 92"},{"T9":16.9,"T12":20.8,"amCategory":"Obs. 93"},{"T9":17.3,"T12":19.8,"amCategory":"Obs. 94"},{"T9":14.2,"T12":22.2,"amCategory":"Obs. 95"},{"T9":15.8,"T12":18.7,"amCategory":"Obs. 96"},{"T9":15.2,"T12":17.9,"amCategory":"Obs. 97"},{"T9":17.1,"T12":17.7,"amCategory":"Obs. 98"},{"T9":15.4,"T12":17.7,"amCategory":"Obs. 99"},{"T9":13.7,"T12":14,"amCategory":"Obs. 100"},{"T9":12.7,"T12":14.3,"amCategory":"Obs. 101"},{"T9":14.8,"T12":16.3,"amCategory":"Obs. 102"},{"T9":15.5,"T12":18,"amCategory":"Obs. 103"},{"T9":11.3,"T12":19.4,"amCategory":"Obs. 104"},{"T9":15.2,"T12":19.7,"amCategory":"Obs. 105"},{"T9":14.7,"T12":17.6,"amCategory":"Obs. 106"},{"T9":13.3,"T12":17.7,"amCategory":"Obs. 107"},{"T9":13.3,"T12":17.7,"amCategory":"Obs. 108"},{"T9":16.2,"T12":20.8,"amCategory":"Obs. 109"},{"T9":16.9,"T12":23,"amCategory":"Obs. 110"},{"T9":16.9,"T12":19.8,"amCategory":"Obs. 111"},{"T9":15.7,"T12":18.6,"amCategory":"Obs. 112"}],"graphs":[{"animationPlayed":false,"lineAlpha":1,"bullet":"round","fill_alphas":0,"bulletAlpha":0,"maxBulletSize":0,"balloonText":"value: <b>[[value]]<\/b>","title":"T9","type":"line","valueField":"T9"},{"animationPlayed":false,"lineAlpha":1,"bullet":"round","fill_alphas":0,"bulletAlpha":0,"maxBulletSize":0,"balloonText":"value: <b>[[value]]<\/b>","title":"T12","type":"line","valueField":"T12"}],"type":"serial","valueAxes":[{"position":"left","id":"y","title":"ozone"}]},"background":"#ffffff","listeners":null,"axes_listeners":null,"axes_listenersIndices":null,"categoryAxis_listeners":null,"chartCursor_listeners":null,"dataSetSelector_listeners":null,"legend_listeners":null,"panels_listeners":null,"panels_listenersIndices":null,"periodSelector_listeners":null,"valueAxes_listeners":null,"valueAxes_listenersIndices":[],"stockLegend_listeners":null,"group":null,"is_ts_module":false},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">amBoxplot</span>(maxO3<span class="sc">~</span>vent,<span class="at">data=</span>ozone)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="htmlwidget-f95854adb69a29008a7a" style="width:100%;height:500px;" class="ramcharts_base html-widget "></div>
-<script type="application/json" data-for="htmlwidget-f95854adb69a29008a7a">{"x":{"chartData":{"rotate":false,"categoryField":"cat","dataProvider":[{"cat":"Est","low_outlier":92,"low":92,"open":96,"median":109,"close":121,"high":146,"high_outlier":146,"color":"#1e90ff","real_outlier_1":"45","individual_1":"<b> Individual <\/b>: 40"},{"cat":"Nord","low_outlier":42,"low":42,"open":71,"median":81,"close":94.5,"high":121,"high_outlier":121,"color":"#1e90ff","real_outlier_1":"153","individual_1":"<b> Individual <\/b>: 53","real_outlier_2":"159","individual_2":"<b> Individual <\/b>: 54"},{"cat":"Ouest","low_outlier":55,"low":55,"open":67,"median":76,"close":88,"high":113,"high_outlier":113,"color":"#1e90ff","real_outlier_1":"131","individual_1":"<b> Individual <\/b>: 78","real_outlier_2":"145","individual_2":"<b> Individual <\/b>: 17","real_outlier_3":"149","individual_3":"<b> Number of outliers <\/b>: 2","real_outlier_4":"156","individual_4":"<b> Individual <\/b>: 57","real_outlier_5":"166","individual_5":"<b> Individual <\/b>: 79"},{"cat":"Sud","low_outlier":54,"low":54,"open":81,"median":99,"close":116,"high":160,"high_outlier":160,"color":"#1e90ff"}],"graphs":[{"animationPlayed":false,"id":"g1","closeField":"close","fillColorsField":"color","highField":"high","lineColor":"#7f8da9","lineAlpha":1,"lowField":"low","fillAlphas":"0.9","negativeLineColor":"#7f8da9","openField":"open","columnWidth":0.4,"balloonText":"High = <b>[[high_outlier]]<\/b><br/>3rd quart. = <b>[[close]]<\/b><br/>Median = <b>[[median]]<\/b><br/>1st quart. = <b>[[open]]<\/b><br/>Low = <b>[[low_outlier]]<\/b><br/>","title":"Price:","type":"candlestick","valueField":"close"},{"animationPlayed":false,"id":"g2","lineColor":"black","noStepRisers":true,"lineThickness":3,"periodSpan":0.4,"balloonText":"","type":"step","valueField":"median"},{"animationPlayed":false,"id":"g3","lineColor":"black","noStepRisers":true,"periodSpan":0.3,"balloonText":"","type":"step","valueField":"low_outlier"},{"animationPlayed":false,"id":"g4","lineColor":"black","noStepRisers":true,"periodSpan":0.3,"balloonText":"","type":"step","valueField":"high_outlier"},{"animationPlayed":false,"id":"g5","lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"","type":"line","valueField":"real_outlier"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_1]]<br/><b> Value <\/b>: [[real_outlier_1]]","type":"line","valueField":"real_outlier_1"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_2]]<br/><b> Value <\/b>: [[real_outlier_2]]","type":"line","valueField":"real_outlier_2"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_3]]<br/><b> Value <\/b>: [[real_outlier_3]]","type":"line","valueField":"real_outlier_3"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_4]]<br/><b> Value <\/b>: [[real_outlier_4]]","type":"line","valueField":"real_outlier_4"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_5]]<br/><b> Value <\/b>: [[real_outlier_5]]","type":"line","valueField":"real_outlier_5"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_6]]<br/><b> Value <\/b>: [[real_outlier_6]]","type":"line","valueField":"real_outlier_6"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_7]]<br/><b> Value <\/b>: [[real_outlier_7]]","type":"line","valueField":"real_outlier_7"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_8]]<br/><b> Value <\/b>: [[real_outlier_8]]","type":"line","valueField":"real_outlier_8"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_9]]<br/><b> Value <\/b>: [[real_outlier_9]]","type":"line","valueField":"real_outlier_9"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_10]]<br/><b> Value <\/b>: [[real_outlier_10]]","type":"line","valueField":"real_outlier_10"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_11]]<br/><b> Value <\/b>: [[real_outlier_11]]","type":"line","valueField":"real_outlier_11"}],"theme":"light","type":"serial"},"background":"#ffffff","listeners":null,"axes_listeners":null,"axes_listenersIndices":null,"categoryAxis_listeners":null,"chartCursor_listeners":null,"dataSetSelector_listeners":null,"legend_listeners":null,"panels_listeners":null,"panels_listenersIndices":null,"periodSelector_listeners":null,"valueAxes_listeners":null,"valueAxes_listenersIndices":null,"stockLegend_listeners":null,"group":null,"is_ts_module":false},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ccca66d76b1bf16f11bf" style="width:100%;height:500px;" class="ramcharts_base html-widget "></div>
+<script type="application/json" data-for="htmlwidget-ccca66d76b1bf16f11bf">{"x":{"chartData":{"rotate":false,"categoryField":"cat","dataProvider":[{"cat":"Est","low_outlier":92,"low":92,"open":96,"median":109,"close":121,"high":146,"high_outlier":146,"color":"#1e90ff","real_outlier_1":"45","individual_1":"<b> Individual <\/b>: 40"},{"cat":"Nord","low_outlier":42,"low":42,"open":71,"median":81,"close":94.5,"high":121,"high_outlier":121,"color":"#1e90ff","real_outlier_1":"153","individual_1":"<b> Individual <\/b>: 53","real_outlier_2":"159","individual_2":"<b> Individual <\/b>: 54"},{"cat":"Ouest","low_outlier":55,"low":55,"open":67,"median":76,"close":88,"high":113,"high_outlier":113,"color":"#1e90ff","real_outlier_1":"131","individual_1":"<b> Individual <\/b>: 78","real_outlier_2":"145","individual_2":"<b> Individual <\/b>: 17","real_outlier_3":"149","individual_3":"<b> Number of outliers <\/b>: 2","real_outlier_4":"156","individual_4":"<b> Individual <\/b>: 57","real_outlier_5":"166","individual_5":"<b> Individual <\/b>: 79"},{"cat":"Sud","low_outlier":54,"low":54,"open":81,"median":99,"close":116,"high":160,"high_outlier":160,"color":"#1e90ff"}],"graphs":[{"animationPlayed":false,"id":"g1","closeField":"close","fillColorsField":"color","highField":"high","lineColor":"#7f8da9","lineAlpha":1,"lowField":"low","fillAlphas":"0.9","negativeLineColor":"#7f8da9","openField":"open","columnWidth":0.4,"balloonText":"High = <b>[[high_outlier]]<\/b><br/>3rd quart. = <b>[[close]]<\/b><br/>Median = <b>[[median]]<\/b><br/>1st quart. = <b>[[open]]<\/b><br/>Low = <b>[[low_outlier]]<\/b><br/>","title":"Price:","type":"candlestick","valueField":"close"},{"animationPlayed":false,"id":"g2","lineColor":"black","noStepRisers":true,"lineThickness":3,"periodSpan":0.4,"balloonText":"","type":"step","valueField":"median"},{"animationPlayed":false,"id":"g3","lineColor":"black","noStepRisers":true,"periodSpan":0.3,"balloonText":"","type":"step","valueField":"low_outlier"},{"animationPlayed":false,"id":"g4","lineColor":"black","noStepRisers":true,"periodSpan":0.3,"balloonText":"","type":"step","valueField":"high_outlier"},{"animationPlayed":false,"id":"g5","lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"","type":"line","valueField":"real_outlier"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_1]]<br/><b> Value <\/b>: [[real_outlier_1]]","type":"line","valueField":"real_outlier_1"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_2]]<br/><b> Value <\/b>: [[real_outlier_2]]","type":"line","valueField":"real_outlier_2"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_3]]<br/><b> Value <\/b>: [[real_outlier_3]]","type":"line","valueField":"real_outlier_3"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_4]]<br/><b> Value <\/b>: [[real_outlier_4]]","type":"line","valueField":"real_outlier_4"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_5]]<br/><b> Value <\/b>: [[real_outlier_5]]","type":"line","valueField":"real_outlier_5"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_6]]<br/><b> Value <\/b>: [[real_outlier_6]]","type":"line","valueField":"real_outlier_6"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_7]]<br/><b> Value <\/b>: [[real_outlier_7]]","type":"line","valueField":"real_outlier_7"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_8]]<br/><b> Value <\/b>: [[real_outlier_8]]","type":"line","valueField":"real_outlier_8"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_9]]<br/><b> Value <\/b>: [[real_outlier_9]]","type":"line","valueField":"real_outlier_9"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_10]]<br/><b> Value <\/b>: [[real_outlier_10]]","type":"line","valueField":"real_outlier_10"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_11]]<br/><b> Value <\/b>: [[real_outlier_11]]","type":"line","valueField":"real_outlier_11"}],"theme":"light","type":"serial"},"background":"#ffffff","listeners":null,"axes_listeners":null,"axes_listenersIndices":null,"categoryAxis_listeners":null,"chartCursor_listeners":null,"dataSetSelector_listeners":null,"legend_listeners":null,"panels_listeners":null,"panels_listenersIndices":null,"periodSelector_listeners":null,"valueAxes_listeners":null,"valueAxes_listenersIndices":null,"stockLegend_listeners":null,"group":null,"is_ts_module":false},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -479,89 +471,41 @@ div.correction {
 <div id="exr-exo1" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 5.1 (Premier graphe) </strong></span>On s’intéresse à quelques graphes simples.</p>
 <ol type="1">
-<li><p>Tracer la fonction <strong>sinus</strong> entre <span class="math inline">\(0\)</span> et <span class="math inline">\(2\pi\)</span>.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>A l’aide de la fonction <strong>title</strong> ajouter le titre <strong>Représentation de la fonction sinus</strong>.</p>
-<div class="cell">
-
-</div>
-<div class="cell">
-
-</div></li>
+<li><p>Tracer la fonction <strong>sinus</strong> entre <span class="math inline">\(0\)</span> et <span class="math inline">\(2\pi\)</span>.</p></li>
+<li><p>A l’aide de la fonction <strong>title</strong> ajouter le titre <strong>Représentation de la fonction sinus</strong>.</p></li>
 </ol>
 </div>
 <div id="exr-exo2" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 5.2 (Tracé de densités) </strong></span>On souhaite ici visualiser et comparer des densités de probabilité.</p>
 <ol type="1">
-<li><p>Tracer la densité de la loi normale centrée réduite entre <span class="math inline">\(-4\)</span> et 4 (utiliser <strong>dnorm</strong>).</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Ajouter une ligne verticale (en tirets) qui passe par <span class="math inline">\(x=0\)</span> (utiliser <strong>abline</strong> avec l’option <strong>lty=2</strong>).</p>
-<div class="cell">
-
-</div>
-<div class="cell">
-
-</div></li>
-<li><p>Sur le même graphe, ajouter les densités de loi la de Student à 5 et 30 degrés de liberté (utiliser <strong>dt</strong>). On utilisera la fonction <strong>lines</strong> et des couleurs différentes pour chaque densité.</p>
-<div class="cell">
-
-</div>
-<div class="cell">
-
-</div></li>
-<li><p>Ajouter une légende qui permette d’identifier chaque densité (fonction <strong>legend</strong>).</p>
-<div class="cell">
-
-</div>
-<div class="cell">
-
-</div></li>
+<li><p>Tracer la densité de la loi normale centrée réduite entre <span class="math inline">\(-4\)</span> et 4 (utiliser <strong>dnorm</strong>).</p></li>
+<li><p>Ajouter une ligne verticale (en tirets) qui passe par <span class="math inline">\(x=0\)</span> (utiliser <strong>abline</strong> avec l’option <strong>lty=2</strong>).</p></li>
+<li><p>Sur le même graphe, ajouter les densités de loi la de Student à 5 et 30 degrés de liberté (utiliser <strong>dt</strong>). On utilisera la fonction <strong>lines</strong> et des couleurs différentes pour chaque densité.</p></li>
+<li><p>Ajouter une légende qui permette d’identifier chaque densité (fonction <strong>legend</strong>).</p></li>
 </ol>
 </div>
 <div id="exr-exo3" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 5.3 (Tâches solaires) </strong></span>On souhaite ici visualiser une série temporelle.</p>
 <ol type="1">
-<li><p>Importer la série <strong>taches_solaires.csv</strong> qui donne, date par date, un nombre de taches solaires observées.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>A l’aide de la fonction <strong>cut_interval</strong> du package <code>ggplot2</code>, créer un facteur qui sépare l’intervalle d’années d’observation en 8 intervalles de tailles à peu près égales. On appellera <strong>periode</strong> ce facteur.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
+<li><p>Importer la série <strong>taches_solaires.csv</strong> qui donne, date par date, un nombre de taches solaires observées.</p></li>
+<li><p>A l’aide de la fonction <strong>cut_interval</strong> du package <code>ggplot2</code>, créer un facteur qui sépare l’intervalle d’années d’observation en 8 intervalles de tailles à peu près égales. On appellera <strong>periode</strong> ce facteur.</p></li>
 <li><p>Utiliser les levels suivants pour le facteur <strong>periode</strong>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>couleurs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"yellow"</span>, <span class="st">"magenta"</span>, <span class="st">"orange"</span>, <span class="st">"cyan"</span>,</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>          <span class="st">"grey"</span>, <span class="st">"red"</span>, <span class="st">"green"</span>, <span class="st">"blue"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-teacher="false">
-
 </div></li>
 <li><p>Expliquer la sortie de la fonction</p>
-<div class="cell" data-teacher="false">
-
-</div>
 <div class="corR">
 <p>On crée une séquence avec un pas de 1 de longueur égale à la dimension de <code>taches[,1]</code>.</p>
 </div></li>
-<li><p>Visualiser la série du nombre de taches en utilisant une couleur différente pour chaque période.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
+<li><p>Visualiser la série du nombre de taches en utilisant une couleur différente pour chaque période.</p></li>
 </ol>
 </div>
 <div id="exr-exo4" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 5.4 (Layout) </strong></span>On reprend le jeu de données sur l’ozone. A l’aide de la fonction <strong>layout</strong> séparer la fenêtre graphique en deux lignes avec</p>
 <ul>
 <li><p>un graphe sur la première ligne (nuage de points <strong>maxO3 vs T12</strong>)</p></li>
-<li><p>2 graphes sur la deuxième ligne (histogramme de <strong>T12</strong> et boxplot de <strong>maxO3</strong>).</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
+<li><p>2 graphes sur la deuxième ligne (histogramme de <strong>T12</strong> et boxplot de <strong>maxO3</strong>).</p></li>
 </ul>
 </div>
 </section>
@@ -641,18 +585,9 @@ div.correction {
 <p><span class="theorem-title"><strong>Exercice 5.5 (Premiers graphes ggplot) </strong></span><br>
 </p>
 <ol type="1">
-<li><p>Tracer l’histogramme de la variable <code>carat</code> (utiliser <code>geom_histogram</code>).</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Même question en utilisant 10 classes pour l’histogramme (<strong>help(geom_histogram)</strong>).</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Tracer le diagramme en barres de la variable <code>cut</code> (utiliser <strong>geom_bar</strong>).</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
+<li><p>Tracer l’histogramme de la variable <code>carat</code> (utiliser <code>geom_histogram</code>).</p></li>
+<li><p>Même question en utilisant 10 classes pour l’histogramme (<strong>help(geom_histogram)</strong>).</p></li>
+<li><p>Tracer le diagramme en barres de la variable <code>cut</code> (utiliser <strong>geom_bar</strong>).</p></li>
 </ol>
 </div>
 <p>La syntaxe <strong>ggplot</strong> est définie à partir d’éléments indépendants qui définissent la grammaire de <strong>ggplot</strong>. Les principaux verbes sont :</p>
@@ -783,26 +718,14 @@ div.correction {
 <div id="exr-exoggplot2" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 5.6 (Diagrammes en barres) </strong></span>On étudie différentes façons de changer la couleur dans un diagramme en barres.</p>
 <ol type="1">
-<li><p>Tracer le diagramme en barres de la variable <strong>cut</strong> avec des barres bleues.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Tracer le diagramme en barres de la variable <strong>cut</strong> avec une couleur pour chaque modalité de <strong>cut</strong> ainsi qu’une légende qui permet de repérer la couleur.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
+<li><p>Tracer le diagramme en barres de la variable <strong>cut</strong> avec des barres bleues.</p></li>
+<li><p>Tracer le diagramme en barres de la variable <strong>cut</strong> avec une couleur pour chaque modalité de <strong>cut</strong> ainsi qu’une légende qui permet de repérer la couleur.</p></li>
 <li><p>Tracer le diagramme en barres de la variable <strong>cut</strong> avec une couleur pour chaque modalité que vous choisirez (et sans légende).</p>
 <div class="corR">
 <p>On peut ajouter l’option <code>show.legend = FALSE</code> dans <strong>geom_bar</strong> :</p>
 </div>
-<div class="cell" data-teacher="false">
-
-</div>
 <div class="corR">
 <p>ou spécifier directement les couleurs (toujours dans <strong>geom_bar</strong>) :</p>
-</div>
-<div class="cell" data-teacher="false">
-
 </div></li>
 </ol>
 </div>
@@ -887,27 +810,15 @@ div.correction {
 <div class="corR">
 <p>La difficulté ici vient du fait que les hauteurs de barre sont données : il ne faut pas les calculer à partir des données. On n’a donc pas à utiliser <strong>stat_count</strong> de <strong>geom_bar</strong>, if faut faire appel à <strong>stat_identity</strong>:</p>
 </div>
-<div class="cell" data-teacher="false">
-
-</div>
 <div class="corR">
 <p>On peut aussi utiliser l’<strong>aes</strong> <code>weight</code> :</p>
-</div>
-<div class="cell" data-teacher="false">
-
 </div>
 </div>
 <div id="exr-exo-stat2" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 5.8 (Lissage) </strong></span>On étudie différentes façons de visualiser un lissage.</p>
 <ol type="1">
-<li><p>Représenter le lissage non linéaire de la variable <code>price</code> contre la variable <code>carat</code> à l’aide de <code>geom_smooth</code> puis de <code>stat_smooth</code>.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Même question mais avec une ligne en pointillés à la place d’un trait plein.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
+<li><p>Représenter le lissage non linéaire de la variable <code>price</code> contre la variable <code>carat</code> à l’aide de <code>geom_smooth</code> puis de <code>stat_smooth</code>.</p></li>
+<li><p>Même question mais avec une ligne en pointillés à la place d’un trait plein.</p></li>
 </ol>
 </div>
 </section>
@@ -1156,102 +1067,70 @@ div.correction {
 <div id="exr-exo-cos-sin" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 5.9 (Fonctions cosinus et sinus) </strong></span>L’objectif est de visualiser les fonctions <strong>sinus</strong> et <strong>cosinus</strong> de plusieurs façons.</p>
 <ol type="1">
-<li><p>Tracer les fonctions sinus et cosinus. On utilisera tout d’abord deux jeux de données : un pour le sinus, l’autre pour le cosinus.</p>
-<div class="cell" data-teacher="false">
-
+<li><p>Tracer les fonctions sinus et cosinus. On utilisera tout d’abord les deux jeux de données suivants (un pour le sinus, l’autre pour le cosinus) :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>donnees1 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">X=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>pi,<span class="dv">2</span><span class="sc">*</span>pi,<span class="at">by=</span><span class="fl">0.001</span>),</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">cos=</span><span class="fu">cos</span>(X))</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>donnees2 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">X=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>pi,<span class="dv">2</span><span class="sc">*</span>pi,<span class="at">by=</span><span class="fl">0.001</span>),</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sin=</span><span class="fu">sin</span>(X))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></li>
-<li><p>Faire la même chose avec un jeu de données et deux appels à la fonction <code>geom_line</code>. On pourra ajouter une légende.</p>
-<div class="cell" data-teacher="false">
-
+<li><p>Faire la même chose avec le jeu de données suivent qui regroupe les informations du cosinus et du sinus (on pourra ajouter une légende) :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>donnees <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">X=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>pi,<span class="dv">2</span><span class="sc">*</span>pi,<span class="at">by=</span><span class="fl">0.001</span>),</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">cos=</span><span class="fu">cos</span>(X),<span class="at">sin=</span><span class="fu">sin</span>(X))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></li>
-<li><p>Faire la même chose avec un jeu de données et un seul appel à <code>geom_line</code>. On pourra utiliser la fonction <strong>pivot_longer</strong> du <strong>tidyverse</strong>.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Tracer les deux fonctions sur deux fenêtres graphiques (utiliser <code>facet_wrap</code>).</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Faire la même chose avec la fonction <code>grid.arrange</code> du package <strong>gridExtra</strong>.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
+<li><p>Faire la même chose avec un jeu de données et un seul appel à <code>geom_line</code>. On pourra utiliser la fonction <strong>pivot_longer</strong> du <strong>tidyverse</strong>.</p></li>
+<li><p>Tracer les deux fonctions sur deux fenêtres graphiques (utiliser <code>facet_wrap</code>).</p></li>
+<li><p>Faire la même chose avec la fonction <code>grid.arrange</code> du package <strong>gridExtra</strong>.</p></li>
 </ol>
 </div>
 <div id="exr-exo-mtcars" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 5.10 (Différents graphes) </strong></span>On considère les données <code>mtcars</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mtcars)</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="do">##       mpg             cyl             disp             hp       </span></span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="do">##  Min.   :10.40   Min.   :4.000   Min.   : 71.1   Min.   : 52.0  </span></span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="do">##  1st Qu.:15.43   1st Qu.:4.000   1st Qu.:120.8   1st Qu.: 96.5  </span></span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="do">##  Median :19.20   Median :6.000   Median :196.3   Median :123.0  </span></span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="do">##  Mean   :20.09   Mean   :6.188   Mean   :230.7   Mean   :146.7  </span></span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="do">##  3rd Qu.:22.80   3rd Qu.:8.000   3rd Qu.:326.0   3rd Qu.:180.0  </span></span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a><span class="do">##  Max.   :33.90   Max.   :8.000   Max.   :472.0   Max.   :335.0  </span></span>
-<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a><span class="do">##       drat             wt             qsec             vs        </span></span>
-<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a><span class="do">##  Min.   :2.760   Min.   :1.513   Min.   :14.50   Min.   :0.0000  </span></span>
-<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  1st Qu.:3.080   1st Qu.:2.581   1st Qu.:16.89   1st Qu.:0.0000  </span></span>
-<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a><span class="do">##  Median :3.695   Median :3.325   Median :17.71   Median :0.0000  </span></span>
-<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a><span class="do">##  Mean   :3.597   Mean   :3.217   Mean   :17.85   Mean   :0.4375  </span></span>
-<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a><span class="do">##  3rd Qu.:3.920   3rd Qu.:3.610   3rd Qu.:18.90   3rd Qu.:1.0000  </span></span>
-<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  Max.   :4.930   Max.   :5.424   Max.   :22.90   Max.   :1.0000  </span></span>
-<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a><span class="do">##        am              gear            carb      </span></span>
-<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a><span class="do">##  Min.   :0.0000   Min.   :3.000   Min.   :1.000  </span></span>
-<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  1st Qu.:0.0000   1st Qu.:3.000   1st Qu.:2.000  </span></span>
-<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a><span class="do">##  Median :0.0000   Median :4.000   Median :2.000  </span></span>
-<span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a><span class="do">##  Mean   :0.4062   Mean   :3.688   Mean   :2.812  </span></span>
-<span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a><span class="do">##  3rd Qu.:1.0000   3rd Qu.:4.000   3rd Qu.:4.000  </span></span>
-<span id="cb47-23"><a href="#cb47-23" aria-hidden="true" tabindex="-1"></a><span class="do">##  Max.   :1.0000   Max.   :5.000   Max.   :8.000</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mtcars)</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="do">##       mpg             cyl             disp             hp       </span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="do">##  Min.   :10.40   Min.   :4.000   Min.   : 71.1   Min.   : 52.0  </span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="do">##  1st Qu.:15.43   1st Qu.:4.000   1st Qu.:120.8   1st Qu.: 96.5  </span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="do">##  Median :19.20   Median :6.000   Median :196.3   Median :123.0  </span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="do">##  Mean   :20.09   Mean   :6.188   Mean   :230.7   Mean   :146.7  </span></span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="do">##  3rd Qu.:22.80   3rd Qu.:8.000   3rd Qu.:326.0   3rd Qu.:180.0  </span></span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a><span class="do">##  Max.   :33.90   Max.   :8.000   Max.   :472.0   Max.   :335.0  </span></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a><span class="do">##       drat             wt             qsec             vs        </span></span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a><span class="do">##  Min.   :2.760   Min.   :1.513   Min.   :14.50   Min.   :0.0000  </span></span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  1st Qu.:3.080   1st Qu.:2.581   1st Qu.:16.89   1st Qu.:0.0000  </span></span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a><span class="do">##  Median :3.695   Median :3.325   Median :17.71   Median :0.0000  </span></span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a><span class="do">##  Mean   :3.597   Mean   :3.217   Mean   :17.85   Mean   :0.4375  </span></span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a><span class="do">##  3rd Qu.:3.920   3rd Qu.:3.610   3rd Qu.:18.90   3rd Qu.:1.0000  </span></span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  Max.   :4.930   Max.   :5.424   Max.   :22.90   Max.   :1.0000  </span></span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a><span class="do">##        am              gear            carb      </span></span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a><span class="do">##  Min.   :0.0000   Min.   :3.000   Min.   :1.000  </span></span>
+<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  1st Qu.:0.0000   1st Qu.:3.000   1st Qu.:2.000  </span></span>
+<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a><span class="do">##  Median :0.0000   Median :4.000   Median :2.000  </span></span>
+<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a><span class="do">##  Mean   :0.4062   Mean   :3.688   Mean   :2.812  </span></span>
+<span id="cb49-22"><a href="#cb49-22" aria-hidden="true" tabindex="-1"></a><span class="do">##  3rd Qu.:1.0000   3rd Qu.:4.000   3rd Qu.:4.000  </span></span>
+<span id="cb49-23"><a href="#cb49-23" aria-hidden="true" tabindex="-1"></a><span class="do">##  Max.   :1.0000   Max.   :5.000   Max.   :8.000</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol type="1">
-<li><p>Tracer l’histogramme de <code>mpg</code> (on fera varier le nombre de classes).</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Tracer l’histogramme de la densité.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Tracer le diagramme en barres de <code>cyl</code>.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Tracer le nuage de points <code>disp vs mpg</code> en utilisant une couleur différente pour chaque valeur de <code>cyl</code>.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Ajouter le lisseur linéaire sur le graphe (un lisseur par modalité de <code>cyl</code>).</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
+<li><p>Tracer l’histogramme de <code>mpg</code> (on fera varier le nombre de classes).</p></li>
+<li><p>Tracer l’histogramme de la densité.</p></li>
+<li><p>Tracer le diagramme en barres de <code>cyl</code>.</p></li>
+<li><p>Tracer le nuage de points <code>disp vs mpg</code> en utilisant une couleur différente pour chaque valeur de <code>cyl</code>.</p></li>
+<li><p>Ajouter le lisseur linéaire sur le graphe (un lisseur par modalité de <code>cyl</code>).</p></li>
 </ol>
 </div>
 <div id="exr-ggplot-reg-simple" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 5.11 (Résidus pour régression simple) </strong></span>On souhaite visualiser les résidus dans un modèle de régression simple.</p>
 <ol type="1">
-<li><p>Générer un échantillon <span class="math inline">\((x_i,y_i),i=1,\dots,100\)</span> selon le modèle linéaire <span class="math display">\[y_i=3+x_i+\varepsilon_i\]</span> où les <span class="math inline">\(x_i\)</span> sont i.i.d. de loi uniforme sur <span class="math inline">\([0,1]\)</span> et les <span class="math inline">\(\varepsilon_i\)</span> sont i.i.d. de loi gaussienne <span class="math inline">\(N(0,0.2^2)\)</span> (utiliser <strong>runif</strong> et <strong>rnorm</strong>).</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
+<li><p>Générer un échantillon <span class="math inline">\((x_i,y_i),i=1,\dots,100\)</span> selon le modèle linéaire <span class="math display">\[y_i=3+x_i+\varepsilon_i\]</span> où les <span class="math inline">\(x_i\)</span> sont i.i.d. de loi uniforme sur <span class="math inline">\([0,1]\)</span> et les <span class="math inline">\(\varepsilon_i\)</span> sont i.i.d. de loi gaussienne <span class="math inline">\(N(0,0.2^2)\)</span> (utiliser <strong>runif</strong> et <strong>rnorm</strong>).</p></li>
 <li><p>Tracer le nuage de points <strong>Y vs X</strong> et ajouter le lisseur linéaire.</p>
 <div class="corR">
 <p>On le fait d’abord “à la main” en calculant l’équation de la droite de régression.</p>
 </div>
-<div class="cell" data-teacher="false">
-
-</div>
 <div class="corR">
 <p>On peut avoir le tracé directement avec <code>geom_smooth</code>.</p>
-</div>
-<div class="cell" data-teacher="false">
-
 </div></li>
-<li><p>Représenter les résidus : on ajoutera une ligne verticale entre chaque point et la droite de lissage (utiliser <strong>geom_segment</strong>).</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
+<li><p>Représenter les résidus : on ajoutera une ligne verticale entre chaque point et la droite de lissage (utiliser <strong>geom_segment</strong>).</p></li>
 </ol>
 </div>
 <div id="exr-ggplot-challenge" class="theorem exercise">
@@ -1260,62 +1139,44 @@ div.correction {
 <li><p>Tracer les graphes suivants.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="04-ggplot_files/figure-html/unnamed-chunk-76-1.png" class="img-fluid" width="672"></p>
+<p><img src="04-ggplot_files/figure-html/unnamed-chunk-78-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<p><img src="04-ggplot_files/figure-html/unnamed-chunk-76-2.png" class="img-fluid" width="672"></p>
+<p><img src="04-ggplot_files/figure-html/unnamed-chunk-78-2.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<p><img src="04-ggplot_files/figure-html/unnamed-chunk-76-3.png" class="img-fluid" width="672"></p>
+<p><img src="04-ggplot_files/figure-html/unnamed-chunk-78-3.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="corR">
 <p>On obtient les graphes demandés avec :</p>
-</div>
-<div class="cell">
-
 </div></li>
 <li><p>Ajouter sur le troisième graphe les quartiles de la variable <strong>carat</strong> pour chaque valeur de <strong>cut</strong>. On utilisera une ligne verticale.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="04-ggplot_files/figure-html/unnamed-chunk-78-1.png" class="img-fluid" width="672"></p>
+<p><img src="04-ggplot_files/figure-html/unnamed-chunk-80-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="corR">
 <p>On peut aussi l’obtenir avec <strong>stat_boxplot</strong> sans calculer explicitement les quartiles :</p>
 </div>
-<div class="cell" data-teacher="false">
-
-</div>
 <div class="corR">
 <p>ou encore avec <strong>stat_summary</strong> :</p>
-</div>
-<div class="cell" data-teacher="false">
-
 </div></li>
 <li><p>En déduire le graphe suivant.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="04-ggplot_files/figure-html/unnamed-chunk-81-1.png" class="img-fluid" width="672"></p>
+<p><img src="04-ggplot_files/figure-html/unnamed-chunk-83-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="corR">
 <p>On l’obtient avec</p>
 </div>
-<div class="cell">
-
-</div>
 <div class="corR">
 <p>ou encore</p>
 </div>
-<div class="cell" data-teacher="false">
-
-</div>
 <div class="corR">
 <p>ou encore avec <strong>stat_summary</strong> :</p>
-</div>
-<div class="cell" data-teacher="false">
-
 </div></li>
 </ol>
 </div>
@@ -1351,9 +1212,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -1418,6 +1293,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {

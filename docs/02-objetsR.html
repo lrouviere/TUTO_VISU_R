@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.3.353">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -17,9 +17,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -46,43 +47,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -124,6 +95,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="style.css">
@@ -133,11 +105,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Les objets R</span></h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-intro.html">Logiciel R</a></li><li class="breadcrumb-item"><a href="./02-objetsR.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Les objets R</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Recherche" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
       </button>
     </div>
   </nav>
@@ -145,42 +122,46 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Visualisation avec R</a> 
         <div class="sidebar-tools-main tools-wide">
-    <a href="" title="Download" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-download"></i></a>
-    <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
-        <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="./Visualisation-avec-R.pdf">
-            <i class="bi bi-bi-file-pdf pe-1"></i>
-          Download PDF
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="./Visualisation-avec-R.epub">
-            <i class="bi bi-bi-journal pe-1"></i>
-          Download ePub
-          </a>
-        </li>
-    </ul>
-    <a href="" title="Share" id="sidebar-tool-dropdown-1" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-share"></i></a>
-    <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-1">
-        <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
-            <i class="bi bi-bi-twitter pe-1"></i>
-          Twitter
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
-            <i class="bi bi-bi-facebook pe-1"></i>
-          Facebook
-          </a>
-        </li>
-    </ul>
-  <a href="" class="quarto-reader-toggle sidebar-tool" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Visualisation-avec-R.pdf">
+              <i class="bi bi-bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Visualisation-avec-R.epub">
+              <i class="bi bi-bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-1" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-1">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+              <i class="bi bi-bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Basculer en mode lecteur">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
   </div>
@@ -188,129 +169,145 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
     </div>
       </div>
-      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
+        <div id="quarto-search" class="" title="Recherche"></div>
         </div>
-      </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">Présentation</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Présentation</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Logiciel R</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Logiciel R</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Basculer la section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01-intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a>
+  <a href="./01-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02-objetsR.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Les objets R</span></a>
+  <a href="./02-objetsR.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Les objets R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-dplyr.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Manipuler les données avec dplyr</span></a>
+  <a href="./03-dplyr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Manipuler les données avec dplyr</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./031-programmer.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Programmer</span></a>
+  <a href="./031-programmer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Programmer</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Visualisation</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Visualisation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Basculer la section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-ggplot.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Visualisation avec ggplot2</span></a>
+  <a href="./04-ggplot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Visualisation avec ggplot2</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05-carto.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Faire des cartes avec R</span></a>
+  <a href="./05-carto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Faire des cartes avec R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./06-interactif.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Quelques outils de visualisation dynamique/interactive</span></a>
+  <a href="./06-interactif.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Quelques outils de visualisation dynamique/interactive</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./07-shiny.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Applications web avec Shiny</span></a>
+  <a href="./07-shiny.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Applications web avec Shiny</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Statistique avec R</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Statistique avec R</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Basculer la section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./08-estimation.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></a>
+  <a href="./08-estimation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./09-regression.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Régression avec R</span></a>
+  <a href="./09-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Régression avec R</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">Références</a>
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Références</span></a>
   </div>
 </li>
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table des matières</h2>
    
   <ul>
-  <li><a href="#création-dobjets" id="toc-création-dobjets" class="nav-link active" data-scroll-target="#création-dobjets"><span class="toc-section-number">2.1</span>  Création d’objets</a>
+  <li><a href="#création-dobjets" id="toc-création-dobjets" class="nav-link active" data-scroll-target="#création-dobjets"><span class="header-section-number">2.1</span> Création d’objets</a>
   <ul class="collapse">
-  <li><a href="#numérique" id="toc-numérique" class="nav-link" data-scroll-target="#numérique"><span class="toc-section-number">2.1.1</span>  Numérique</a></li>
-  <li><a href="#caractère" id="toc-caractère" class="nav-link" data-scroll-target="#caractère"><span class="toc-section-number">2.1.2</span>  Caractère</a></li>
-  <li><a href="#facteur" id="toc-facteur" class="nav-link" data-scroll-target="#facteur"><span class="toc-section-number">2.1.3</span>  Facteur</a></li>
-  <li><a href="#logique-booléen" id="toc-logique-booléen" class="nav-link" data-scroll-target="#logique-booléen"><span class="toc-section-number">2.1.4</span>  Logique (Booléen)</a></li>
+  <li><a href="#numérique" id="toc-numérique" class="nav-link" data-scroll-target="#numérique"><span class="header-section-number">2.1.1</span> Numérique</a></li>
+  <li><a href="#caractère" id="toc-caractère" class="nav-link" data-scroll-target="#caractère"><span class="header-section-number">2.1.2</span> Caractère</a></li>
+  <li><a href="#facteur" id="toc-facteur" class="nav-link" data-scroll-target="#facteur"><span class="header-section-number">2.1.3</span> Facteur</a></li>
+  <li><a href="#logique-booléen" id="toc-logique-booléen" class="nav-link" data-scroll-target="#logique-booléen"><span class="header-section-number">2.1.4</span> Logique (Booléen)</a></li>
   </ul></li>
-  <li><a href="#vecteur" id="toc-vecteur" class="nav-link" data-scroll-target="#vecteur"><span class="toc-section-number">2.2</span>  Vecteur</a>
+  <li><a href="#vecteur" id="toc-vecteur" class="nav-link" data-scroll-target="#vecteur"><span class="header-section-number">2.2</span> Vecteur</a>
   <ul class="collapse">
-  <li><a href="#sélectionner-une-partie-dun-vecteur" id="toc-sélectionner-une-partie-dun-vecteur" class="nav-link" data-scroll-target="#sélectionner-une-partie-dun-vecteur"><span class="toc-section-number">2.2.1</span>  Sélectionner une partie d’un vecteur</a></li>
-  <li><a href="#opérations-sur-les-vecteurs" id="toc-opérations-sur-les-vecteurs" class="nav-link" data-scroll-target="#opérations-sur-les-vecteurs"><span class="toc-section-number">2.2.2</span>  Opérations sur les vecteurs</a></li>
+  <li><a href="#sélectionner-une-partie-dun-vecteur" id="toc-sélectionner-une-partie-dun-vecteur" class="nav-link" data-scroll-target="#sélectionner-une-partie-dun-vecteur"><span class="header-section-number">2.2.1</span> Sélectionner une partie d’un vecteur</a></li>
+  <li><a href="#opérations-sur-les-vecteurs" id="toc-opérations-sur-les-vecteurs" class="nav-link" data-scroll-target="#opérations-sur-les-vecteurs"><span class="header-section-number">2.2.2</span> Opérations sur les vecteurs</a></li>
   </ul></li>
-  <li><a href="#matrices" id="toc-matrices" class="nav-link" data-scroll-target="#matrices"><span class="toc-section-number">2.3</span>  Matrices</a></li>
-  <li><a href="#listes" id="toc-listes" class="nav-link" data-scroll-target="#listes"><span class="toc-section-number">2.4</span>  Listes</a></li>
-  <li><a href="#dataframe" id="toc-dataframe" class="nav-link" data-scroll-target="#dataframe"><span class="toc-section-number">2.5</span>  Dataframe</a></li>
-  <li><a href="#quelques-fonctions-importantes" id="toc-quelques-fonctions-importantes" class="nav-link" data-scroll-target="#quelques-fonctions-importantes"><span class="toc-section-number">2.6</span>  Quelques fonctions importantes</a></li>
-  <li><a href="#exercices-complémentaires" id="toc-exercices-complémentaires" class="nav-link" data-scroll-target="#exercices-complémentaires"><span class="toc-section-number">2.7</span>  Exercices complémentaires</a></li>
+  <li><a href="#matrices" id="toc-matrices" class="nav-link" data-scroll-target="#matrices"><span class="header-section-number">2.3</span> Matrices</a></li>
+  <li><a href="#listes" id="toc-listes" class="nav-link" data-scroll-target="#listes"><span class="header-section-number">2.4</span> Listes</a></li>
+  <li><a href="#dataframe" id="toc-dataframe" class="nav-link" data-scroll-target="#dataframe"><span class="header-section-number">2.5</span> Dataframe</a></li>
+  <li><a href="#quelques-fonctions-importantes" id="toc-quelques-fonctions-importantes" class="nav-link" data-scroll-target="#quelques-fonctions-importantes"><span class="header-section-number">2.6</span> Quelques fonctions importantes</a></li>
+  <li><a href="#exercices-complémentaires" id="toc-exercices-complémentaires" class="nav-link" data-scroll-target="#exercices-complémentaires"><span class="header-section-number">2.7</span> Exercices complémentaires</a></li>
   </ul>
 </nav>
     </div>
@@ -319,7 +316,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-objetsR" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Les objets R</span></span></h1>
+<h1 class="title"><span id="sec-objetsR" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Les objets R</span></span></h1>
 </div>
 
 
@@ -334,7 +331,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<div>
 <div class="cell">
 
 </div>
@@ -351,10 +347,6 @@ div.correction {
   display: none;
 }
 </style>
-</div>
-<div class="cell">
-
-</div>
 <p>On commencera par créer un répertoire dans lequel on mettra tous les fichiers du tutoriel. On pourra créer un <strong>projet</strong> avec Rstudio dans lequel on placera ces fichiers (<em>File -&gt; New Project…</em>). Par défaut, le répertoire de travail se situera dans le répertoire de ce projet. On peut le vérifier avec la commande</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -500,35 +492,20 @@ div.correction {
 <div id="exr-exo-vecteur" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 2.1 (Manipulation de vecteurs) </strong></span>On s’intéresse à des fonctions classiques permettant de manipuler des vecteurs.</p>
 <ol type="1">
-<li><p>Calculer la moyenne, la somme, la médiane et la variance du vecteur (1,3,8,9,11).</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
+<li><p>Calculer la moyenne, la somme, la médiane et la variance du vecteur (1,3,8,9,11).</p></li>
 <li><p>Créer les vecteurs suivants en utilisant la fonction <strong>rep</strong>.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>vec1 = 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 </span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>vec2 = 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>vec3 = 1 1 2 2 2 3 3 3 3 4 4 4 4 4</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell" data-teacher="false">
-
-</div></li>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>vec3 = 1 1 2 2 2 3 3 3 3 4 4 4 4 4</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Créer le vecteur suivant à l’aide de la fonction <strong>paste</strong>, puis avec la fonction <strong>str_c</strong>.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>vec4 = "A0)" "A1)" "A2)" "A3)" "A4)" "A5)" "A6)" "A7)" "A8)" "A9)" "A10)"</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell" data-teacher="false">
-
-</div></li>
+<div class="sourceCode" id="cb15"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>vec4 = "A0)" "A1)" "A2)" "A3)" "A4)" "A5)" "A6)" "A7)" "A8)" "A9)" "A10)"</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p><code>letters</code> est un vecteur qui contient les 26 lettres de l’alphabet.</p>
 <ol type="a">
-<li><p>Trouver le numéro de la lettre <span class="math inline">\(q\)</span> (sans compter “avec les doigts” !). On pourra utiliser la fonction <strong>which</strong> ou <strong>str_which</strong>.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
+<li><p>Trouver le numéro de la lettre <span class="math inline">\(q\)</span> (sans compter “avec les doigts” !). On pourra utiliser la fonction <strong>which</strong> ou <strong>str_which</strong>.</p></li>
 </ol>
 <!-- -->
 <ol start="2" type="a">
-<li><p>Créer le vecteur “a1”,“b2”,<span class="math inline">\(\dots\)</span> jusqu’à <span class="math inline">\(q\)</span> et son index.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
+<li><p>Créer le vecteur “a1”,“b2”,<span class="math inline">\(\dots\)</span> jusqu’à <span class="math inline">\(q\)</span> et son index.</p></li>
 </ol></li>
 </ol>
 </div>
@@ -709,7 +686,7 @@ div.correction {
 <ol type="1">
 <li><p>Créer la matrice suivante que l’on appellera <strong>mat</strong> (on pourra utiliser les fonctions <code>rownames</code> et <code>colnames</code>) :</p>
 <div class="cell">
-<table class="table table-sm table-striped">
+<table class="table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: center;"></th>
@@ -750,26 +727,11 @@ div.correction {
 </tr>
 </tbody>
 </table>
-</div>
-<div class="cell" data-teacher="false">
-
 </div></li>
-<li><p>Créer un vecteur qui contient la diagonal de <strong>mat</strong>.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Créer une matrice qui contient les 2 premières lignes de <strong>mat</strong>.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Créer une matrice qui contient les 2 dernières colonnes de <strong>mat</strong>.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Calculer le déterminant et l’inverse de <strong>mat</strong>.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
+<li><p>Créer un vecteur qui contient la diagonal de <strong>mat</strong>.</p></li>
+<li><p>Créer une matrice qui contient les 2 premières lignes de <strong>mat</strong>.</p></li>
+<li><p>Créer une matrice qui contient les 2 dernières colonnes de <strong>mat</strong>.</p></li>
+<li><p>Calculer le déterminant et l’inverse de <strong>mat</strong>.</p></li>
 </ol>
 </div>
 <div id="exr-exo-manip-iris" class="theorem exercise">
@@ -786,26 +748,11 @@ div.correction {
 <span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 6          5.4         3.9          1.7         0.4  setosa</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol type="1">
-<li><p>Calculer les moyennes et variances des variables <code>Sepal.Width</code> et <code>Petal.Length</code>.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Créer un sous jeu de données qui contient uniquement les iris de l’espèce <code>versicolor</code>. On appellera ce tableau <strong>iris2</strong>.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Ordonner les individus dans <strong>iris2</strong> par valeurs décroissantes de la variable <code>Sepal.Length</code> (on pourra utiliser la fonction <strong>order</strong>).</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Calculer les valeurs moyennes de <code>Sepal.Length</code> pour chaque espèce.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Ajouter une variable (qu’on appellera <code>sum.Petal</code>) dans le dataframe iris qui contiendra la somme de <code>Petal.Length</code> et <code>Petal.Width</code>.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
+<li><p>Calculer les moyennes et variances des variables <code>Sepal.Width</code> et <code>Petal.Length</code>.</p></li>
+<li><p>Créer un sous jeu de données qui contient uniquement les iris de l’espèce <code>versicolor</code>. On appellera ce tableau <strong>iris2</strong>.</p></li>
+<li><p>Ordonner les individus dans <strong>iris2</strong> par valeurs décroissantes de la variable <code>Sepal.Length</code> (on pourra utiliser la fonction <strong>order</strong>).</p></li>
+<li><p>Calculer les valeurs moyennes de <code>Sepal.Length</code> pour chaque espèce.</p></li>
+<li><p>Ajouter une variable (qu’on appellera <code>sum.Petal</code>) dans le dataframe iris qui contiendra la somme de <code>Petal.Length</code> et <code>Petal.Width</code>.</p></li>
 </ol>
 </div>
 <div id="exr-exo-fonc-apply" class="theorem exercise">
@@ -815,18 +762,9 @@ div.correction {
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"ethanol"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol type="1">
-<li><p>Calculer les indicateurs numériques standards (moyenne, min, max, etc.) des 3 variables du jeux de données <strong>ethanol</strong> (disponible dans le package <em>lattice</em>).</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Calculer les quartiles de chaque variables. On pourra faire un <strong>apply</strong> avec la fonction <strong>quantile</strong>.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Faire de même pour les déciles.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
+<li><p>Calculer les indicateurs numériques standards (moyenne, min, max, etc.) des 3 variables du jeux de données <strong>ethanol</strong> (disponible dans le package <em>lattice</em>).</p></li>
+<li><p>Calculer les quartiles de chaque variables. On pourra faire un <strong>apply</strong> avec la fonction <strong>quantile</strong>.</p></li>
+<li><p>Faire de même pour les déciles.</p></li>
 </ol>
 </div>
 <div id="exr-exo-NA-pres" class="theorem exercise">
@@ -836,23 +774,11 @@ div.correction {
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">matrix</span>(presidents,<span class="at">ncol=</span><span class="dv">4</span>,<span class="at">byrow=</span>T)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol type="1">
-<li><p>Est-ce que la ligne 20 contient au moins une données manquante ? On pourra utiliser la fonction <strong>any</strong>.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
-<li><p>Quelles sont les lignes de <strong>df</strong> qui contiennent au moins une donnée manquante ? On pourra utiliser la fonction <strong>which</strong>.</p>
-<div class="cell" data-teacher="false">
-
-</div></li>
+<li><p>Est-ce que la ligne 20 contient au moins une données manquante ? On pourra utiliser la fonction <strong>any</strong>.</p></li>
+<li><p>Quelles sont les lignes de <strong>df</strong> qui contiennent au moins une donnée manquante ? On pourra utiliser la fonction <strong>which</strong>.</p></li>
 <li><p>Supprimer les lignes de <strong>df</strong> qui contiennent au moins une donnée manquante.</p>
-<div class="cell" data-teacher="false">
-
-</div>
 <div class="corR">
 <p>On aurait aussi pu utiliser directement la fonction <strong>na.omit</strong> :</p>
-</div>
-<div class="cell" data-teacher="false">
-
 </div></li>
 </ol>
 </div>
@@ -888,9 +814,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -955,6 +895,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
