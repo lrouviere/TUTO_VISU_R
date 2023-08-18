@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Visualisation avec R - 8&nbsp; Applications web avec Shiny</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./08-estimation.html" rel="next">
+<link href="./06-interactif.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Pas de résultats",
+    "search-matching-documents-text": "documents trouvés",
+    "search-copy-link-title": "Copier le lien vers la recherche",
+    "search-hide-matches-text": "Cacher les correspondances additionnelles",
+    "search-more-match-text": "correspondance de plus dans ce document",
+    "search-more-matches-text": "correspondances de plus dans ce document",
+    "search-clear-button-title": "Effacer",
+    "search-detached-cancel-button-title": "Annuler",
+    "search-submit-button-title": "Envoyer"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Applications web avec Shiny</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Visualisation avec R</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="" title="Download" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-download"></i></a>
+    <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
+        <li>
+          <a class="dropdown-item sidebar-tools-main-item" href="./Visualisation-avec-R.pdf">
+            <i class="bi bi-bi-file-pdf pe-1"></i>
+          Download PDF
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item sidebar-tools-main-item" href="./Visualisation-avec-R.epub">
+            <i class="bi bi-bi-journal pe-1"></i>
+          Download ePub
+          </a>
+        </li>
+    </ul>
+    <a href="" title="Share" id="sidebar-tool-dropdown-1" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-share"></i></a>
+    <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-1">
+        <li>
+          <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+            <i class="bi bi-bi-twitter pe-1"></i>
+          Twitter
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+            <i class="bi bi-bi-facebook pe-1"></i>
+          Facebook
+          </a>
+        </li>
+    </ul>
+  <a href="" class="quarto-reader-toggle sidebar-tool" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Présentation</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Logiciel R</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-objetsR.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Les objets R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-dplyr.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Manipuler les données avec dplyr</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./031-programmer.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Programmer</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Visualisation</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-ggplot.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Visualisation avec ggplot2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-carto.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Faire des cartes avec R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-interactif.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Quelques outils de visualisation dynamique/interactive</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-shiny.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Applications web avec Shiny</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Statistique avec R</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-estimation.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-regression.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Régression avec R</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">Références</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table des matières</h2>
+   
+  <ul>
+  <li><a href="#une-première-application" id="toc-une-première-application" class="nav-link active" data-scroll-target="#une-première-application"><span class="toc-section-number">8.1</span>  Une première application</a></li>
+  <li><a href="#input---output" id="toc-input---output" class="nav-link" data-scroll-target="#input---output"><span class="toc-section-number">8.2</span>  Input - output</a></li>
+  <li><a href="#structurer-lapplication" id="toc-structurer-lapplication" class="nav-link" data-scroll-target="#structurer-lapplication"><span class="toc-section-number">8.3</span>  Structurer l’application</a></li>
+  <li><a href="#ajout-de-graphes-interactifs" id="toc-ajout-de-graphes-interactifs" class="nav-link" data-scroll-target="#ajout-de-graphes-interactifs"><span class="toc-section-number">8.4</span>  Ajout de graphes interactifs</a></li>
+  <li><a href="#reactive-isolation-observe-html" id="toc-reactive-isolation-observe-html" class="nav-link" data-scroll-target="#reactive-isolation-observe-html"><span class="toc-section-number">8.5</span>  Reactive, isolation, observe, html, …</a></li>
+  <li><a href="#exercices-complémentaires" id="toc-exercices-complémentaires" class="nav-link" data-scroll-target="#exercices-complémentaires"><span class="toc-section-number">8.6</span>  Exercices complémentaires</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-shiny" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Applications web avec Shiny</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div>
+<div class="cell">
+
+</div>
+<style>
+div.correction {
+  color: black;
+  background-color: #F0F0F0;
+  font-style: normal;
+  display: none;
+}
+
+.corR {
+  font-style: italic;
+  display: none;
+}
+</style>
+</div>
+<div class="cell">
+
+</div>
+<p><code>Shiny</code> est un package <strong>R</strong> qui permet la création simple d’applications web intéractives depuis <strong>R</strong>. Cette partie provient essentiellement du tutoriel de Benoît Thieurmel disponible ici : <a href="https://github.com/datastorm-open/tuto_shiny_rennes" class="uri">https://github.com/datastorm-open/tuto_shiny_rennes</a>.</p>
+<section id="une-première-application" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="une-première-application"><span class="header-section-number">8.1</span> Une première application</h2>
+<p>Créer un répertoire pour l’application avec <strong>RStudio</strong></p>
+<pre><code>File -&gt; New Project -&gt; New Directory -&gt; Shiny Web Application</code></pre>
+<p>Choisir une application <strong>Multiple File</strong>.</p>
+<p>Si cette option n’est pas disponible (ça peut dépendre des versions de Rstudio), on pourra utiliser</p>
+<pre><code>File -&gt; New File -&gt; Shiny Web App -&gt; Multiple File</code></pre>
+<p>Deux fichier sont automatiquement générés : <code>ui.R</code> et <code>server.R</code>. Lancer l’application en cliquant sur le bouton <code>Run App</code>.</p>
+<ul>
+<li>Changer le titre de l’application. On pourra l’appeler <strong>My first application</strong>.</li>
+<li>Mettre à jour et vérifier que le titre a bien été changé.</li>
+</ul>
+</section>
+<section id="input---output" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="input---output"><span class="header-section-number">8.2</span> Input - output</h2>
+<p>On garde la même application. On ne s’intéressera pas à la structure dans cette partie, on veut simplement ajouter</p>
+<ul>
+<li>des nouveaux <strong>inputs</strong> dans le <code>sidebarPanel</code>, après le <code>sliderInput</code>. On n’oubliera pas de séparer les inputs par des virgules;</li>
+<li>des nouveaux <strong>outputs</strong> dans le <code>mainPanel</code>, après le <code>plotOutput</code>. Là encore, on n’oubliera pas de séparer les outputs par des virgules.</li>
+</ul>
+<p>Pour résumer on souhaite une colonne avec tous les inputs et une autre avec tous les outputs.</p>
+<ol type="1">
+<li><p>Ajouter dans <code>ui.R</code> une entrée qui permette de changer la couleur de l’histogramme. On pourra utiliser</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">selectInput</span>(<span class="at">inputId =</span> <span class="st">"color"</span>, <span class="at">label =</span> <span class="st">"Couleur :"</span>,</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">choices =</span> <span class="fu">c</span>(<span class="st">"Rouge"</span> <span class="ot">=</span> <span class="st">"red"</span>, <span class="st">"Vert"</span> <span class="ot">=</span> <span class="st">"green"</span>, <span class="st">"Bleu"</span> <span class="ot">=</span> <span class="st">"blue"</span>))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+<li><p>Ajouter une sortie qui permette de visualiser le <strong>summary</strong> du jeu de données <code>faithful</code>. On pourra utiliser</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ui.R</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">verbatimTextOutput</span>(<span class="st">"..."</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># server.R</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>output<span class="sc">$</span>... <span class="ot">&lt;-</span> <span class="fu">renderPrint</span>({</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(...)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+</ol>
+<div id="exr-exo-shiny-input-output" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 8.1 (Ajouter des inputs/outputs) </strong></span>Ajouter des entrées/sorties à votre application pour</p>
+<ol type="1">
+<li><p>proposer à l’utilisateur de choisir un titre pour l’histogramme (utiliser <code>textInput</code> dans l’<strong>ui</strong> et l’option <code>main</code> dans <strong>hist</strong>);</p></li>
+<li><p>choisir la variable de <code>faithful</code> à représenter dans l’histogramme avec un <code>radioButtons</code> ayant pour choix <code>colnames(faithful)</code>;</p></li>
+<li><p>visualiser le jeu de données entier (<code>renderDataTable</code> &amp; <code>dataTableOutput</code>);</p></li>
+<li><p>ajouter un text sous l’histogramme qui indique le nombre de classes (<code>renderText</code> et <code>paste</code> dans <strong>server</strong>, <code>textOutput</code> dans <strong>ui</strong>);</p></li>
+<li><p>remplacer le <code>selectInput</code> du choix de la couleur par un <code>colourInput</code> (utiliser la package <a href="https://cran.r-project.org/web/packages/colourpicker/vignettes/colourpicker.html">colourpicker</a>);</p></li>
+<li><p>exporter le graphe (<code>downloadButton</code> &amp; <code>jpeg</code>).</p></li>
+</ol>
+<p>L’application demandée pourra ressembler à</p>
+<div class="cell" name="input-output-app_html" data-screenshot.opts="{&quot;delay&quot;:5,&quot;cliprect&quot;:&quot;viewport&quot;,&quot;zoom&quot;:2,&quot;vwidth&quot;:200,&quot;vheight&quot;:200}">
+<iframe src="https://input-output-rouviere-shiny.apps.math.cnrs.fr/?showcase=0" width="760" height="650px" data-external="1">
+</iframe>
+</div>
+<div class="cell" name="input-output-app_pdf">
+
+</div>
+<p>Elle est également disponible ici <a href="https://input-output-rouviere-shiny.apps.math.cnrs.fr/" class="uri">https://input-output-rouviere-shiny.apps.math.cnrs.fr/</a>.</p>
+</div>
+</section>
+<section id="structurer-lapplication" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="structurer-lapplication"><span class="header-section-number">8.3</span> Structurer l’application</h2>
+<p>On considère l’application <strong>app_structure</strong> disponible <a href="https://lrouviere.github.io/VISU/">ici</a>. C’est quasiment la même que précédemment avec un <code>navbarPage</code> qui définit</p>
+<ul>
+<li>un onglet <em>Data</em> pour visualiser les données (table + summary)</li>
+<li>un onglet <em>Visualisation</em> : inputs + histogramme.</li>
+</ul>
+<div id="exr-exo-shiny-structure1" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 8.2 (Structurer son application) </strong></span>On conserve l’application précédente.</p>
+<ol type="1">
+<li><p>Dans l’onglet <strong>Data</strong> utiliser <code>navlistPanel</code> pour séparer le <code>summary</code> et la table <code>table</code> en deux onglets :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># rappel de la structure (ui.R)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">navlistPanel</span>(<span class="st">"Title of the structure"</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>             <span class="fu">tabPanel</span>(<span class="st">"Title of the tab"</span>, ..., <span class="st">"(content of the tab)"</span>),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>             <span class="fu">tabPanel</span>(<span class="st">"Title of the tab"</span>, ..., <span class="st">"(content of the tab)"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+<li><p>Dans l’onglet <strong>Visualization</strong> changer <code>sidebarLayout</code> - <code>sidebarPanel</code> - <code>mainPanel</code> par un <code>fluidRow</code> à 2 colonnes :</p>
+<ul>
+<li>1/4 : pour le <code>sidebarPanel</code></li>
+<li>3/4 : pour le <code>mainPanel</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fluidRow</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column</span>(<span class="at">width =</span> <span class="dv">3</span>, ...), <span class="co"># column 1/4 (3/12)</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column</span>(<span class="at">width =</span> <span class="dv">9</span>, ...)  <span class="co"># column 3/4 (9/12)</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><em>Indication : utiliser <code>wellPanel</code> pour la colonne de gauche.</em></p></li>
+<li><p>Ajouter un bloxplot dans l’onglet visualisation (même variable et même couleur). On pourra également utiliser <code>tabsetPanel</code> pour avoir deux onglets pour l’histogramme et le boxplot.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># rappel de la structure (ui.R)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tabsetPanel</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tabPanel</span>(<span class="st">"Title of the tab"</span>, ... ,<span class="st">"(content of the tab)"</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tabPanel</span>(<span class="st">"Title of the tab"</span>, ... ,<span class="st">"(content of the tab)"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+</ol>
+<p>L’application demandée pourra ressembler à</p>
+<div class="cell" name="structure-app_html" data-screenshot.opts="{&quot;delay&quot;:5,&quot;cliprect&quot;:&quot;viewport&quot;,&quot;zoom&quot;:2,&quot;vwidth&quot;:200,&quot;vheight&quot;:200}">
+<iframe src="https://structure-rouviere-shiny.apps.math.cnrs.fr/?showcase=0" width="760" height="650px" data-external="1">
+</iframe>
+</div>
+<div class="cell" name="structure-app_pdf">
+
+</div>
+<p>Elle est également disponible ici <a href="https://structure-rouviere-shiny.apps.math.cnrs.fr/" class="uri">https://structure-rouviere-shiny.apps.math.cnrs.fr/</a>.</p>
+<p><strong>Pour aller plus loin</strong> : faire la même application avec <a href="https://rstudio.github.io/shinydashboard/">shinydashboard</a>.</p>
+</div>
+</section>
+<section id="ajout-de-graphes-interactifs" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="ajout-de-graphes-interactifs"><span class="header-section-number">8.4</span> Ajout de graphes interactifs</h2>
+<p>Dans l’application précédente, remplacer l’histogramme et la boxplot par des graphes javascript réalisés avec <a href="http://datastorm-open.github.io/introduction_ramcharts/">rAmCharts</a>. On pourra utiliser</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># server.R</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>output<span class="sc">$</span>distPlot <span class="ot">&lt;-</span> <span class="fu">renderAmCharts</span>({...})</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ui.R</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">amChartsOutput</span>(<span class="st">"..."</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>L’application demandée pourra ressembler à</p>
+<div class="cell" name="interactif-app_html" data-screenshot.opts="{&quot;delay&quot;:5,&quot;cliprect&quot;:&quot;viewport&quot;,&quot;zoom&quot;:2,&quot;vwidth&quot;:200,&quot;vheight&quot;:200}">
+<iframe src="https://interactifs-rouviere-shiny-2.apps.math.cnrs.fr/?showcase=0" width="760" height="650px" data-external="1">
+</iframe>
+</div>
+<div class="cell" name="interactif_pdf">
+
+</div>
+<p>Elle est également disponible ici <a href="https://interactifs-rouviere-shiny-2.apps.math.cnrs.fr/" class="uri">https://interactifs-rouviere-shiny-2.apps.math.cnrs.fr/</a>.</p>
+<div id="exr-exo-shiny-ozone" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 8.3 (Modèles linéaires pour l’ozone) </strong></span>On considère les données <code>ozone.txt</code> où le problème est d’expliquer la variable continue <code>maxO3</code> par les autres variables du jeu de données. On propose de construire une application avec 3 onglets en utilisant (dans le <strong>ui.R</strong>) la structure suivante :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">navbarPage</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title=</span><span class="st">"Titre de l'appli"</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tabPanel</span>(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="st">"Titre de l'onglet"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol type="1">
+<li><p>Créer le fichier <code>global.R</code> où on chargera les packages nécessaires et où on lira le jeu de données.</p></li>
+<li><p>Construire le premier onglet où on visualisera :</p>
+<ul>
+<li><p>sur une ligne le jeu de données de façon dynamique : on pourra utiliser la fonction <code>dataTableOutput</code> dans le <strong>ui.R</strong> et la fonction <code>renderDataTable</code> dans le <strong>server.R</strong>.</p></li>
+<li><p>sur une autre ligne l’histogramme de la variable à expliquer et la matrice des corrélations des variables explicatives quatitatives. On pourra utiliser les commandes suivantes pour la matrice des corrélations :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>corrplot<span class="sc">::</span><span class="fu">corrplot</span>(<span class="fu">cor</span>(ozone[,<span class="dv">2</span><span class="sc">:</span><span class="dv">11</span>]))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>D’un point de vue structure on pourra utiliser la fonction <code>fluidrow</code> pour intégrer les deux graphes.</p></li>
+</ul></li>
+<li><p>Ajouter un second onglet qui permettra de visualiser un modèle à une variable explicative que l’utilisateur choisira. On pourra utiliser <code>radioButtons</code> dans le <strong>ui.R</strong> pour choisir la variable et les commandes suivantes dans le <strong>server.R</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">renderDataTable</span>({</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  XX <span class="ot">&lt;-</span> <span class="fu">paste</span>(input<span class="sc">$</span>...,<span class="at">collapse=</span><span class="st">"+"</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  form <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"maxO3~"</span>,XX,<span class="at">sep=</span><span class="st">""</span>) <span class="sc">|&gt;</span> <span class="fu">formula</span>()</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(form,<span class="at">data=</span>ozone)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  mod_sum1 <span class="ot">&lt;-</span> <span class="fu">summary</span>(mod)<span class="sc">$</span>coefficients <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>) <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>()</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  mod_sum1</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>On pourra également visualiser le nuage de points et la droite de régression pour le modèle choisi par l’utilisateur.</p></li>
+<li><p>Ajouter un troisième onglet où l’utilisateur pourra visualiser les estimateurs d’un modèle de régression multiple où il choisira les variables explicatives (avec <code>checkboxGroupInput</code> par exemple). On pourra éventuellement ajouter un graphe pour visualiser les résidus.</p></li>
+<li><p>Choisir un thème pour votre application en vous référant à la page suivante : <a href="https://rstudio.github.io/shinythemes/" class="uri">https://rstudio.github.io/shinythemes/</a>.</p></li>
+</ol>
+<p>L’application demandée pourra ressembler à</p>
+<div class="cell" name="ozone-app_html" data-screenshot.opts="{&quot;delay&quot;:5,&quot;cliprect&quot;:&quot;viewport&quot;,&quot;zoom&quot;:2,&quot;vwidth&quot;:200,&quot;vheight&quot;:200}">
+<iframe src="https://ozone-rouviere-shiny-4.apps.math.cnrs.fr/?showcase=0" width="760" height="650px" data-external="1">
+</iframe>
+</div>
+<div class="cell" name="ozone_pdf">
+
+</div>
+<p>Elle est également disponible ici : <a href="https://ozone-rouviere-shiny-4.apps.math.cnrs.fr/" class="uri">https://ozone-rouviere-shiny-4.apps.math.cnrs.fr/</a>.</p>
+</div>
+</section>
+<section id="reactive-isolation-observe-html" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="reactive-isolation-observe-html"><span class="header-section-number">8.5</span> Reactive, isolation, observe, html, …</h2>
+<p>Garder la même application et</p>
+<ul>
+<li><p>ajouter un <code>actionButton</code> combiné à un <code>isolate</code> pour mettre à jour l’application uniquement lorsque l’utilisateur clique sur le bouton.</p></li>
+<li><p>Utiliser <code>observeEvent</code> pour forcer l’apparition de l’histogramme lorsqu’on met à jour l’application. On pourra utiliser</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># think to add  "session" </span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyServer</span>(<span class="cf">function</span>(input, output, session))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># an id </span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tabsetPanel</span>(<span class="at">id =</span> <span class="st">"viz"</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>            <span class="fu">tabPanel</span>(<span class="st">"Histogram"</span>,...,))</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># and finaly</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">observeEvent</span>(input<span class="sc">$</span>go, {</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">updateTabsetPanel</span>(session, <span class="at">inputId =</span> <span class="st">"viz"</span>,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">selected =</span> <span class="st">"Histogram"</span>)})</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+<li><p>Utiliser <code>reactive</code> pour stocker la variable sélectionnée</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example of reactive</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>output<span class="sc">$</span>plot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">data</span>()</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+<li><p>Ajouter un titre en bleu sur le jeu de données. On pourra utiliser <code>h1</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">h1</span>(<span class="st">"Dataset"</span>, <span class="at">style =</span> <span class="st">"color : #0099ff;text-align:center"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+<li><p>Ajouter un troisième onglet pour présenter un résumé de votre Uinersité, avec un logo de l’institution et un lien vers son site web.</p></li>
+<li><p><strong>Pour aller plus loin</strong> : changer le thème de l’application avec un fichier de style <code>.css</code>. On pourra par exemple utiliser bootswatch <a href="http://bootswatch.com/3" class="uri">http://bootswatch.com/3</a>.</p></li>
+</ul>
+<p>L’application finale pourra ressembler à</p>
+<div class="cell" name="plus-loin-app_html" data-screenshot.opts="{&quot;delay&quot;:5,&quot;cliprect&quot;:&quot;viewport&quot;,&quot;zoom&quot;:2,&quot;vwidth&quot;:200,&quot;vheight&quot;:200}">
+<iframe src="https://plus-loin-rouviere-shiny-2.apps.math.cnrs.fr/?showcase=0" width="760" height="650px" data-external="1">
+</iframe>
+</div>
+<div class="cell" name="plus-loin-app_pdf">
+
+</div>
+<p>Elle est également disponible ici <a href="https://plus-loin-rouviere-shiny-2.apps.math.cnrs.fr/" class="uri">https://plus-loin-rouviere-shiny-2.apps.math.cnrs.fr/</a>.</p>
+</section>
+<section id="exercices-complémentaires" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="exercices-complémentaires"><span class="header-section-number">8.6</span> Exercices complémentaires</h2>
+<div id="exr-shiny-desc-app" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 8.4 (Une application simple descriptive) </strong></span>On considère le jeu de données <em>SAheart</em> du package <strong>bestglm</strong>.</p>
+<ol type="1">
+<li><p>A l’aide du package <strong>rAmCharts</strong>, représenter les histogrammes des variables quantitatives du jeu de données ainsi que les boxplots de ces variables en fonction de la variable <strong>chd</strong>.</p>
+<div class="cell" data-teacher="false">
+
+</div>
+<div class="cell" data-teacher="false">
+
+</div></li>
+<li><p>Créer une application shiny avec <a href="https://rstudio.github.io/shinydashboard/index.html">shinydashboard</a> qui permette de</p>
+<ul>
+<li>choisir une variable parmi les variables quantitatives du jeu de données. On pourra utiliser <strong>radioButtons</strong> avec l’argument</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>choices<span class="ot">=</span><span class="fu">names</span>(SAheart)[<span class="fu">sapply</span>(SAheart,class)<span class="sc">==</span><span class="st">"numeric"</span>]</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>visualiser l’histogramme, puis le boxplot en fonction de <em>chd</em> de la variable sélectionnée. Ces graphiques devront être faits avec <strong>rAmCharts</strong>. On pourra utiliser <strong>amChartsOutput</strong>. L’application demandée pourra ressembler à</li>
+</ul>
+<div class="cell" name="desc-app_html" data-screenshot.opts="{&quot;delay&quot;:5,&quot;cliprect&quot;:&quot;viewport&quot;,&quot;zoom&quot;:2,&quot;vwidth&quot;:200,&quot;vheight&quot;:200}">
+<iframe src="https://lrouviere.shinyapps.io/DESC_APP/?showcase=0" width="760" height="650px" data-external="1">
+</iframe>
+</div>
+<div class="cell" name="desc-app_pdf">
+
+</div>
+<p>Elle est disponible ici <a href="https://lrouviere.shinyapps.io/DESC_APP" class="uri">https://lrouviere.shinyapps.io/DESC_APP</a>.</p></li>
+</ol>
+</div>
+<div id="exr-shiny-velib-app" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 8.5 (Stations velib à Rennes) </strong></span>Réaliser une application qui permette de visualiser les stations velib à Rennes. Elle pourra être du même genre que celle-ci :</p>
+<div class="cell" name="velib-app_html" data-screenshot.opts="{&quot;delay&quot;:5,&quot;cliprect&quot;:&quot;viewport&quot;,&quot;zoom&quot;:2,&quot;vwidth&quot;:200,&quot;vheight&quot;:200}">
+<iframe src="https://lrouviere.shinyapps.io/velib/?showcase=0" width="760" height="650px" data-external="1">
+</iframe>
+</div>
+<div class="cell" name="velib-app_pdf">
+
+</div>
+<p>On peut avoir une meilleure vision ici : <a href="https://lrouviere.shinyapps.io/velib/" class="uri">https://lrouviere.shinyapps.io/velib/</a>. On récupérera les données sur le site de Rennes métropole : <a href="https://data.rennesmetropole.fr/explore/dataset/etat-des-stations-le-velo-star-en-temps-reel/export/" class="uri">https://data.rennesmetropole.fr/explore/dataset/etat-des-stations-le-velo-star-en-temps-reel/export/</a></p>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copié");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copié");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./06-interactif.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Quelques outils de visualisation dynamique/interactive</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./08-estimation.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
