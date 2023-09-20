@@ -301,6 +301,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#diaporama-r" id="toc-diaporama-r" class="nav-link" data-scroll-target="#diaporama-r"><span class="header-section-number">1.3.4</span> Diaporama R</a></li>
   <li><a href="#exemples-de-styles-de-documents-quarto" id="toc-exemples-de-styles-de-documents-quarto" class="nav-link" data-scroll-target="#exemples-de-styles-de-documents-quarto"><span class="header-section-number">1.3.5</span> Exemples de styles de documents Quarto</a></li>
   </ul></li>
+  <li><a href="#lenvironnement-projet-de-rstudio" id="toc-lenvironnement-projet-de-rstudio" class="nav-link" data-scroll-target="#lenvironnement-projet-de-rstudio"><span class="header-section-number">1.4</span> L’environnement projet de Rstudio</a></li>
   </ul>
 </nav>
     </div>
@@ -542,9 +543,40 @@ div.correction {
 </figure>
 </div>
 <p>On pourra trouver des compléments sur les différents styles et options ici : <a href="https://quarto.org/docs/output-formats/html-themes.html#navigation" class="uri">https://quarto.org/docs/output-formats/html-themes.html#navigation</a>.</p>
-
-
 </section>
+</section>
+<section id="lenvironnement-projet-de-rstudio" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="lenvironnement-projet-de-rstudio"><span class="header-section-number">1.4</span> L’environnement projet de Rstudio</h2>
+<p>Il permet de créer un répertoire dans l’arborescence et facilite la gestion des chemins. <strong>R</strong> travaille par défaut dans un répertoire que l’on peut identifier à l’aide de la commande</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ce répertoire peut être modifié avec la fonction</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>ou avec les boutons</p>
+<pre><code>Session -&gt; Set Working Directory -&gt; Choose Directory</code></pre>
+<p>Travailler en mode <strong>projet</strong> permet, entre autres, d’utiliser le répertoire du projet comme répertoire de travail ppar défaut.</p>
+<div id="exo-projet-rstudio" class="exercise" name="Travailler en mode projet">
+<ol type="1">
+<li><p>Ouvrir <strong>Rstudio</strong> et executer la fonction <code>getwd()</code>. Expliquer la sortie.</p>
+<div class="corR">
+<p>Cette fonction renvoie le répertoire à partir duquel <strong>R</strong> travaille.</p>
+</div></li>
+<li><p>Créer un projet avec</p>
+<p>File -&gt; New Project -&gt; New Directory -&gt; New Project</p>
+<p>On choisit un répertoire dans l’arborescence qui contiendra le répertoire de cet enseignement.</p></li>
+<li><p>Exécuter à nouveau la commande <code>getwd()</code>.</p>
+<div class="corR">
+<p>Le répertoire de travail est maintenant le répertoire du projet.</p>
+</div></li>
+<li><p>Fermer le projet en cliquant sur <code>Close Project</code> en haut à droite de la fenêtre <strong>Rstudio</strong>.</p></li>
+<li><p>Ré-ouvrir le projet, toujours en cliquant en haut à droite de la fenêtre <strong>Rstudio</strong>.</p></li>
+</ol>
+</div>
+
+
 </section>
 
 </main> <!-- /main -->
