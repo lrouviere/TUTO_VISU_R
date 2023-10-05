@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Visualisation avec R - 10&nbsp; Régression avec R</title>
+<title>Visualisation avec R - 9&nbsp; Régression avec R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -129,7 +129,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08-estimation.html">Statistique avec R</a></li><li class="breadcrumb-item"><a href="./09-regression.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Régression avec R</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08-estimation.html">Statistique avec R</a></li><li class="breadcrumb-item"><a href="./09-regression.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Régression avec R</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="Recherche" onclick="window.quartoOpenSearch();">
@@ -253,20 +253,14 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05-carto.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Faire des cartes avec R</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./06-interactif.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Quelques outils de visualisation dynamique/interactive</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Quelques outils de visualisation dynamique/interactive</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-shiny.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Applications web avec Shiny</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Applications web avec Shiny</span></span></a>
   </div>
 </li>
       </ul>
@@ -283,13 +277,13 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./08-estimation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./09-regression.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Régression avec R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Régression avec R</span></span></a>
   </div>
 </li>
       </ul>
@@ -310,9 +304,9 @@ div.csl-indent {
     <h2 id="toc-title">Table des matières</h2>
    
   <ul>
-  <li><a href="#modèle-linéaire-fonctions-lm-et-predict" id="toc-modèle-linéaire-fonctions-lm-et-predict" class="nav-link active" data-scroll-target="#modèle-linéaire-fonctions-lm-et-predict"><span class="header-section-number">10.1</span> Modèle linéaire : fonctions lm et predict</a></li>
-  <li><a href="#sélection-de-variables" id="toc-sélection-de-variables" class="nav-link" data-scroll-target="#sélection-de-variables"><span class="header-section-number">10.2</span> Sélection de variables</a></li>
-  <li><a href="#régression-logistique-et-arbre" id="toc-régression-logistique-et-arbre" class="nav-link" data-scroll-target="#régression-logistique-et-arbre"><span class="header-section-number">10.3</span> Régression logistique et arbre</a></li>
+  <li><a href="#modèle-linéaire-fonctions-lm-et-predict" id="toc-modèle-linéaire-fonctions-lm-et-predict" class="nav-link active" data-scroll-target="#modèle-linéaire-fonctions-lm-et-predict"><span class="header-section-number">9.1</span> Modèle linéaire : fonctions lm et predict</a></li>
+  <li><a href="#sélection-de-variables" id="toc-sélection-de-variables" class="nav-link" data-scroll-target="#sélection-de-variables"><span class="header-section-number">9.2</span> Sélection de variables</a></li>
+  <li><a href="#régression-logistique-et-arbre" id="toc-régression-logistique-et-arbre" class="nav-link" data-scroll-target="#régression-logistique-et-arbre"><span class="header-section-number">9.3</span> Régression logistique et arbre</a></li>
   </ul>
 </nav>
     </div>
@@ -321,7 +315,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec:estimation" class="quarto-section-identifier"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Régression avec R</span></span></h1>
+<h1 class="title"><span id="sec:estimation" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Régression avec R</span></span></h1>
 </div>
 
 
@@ -502,10 +496,10 @@ div.correction {
 <li>…</li>
 </ul>
 <p>Dans la suite on suppose que <span class="math inline">\(\mathcal Y=\mathbb R\)</span> et on considère le modèle de régression <span class="math display">\[Y=m(X)+\varepsilon.\]</span> La performance d’un estimateur <span class="math inline">\(\widehat{m}\)</span> de <span class="math inline">\(m\)</span> sera mesurée par son erreur quadratique de prédiction : <span class="math display">\[E[(Y-\widehat m(X))^2].\]</span></p>
-<section id="modèle-linéaire-fonctions-lm-et-predict" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="modèle-linéaire-fonctions-lm-et-predict"><span class="header-section-number">10.1</span> Modèle linéaire : fonctions lm et predict</h2>
+<section id="modèle-linéaire-fonctions-lm-et-predict" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="modèle-linéaire-fonctions-lm-et-predict"><span class="header-section-number">9.1</span> Modèle linéaire : fonctions lm et predict</h2>
 <div id="exr-exo-regression-intro" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 10.1 (Fonctions standards pour le modèle linéaire) </strong></span>On considère le modèle de régression linéaire <span class="math display">\[Y=\beta_0+\beta_1X_1+\dots+\beta_pX_p+\varepsilon\]</span> où <span class="math inline">\(X_1,\dots,X_p\)</span> sont les variables explicatives, <span class="math inline">\(Y\)</span> la variable à expliquer et <span class="math inline">\(\varepsilon\)</span> le terme d’erreur. On fixe <span class="math inline">\(p=5\)</span> et on considère les données suivantes :</p>
+<p><span class="theorem-title"><strong>Exercice 9.1 (Fonctions standards pour le modèle linéaire) </strong></span>On considère le modèle de régression linéaire <span class="math display">\[Y=\beta_0+\beta_1X_1+\dots+\beta_pX_p+\varepsilon\]</span> où <span class="math inline">\(X_1,\dots,X_p\)</span> sont les variables explicatives, <span class="math inline">\(Y\)</span> la variable à expliquer et <span class="math inline">\(\varepsilon\)</span> le terme d’erreur. On fixe <span class="math inline">\(p=5\)</span> et on considère les données suivantes :</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">5</span></span>
@@ -533,10 +527,10 @@ div.correction {
 </ol>
 </div>
 </section>
-<section id="sélection-de-variables" class="level2" data-number="10.2">
-<h2 data-number="10.2" class="anchored" data-anchor-id="sélection-de-variables"><span class="header-section-number">10.2</span> Sélection de variables</h2>
+<section id="sélection-de-variables" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="sélection-de-variables"><span class="header-section-number">9.2</span> Sélection de variables</h2>
 <div id="exr-exo-regression-sel-var" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 10.2 (Sélection de variables) </strong></span>On considère les données suivantes</p>
+<p><span class="theorem-title"><strong>Exercice 9.2 (Sélection de variables) </strong></span>On considère les données suivantes</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">105</span></span>
@@ -572,10 +566,10 @@ div.correction {
 </ol>
 </div>
 </section>
-<section id="régression-logistique-et-arbre" class="level2" data-number="10.3">
-<h2 data-number="10.3" class="anchored" data-anchor-id="régression-logistique-et-arbre"><span class="header-section-number">10.3</span> Régression logistique et arbre</h2>
+<section id="régression-logistique-et-arbre" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="régression-logistique-et-arbre"><span class="header-section-number">9.3</span> Régression logistique et arbre</h2>
 <div id="exr-exo-logit-arbre" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 10.3 </strong></span>On considère le jeu de données <strong>spam</strong> disponible ici</p>
+<p><span class="theorem-title"><strong>Exercice 9.3 </strong></span>On considère le jeu de données <strong>spam</strong> disponible ici</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kernlab)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(spam)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -839,7 +833,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./08-estimation.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
