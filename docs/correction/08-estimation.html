@@ -407,8 +407,8 @@ div.correction {
 <li><p>Générer 10 observations selon une loi <span class="math inline">\(\mathcal N(0,1)\)</span> avec</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">10</span>,<span class="at">mean=</span><span class="dv">0</span>,<span class="at">sd=</span><span class="dv">1</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1]  1.48505119 -0.38239397  0.42810870  0.05119484  0.12133132 -1.13287785</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">##  [7]  1.78942749 -0.81492051 -0.66732150  0.30230929</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] -0.30647773  1.22544137 -0.98622333 -0.48768341 -0.68808521  1.23408258</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">##  [7]  2.01305561 -0.01116342 -0.03911877  0.15343995</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></li>
 </ul>
 <div id="exr-exo-loibinomiale" class="theorem exercise">
@@ -535,7 +535,7 @@ div.correction {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> <span class="fu">summarise_all</span>(mean)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="do">##        ech1      ech2</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 0.4997297 0.4146054</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 0.4876945 0.4780057</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>La moyenne empirique peut-être considérée comme une <strong>variable aléatoire</strong> : elle va donc posséder une loi de probabilité, une espérance… Si on considère l’exemple précédent, on sent bien que la distribution de la moyenne empirique doit</p>
 <ul>
