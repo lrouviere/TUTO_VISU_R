@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Visualisation avec R - 7&nbsp; Applications web avec Shiny</title>
+<title>Visualisation avec R - 8&nbsp; Applications web avec Shiny</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -95,7 +95,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Recherche"
   }
 }</script>
-<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="site_libs/htmlwidgets-1.6.3/htmlwidgets.js"></script>
 <script src="site_libs/amcharts-3.21.13/amcharts.js"></script>
 <script src="site_libs/ramcharts_base-binding-2.1.15/ramcharts_base.js"></script>
 <script src="site_libs/amcharts_type_serial-3.20.18/serial.js"></script>
@@ -114,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ggplot.html">Visualisation</a></li><li class="breadcrumb-item"><a href="./07-shiny.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Applications web avec Shiny</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ggplot.html">Visualisation</a></li><li class="breadcrumb-item"><a href="./07-shiny.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Applications web avec Shiny</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -238,14 +238,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./05-carto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Faire des cartes avec R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./06-interactif.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Quelques outils de visualisation dynamique/interactive</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Quelques outils de visualisation dynamique/interactive</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-shiny.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Applications web avec Shiny</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Applications web avec Shiny</span></span></a>
   </div>
 </li>
       </ul>
@@ -262,13 +268,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./08-estimation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./09-regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Régression avec R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Régression avec R</span></span></a>
   </div>
 </li>
       </ul>
@@ -289,12 +295,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table des matières</h2>
    
   <ul>
-  <li><a href="#une-première-application" id="toc-une-première-application" class="nav-link active" data-scroll-target="#une-première-application"><span class="header-section-number">7.1</span> Une première application</a></li>
-  <li><a href="#input---output" id="toc-input---output" class="nav-link" data-scroll-target="#input---output"><span class="header-section-number">7.2</span> Input - output</a></li>
-  <li><a href="#structurer-lapplication" id="toc-structurer-lapplication" class="nav-link" data-scroll-target="#structurer-lapplication"><span class="header-section-number">7.3</span> Structurer l’application</a></li>
-  <li><a href="#ajout-de-graphes-interactifs" id="toc-ajout-de-graphes-interactifs" class="nav-link" data-scroll-target="#ajout-de-graphes-interactifs"><span class="header-section-number">7.4</span> Ajout de graphes interactifs</a></li>
-  <li><a href="#reactive-isolation-observe-html" id="toc-reactive-isolation-observe-html" class="nav-link" data-scroll-target="#reactive-isolation-observe-html"><span class="header-section-number">7.5</span> Reactive, isolation, observe, html, …</a></li>
-  <li><a href="#exercices-complémentaires" id="toc-exercices-complémentaires" class="nav-link" data-scroll-target="#exercices-complémentaires"><span class="header-section-number">7.6</span> Exercices complémentaires</a></li>
+  <li><a href="#une-première-application" id="toc-une-première-application" class="nav-link active" data-scroll-target="#une-première-application"><span class="header-section-number">8.1</span> Une première application</a></li>
+  <li><a href="#input---output" id="toc-input---output" class="nav-link" data-scroll-target="#input---output"><span class="header-section-number">8.2</span> Input - output</a></li>
+  <li><a href="#structurer-lapplication" id="toc-structurer-lapplication" class="nav-link" data-scroll-target="#structurer-lapplication"><span class="header-section-number">8.3</span> Structurer l’application</a></li>
+  <li><a href="#ajout-de-graphes-interactifs" id="toc-ajout-de-graphes-interactifs" class="nav-link" data-scroll-target="#ajout-de-graphes-interactifs"><span class="header-section-number">8.4</span> Ajout de graphes interactifs</a></li>
+  <li><a href="#reactive-isolation-observe-html" id="toc-reactive-isolation-observe-html" class="nav-link" data-scroll-target="#reactive-isolation-observe-html"><span class="header-section-number">8.5</span> Reactive, isolation, observe, html, …</a></li>
+  <li><a href="#exercices-complémentaires" id="toc-exercices-complémentaires" class="nav-link" data-scroll-target="#exercices-complémentaires"><span class="header-section-number">8.6</span> Exercices complémentaires</a></li>
   </ul>
 </nav>
     </div>
@@ -303,7 +309,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-shiny" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Applications web avec Shiny</span></span></h1>
+<h1 class="title"><span id="sec-shiny" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Applications web avec Shiny</span></span></h1>
 </div>
 
 
@@ -335,8 +341,8 @@ div.correction {
 }
 </style>
 <p><code>Shiny</code> est un package <strong>R</strong> qui permet la création simple d’applications web intéractives depuis <strong>R</strong>. Cette partie provient essentiellement du tutoriel de Benoît Thieurmel disponible ici : <a href="https://github.com/datastorm-open/tuto_shiny_rennes" class="uri">https://github.com/datastorm-open/tuto_shiny_rennes</a>.</p>
-<section id="une-première-application" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="une-première-application"><span class="header-section-number">7.1</span> Une première application</h2>
+<section id="une-première-application" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="une-première-application"><span class="header-section-number">8.1</span> Une première application</h2>
 <p>Créer un répertoire pour l’application avec <strong>RStudio</strong></p>
 <pre><code>File -&gt; New Project -&gt; New Directory -&gt; Shiny Web Application</code></pre>
 <p>Choisir une application <strong>Multiple File</strong>.</p>
@@ -348,8 +354,8 @@ div.correction {
 <li>Mettre à jour et vérifier que le titre a bien été changé.</li>
 </ul>
 </section>
-<section id="input---output" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="input---output"><span class="header-section-number">7.2</span> Input - output</h2>
+<section id="input---output" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="input---output"><span class="header-section-number">8.2</span> Input - output</h2>
 <p>On garde la même application. On ne s’intéressera pas à la structure dans cette partie, on veut simplement ajouter</p>
 <ul>
 <li>des nouveaux <strong>inputs</strong> dans le <code>sidebarPanel</code>, après le <code>sliderInput</code>. On n’oubliera pas de séparer les inputs par des virgules ;</li>
@@ -374,7 +380,7 @@ div.correction {
 </div></li>
 </ol>
 <div id="exr-exo-shiny-input-output" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 7.1 (Ajouter des inputs/outputs) </strong></span>Ajouter des entrées/sorties à votre application pour</p>
+<p><span class="theorem-title"><strong>Exercice 8.1 (Ajouter des inputs/outputs) </strong></span>Ajouter des entrées/sorties à votre application pour</p>
 <ol type="1">
 <li><p>proposer à l’utilisateur de choisir un titre pour l’histogramme (utiliser <code>textInput</code> dans l’<strong>ui</strong> et l’option <code>main</code> dans <strong>hist</strong>);</p></li>
 <li><p>choisir la variable de <code>faithful</code> à représenter dans l’histogramme avec un <code>radioButtons</code> ayant pour choix <code>colnames(faithful)</code>;</p></li>
@@ -391,15 +397,15 @@ div.correction {
 <p>Elle est également disponible ici <a href="https://input-output-rouviere-shiny.apps.math.cnrs.fr/" class="uri">https://input-output-rouviere-shiny.apps.math.cnrs.fr/</a>.</p>
 </div>
 </section>
-<section id="structurer-lapplication" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="structurer-lapplication"><span class="header-section-number">7.3</span> Structurer l’application</h2>
+<section id="structurer-lapplication" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="structurer-lapplication"><span class="header-section-number">8.3</span> Structurer l’application</h2>
 <p>On considère l’application <strong>app_structure</strong> disponible <a href="https://lrouviere.github.io/VISU/">ici</a>. C’est quasiment la même que précédemment avec un <code>navbarPage</code> qui définit</p>
 <ul>
 <li>un onglet <em>Data</em> pour visualiser les données (table + summary)</li>
 <li>un onglet <em>Visualisation</em> : inputs + histogramme.</li>
 </ul>
 <div id="exr-exo-shiny-structure1" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 7.2 (Structurer son application) </strong></span>On conserve l’application précédente.</p>
+<p><span class="theorem-title"><strong>Exercice 8.2 (Structurer son application) </strong></span>On conserve l’application précédente.</p>
 <ol type="1">
 <li><p>Dans l’onglet <strong>Data</strong> utiliser <code>navlistPanel</code> pour séparer le <code>summary</code> et la table <code>table</code> en deux onglets :</p>
 <div class="cell">
@@ -439,8 +445,8 @@ div.correction {
 <p><strong>Pour aller plus loin</strong> : faire la même application avec <a href="https://rstudio.github.io/shinydashboard/">shinydashboard</a>.</p>
 </div>
 </section>
-<section id="ajout-de-graphes-interactifs" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="ajout-de-graphes-interactifs"><span class="header-section-number">7.4</span> Ajout de graphes interactifs</h2>
+<section id="ajout-de-graphes-interactifs" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="ajout-de-graphes-interactifs"><span class="header-section-number">8.4</span> Ajout de graphes interactifs</h2>
 <p>Dans l’application précédente, remplacer l’histogramme et la boxplot par des graphes javascript réalisés avec <a href="http://datastorm-open.github.io/introduction_ramcharts/">rAmCharts</a>. On pourra utiliser</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># server.R</span></span>
@@ -456,7 +462,7 @@ div.correction {
 </div>
 <p>Elle est également disponible ici <a href="https://interactifs-rouviere-shiny-2.apps.math.cnrs.fr/" class="uri">https://interactifs-rouviere-shiny-2.apps.math.cnrs.fr/</a>.</p>
 <div id="exr-exo-shiny-ozone" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 7.3 (Modèles linéaires pour l’ozone) </strong></span>On considère les données <code>ozone.txt</code> où le problème est d’expliquer la variable continue <code>maxO3</code> par les autres variables du jeu de données. On propose de construire une application avec 3 onglets en utilisant (dans le <strong>ui.R</strong>) la structure suivante :</p>
+<p><span class="theorem-title"><strong>Exercice 8.3 (Modèles linéaires pour l’ozone) </strong></span>On considère les données <code>ozone.txt</code> où le problème est d’expliquer la variable continue <code>maxO3</code> par les autres variables du jeu de données. On propose de construire une application avec 3 onglets en utilisant (dans le <strong>ui.R</strong>) la structure suivante :</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">navbarPage</span>(</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title=</span><span class="st">"Titre de l'appli"</span>,</span>
@@ -499,8 +505,8 @@ div.correction {
 <p>Elle est également disponible ici : <a href="https://ozone-rouviere-shiny-4.apps.math.cnrs.fr/" class="uri">https://ozone-rouviere-shiny-4.apps.math.cnrs.fr/</a>.</p>
 </div>
 </section>
-<section id="reactive-isolation-observe-html" class="level2" data-number="7.5">
-<h2 data-number="7.5" class="anchored" data-anchor-id="reactive-isolation-observe-html"><span class="header-section-number">7.5</span> Reactive, isolation, observe, html, …</h2>
+<section id="reactive-isolation-observe-html" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="reactive-isolation-observe-html"><span class="header-section-number">8.5</span> Reactive, isolation, observe, html, …</h2>
 <p>Garder la même application et</p>
 <ul>
 <li><p>ajouter un <code>actionButton</code> combiné à un <code>isolate</code> pour mettre à jour l’application uniquement lorsque l’utilisateur clique sur le bouton.</p></li>
@@ -516,8 +522,7 @@ div.correction {
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># and finaly</span></span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">observeEvent</span>(input<span class="sc">$</span>go, {</span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">updateTabsetPanel</span>(session, <span class="at">inputId =</span> <span class="st">"viz"</span>,</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">selected =</span> <span class="st">"Histogram"</span>)})</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">selected =</span> <span class="st">"Histogram"</span>)})</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></li>
 <li><p>Utiliser <code>reactive</code> pour stocker la variable sélectionnée</p>
 <div class="cell">
@@ -545,10 +550,10 @@ div.correction {
 </div>
 <p>Elle est également disponible ici <a href="https://plus-loin-rouviere-shiny-2.apps.math.cnrs.fr/" class="uri">https://plus-loin-rouviere-shiny-2.apps.math.cnrs.fr/</a>.</p>
 </section>
-<section id="exercices-complémentaires" class="level2" data-number="7.6">
-<h2 data-number="7.6" class="anchored" data-anchor-id="exercices-complémentaires"><span class="header-section-number">7.6</span> Exercices complémentaires</h2>
+<section id="exercices-complémentaires" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="exercices-complémentaires"><span class="header-section-number">8.6</span> Exercices complémentaires</h2>
 <div id="exr-shiny-desc-app" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 7.4 (Une application simple descriptive) </strong></span>On considère le jeu de données <em>SAheart</em> du package <strong>bestglm</strong>.</p>
+<p><span class="theorem-title"><strong>Exercice 8.4 (Une application simple descriptive) </strong></span>On considère le jeu de données <em>SAheart</em> du package <strong>bestglm</strong>.</p>
 <ol type="1">
 <li><p>A l’aide du package <strong>rAmCharts</strong>, représenter les histogrammes des variables quantitatives du jeu de données ainsi que les boxplots de ces variables en fonction de la variable <strong>chd</strong>.</p>
 <div class="cell" data-teacher="true">
@@ -556,36 +561,34 @@ div.correction {
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rAmCharts)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">amHist</span>(SAheart<span class="sc">$</span>adiposity,<span class="at">freq=</span><span class="cn">FALSE</span>,<span class="at">xlab=</span><span class="st">"adiposity"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="htmlwidget-0ede027ebb9963cd2917" style="width:100%;height:500px;" class="ramcharts_base html-widget "></div>
-<script type="application/json" data-for="htmlwidget-0ede027ebb9963cd2917">{"x":{"chartData":{"columnSpacing":0,"columnWidth":1,"fillAlphas":1,"lineAlpha":1,"categoryAxis":{"title":"adiposity"},"categoryField":"x","creditsPosition":"bottom-right","dataProvider":[{"x":7.5,"y":0.004,"cut":"(from 5 to 10)","color":"#1e90ff"},{"x":12.5,"y":0.019,"cut":"(from 10 to 15)","color":"#1e90ff"},{"x":17.5,"y":0.028,"cut":"(from 15 to 20)","color":"#1e90ff"},{"x":22.5,"y":0.038,"cut":"(from 20 to 25)","color":"#1e90ff"},{"x":27.5,"y":0.051,"cut":"(from 25 to 30)","color":"#1e90ff"},{"x":32.5,"y":0.039,"cut":"(from 30 to 35)","color":"#1e90ff"},{"x":37.5,"y":0.019,"cut":"(from 35 to 40)","color":"#1e90ff"},{"x":42.5,"y":0.002,"cut":"(from 40 to 45)","color":"#1e90ff"}],"graphs":[{"animationPlayed":false,"fillAlphas":0.8,"lineAlpha":1,"fillColorsField":"color","lineColor":"#1e90ff","labelText":"","balloonText":"<b>[[value]]<\/b> <br/> [[cut]] ","type":"column","valueField":"y"}],"theme":"light","type":"serial","valueAxes":[{"minimum":0,"maximum":0.05355,"title":"Density"}]},"background":"#ffffff","listeners":null,"axes_listeners":null,"axes_listenersIndices":null,"categoryAxis_listeners":null,"chartCursor_listeners":null,"dataSetSelector_listeners":null,"legend_listeners":null,"panels_listeners":null,"panels_listenersIndices":null,"periodSelector_listeners":null,"valueAxes_listeners":null,"valueAxes_listenersIndices":[],"stockLegend_listeners":null,"group":null,"is_ts_module":false},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-5f2b6290a347b1f78ce6" style="width:100%;height:500px;" class="ramcharts_base html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5f2b6290a347b1f78ce6">{"x":{"chartData":{"columnSpacing":0,"columnWidth":1,"fillAlphas":1,"lineAlpha":1,"categoryAxis":{"title":"adiposity"},"categoryField":"x","creditsPosition":"bottom-right","dataProvider":[{"x":7.5,"y":0.004,"cut":"(from 5 to 10)","color":"#1e90ff"},{"x":12.5,"y":0.019,"cut":"(from 10 to 15)","color":"#1e90ff"},{"x":17.5,"y":0.028,"cut":"(from 15 to 20)","color":"#1e90ff"},{"x":22.5,"y":0.038,"cut":"(from 20 to 25)","color":"#1e90ff"},{"x":27.5,"y":0.051,"cut":"(from 25 to 30)","color":"#1e90ff"},{"x":32.5,"y":0.039,"cut":"(from 30 to 35)","color":"#1e90ff"},{"x":37.5,"y":0.019,"cut":"(from 35 to 40)","color":"#1e90ff"},{"x":42.5,"y":0.002,"cut":"(from 40 to 45)","color":"#1e90ff"}],"graphs":[{"animationPlayed":false,"fillAlphas":0.8,"lineAlpha":1,"fillColorsField":"color","lineColor":"#1e90ff","labelText":"","balloonText":"<b>[[value]]<\/b> <br/> [[cut]] ","type":"column","valueField":"y"}],"theme":"light","type":"serial","valueAxes":[{"minimum":0,"maximum":0.05355,"title":"Density"}]},"background":"#ffffff","listeners":null,"axes_listeners":null,"axes_listenersIndices":null,"categoryAxis_listeners":null,"chartCursor_listeners":null,"dataSetSelector_listeners":null,"legend_listeners":null,"panels_listeners":null,"panels_listenersIndices":null,"periodSelector_listeners":null,"valueAxes_listeners":null,"valueAxes_listenersIndices":[],"stockLegend_listeners":null,"group":null,"is_ts_module":false},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="cell" data-teacher="true">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">amBoxplot</span>(adiposity<span class="sc">~</span>chd,<span class="at">data=</span>SAheart)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="htmlwidget-5d3e454e587cfdc4bb6f" style="width:100%;height:500px;" class="ramcharts_base html-widget "></div>
-<script type="application/json" data-for="htmlwidget-5d3e454e587cfdc4bb6f">{"x":{"chartData":{"rotate":false,"categoryField":"cat","dataProvider":[{"cat":"0","low_outlier":6.74,"low":6.74,"open":17.42,"median":24.62,"close":29.98,"high":42.06,"high_outlier":42.06,"color":"#1e90ff"},{"cat":"1","low_outlier":9.390000000000001,"low":9.390000000000001,"open":23.41,"median":28.41,"close":33.62,"high":42.49,"high_outlier":42.49,"color":"#1e90ff"}],"graphs":[{"animationPlayed":false,"id":"g1","closeField":"close","fillColorsField":"color","highField":"high","lineColor":"#7f8da9","lineAlpha":1,"lowField":"low","fillAlphas":"0.9","negativeLineColor":"#7f8da9","openField":"open","columnWidth":0.4,"balloonText":"High = <b>[[high_outlier]]<\/b><br/>3rd quart. = <b>[[close]]<\/b><br/>Median = <b>[[median]]<\/b><br/>1st quart. = <b>[[open]]<\/b><br/>Low = <b>[[low_outlier]]<\/b><br/>","title":"Price:","type":"candlestick","valueField":"close"},{"animationPlayed":false,"id":"g2","lineColor":"black","noStepRisers":true,"lineThickness":3,"periodSpan":0.4,"balloonText":"","type":"step","valueField":"median"},{"animationPlayed":false,"id":"g3","lineColor":"black","noStepRisers":true,"periodSpan":0.3,"balloonText":"","type":"step","valueField":"low_outlier"},{"animationPlayed":false,"id":"g4","lineColor":"black","noStepRisers":true,"periodSpan":0.3,"balloonText":"","type":"step","valueField":"high_outlier"},{"animationPlayed":false,"id":"g5","lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"","type":"line","valueField":"real_outlier"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_1]]<br/><b> Value <\/b>: [[real_outlier_1]]","type":"line","valueField":"real_outlier_1"}],"theme":"light","type":"serial"},"background":"#ffffff","listeners":null,"axes_listeners":null,"axes_listenersIndices":null,"categoryAxis_listeners":null,"chartCursor_listeners":null,"dataSetSelector_listeners":null,"legend_listeners":null,"panels_listeners":null,"panels_listenersIndices":null,"periodSelector_listeners":null,"valueAxes_listeners":null,"valueAxes_listenersIndices":null,"stockLegend_listeners":null,"group":null,"is_ts_module":false},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-5f4cf78492550810d8c8" style="width:100%;height:500px;" class="ramcharts_base html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5f4cf78492550810d8c8">{"x":{"chartData":{"rotate":false,"categoryField":"cat","dataProvider":[{"cat":"0","low_outlier":6.74,"low":6.74,"open":17.42,"median":24.62,"close":29.98,"high":42.06,"high_outlier":42.06,"color":"#1e90ff"},{"cat":"1","low_outlier":9.390000000000001,"low":9.390000000000001,"open":23.41,"median":28.41,"close":33.62,"high":42.49,"high_outlier":42.49,"color":"#1e90ff"}],"graphs":[{"animationPlayed":false,"id":"g1","closeField":"close","fillColorsField":"color","highField":"high","lineColor":"#7f8da9","lineAlpha":1,"lowField":"low","fillAlphas":"0.9","negativeLineColor":"#7f8da9","openField":"open","columnWidth":0.4,"balloonText":"High = <b>[[high_outlier]]<\/b><br/>3rd quart. = <b>[[close]]<\/b><br/>Median = <b>[[median]]<\/b><br/>1st quart. = <b>[[open]]<\/b><br/>Low = <b>[[low_outlier]]<\/b><br/>","title":"Price:","type":"candlestick","valueField":"close"},{"animationPlayed":false,"id":"g2","lineColor":"black","noStepRisers":true,"lineThickness":3,"periodSpan":0.4,"balloonText":"","type":"step","valueField":"median"},{"animationPlayed":false,"id":"g3","lineColor":"black","noStepRisers":true,"periodSpan":0.3,"balloonText":"","type":"step","valueField":"low_outlier"},{"animationPlayed":false,"id":"g4","lineColor":"black","noStepRisers":true,"periodSpan":0.3,"balloonText":"","type":"step","valueField":"high_outlier"},{"animationPlayed":false,"id":"g5","lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"","type":"line","valueField":"real_outlier"},{"animationPlayed":false,"lineColor":"black","lineAlpha":0,"bullet":"round","noStepRisers":true,"periodSpan":0.5,"balloonText":"[[individual_1]]<br/><b> Value <\/b>: [[real_outlier_1]]","type":"line","valueField":"real_outlier_1"}],"theme":"light","type":"serial"},"background":"#ffffff","listeners":null,"axes_listeners":null,"axes_listenersIndices":null,"categoryAxis_listeners":null,"chartCursor_listeners":null,"dataSetSelector_listeners":null,"legend_listeners":null,"panels_listeners":null,"panels_listenersIndices":null,"periodSelector_listeners":null,"valueAxes_listeners":null,"valueAxes_listenersIndices":null,"stockLegend_listeners":null,"group":null,"is_ts_module":false},"evals":[],"jsHooks":[]}</script>
 </div>
 </div></li>
 <li><p>Créer une application shiny avec <a href="https://rstudio.github.io/shinydashboard/index.html">shinydashboard</a> qui permette de</p>
 <ul>
-<li>choisir une variable parmi les variables quantitatives du jeu de données. On pourra utiliser <strong>radioButtons</strong> avec l’argument</li>
-</ul>
+<li><p>choisir une variable parmi les variables quantitatives du jeu de données. On pourra utiliser <strong>radioButtons</strong> avec l’argument</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>choices<span class="ot">=</span><span class="fu">names</span>(SAheart)[<span class="fu">sapply</span>(SAheart,class)<span class="sc">==</span><span class="st">"numeric"</span>]</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<ul>
-<li>visualiser l’histogramme, puis le boxplot en fonction de <em>chd</em> de la variable sélectionnée. Ces graphiques devront être faits avec <strong>rAmCharts</strong>. On pourra utiliser <strong>amChartsOutput</strong>. L’application demandée pourra ressembler à</li>
-</ul>
+</div></li>
+<li><p>visualiser l’histogramme, puis le boxplot en fonction de <em>chd</em> de la variable sélectionnée. Ces graphiques devront être faits avec <strong>rAmCharts</strong>. On pourra utiliser <strong>amChartsOutput</strong>. L’application demandée pourra ressembler à</p>
 <div class="cell" name="desc-app_html" data-screenshot.opts="{&quot;delay&quot;:5,&quot;cliprect&quot;:&quot;viewport&quot;,&quot;zoom&quot;:2,&quot;vwidth&quot;:200,&quot;vheight&quot;:200}">
 <iframe src="https://lrouviere.shinyapps.io/DESC_APP/?showcase=0" width="760" height="650px" data-external="1">
 </iframe>
 </div>
 <p>Elle est disponible ici <a href="https://lrouviere.shinyapps.io/DESC_APP" class="uri">https://lrouviere.shinyapps.io/DESC_APP</a>.</p></li>
+</ul></li>
 </ol>
 </div>
 <div id="exr-shiny-velib-app" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 7.5 (Stations velib à Rennes) </strong></span>Réaliser une application qui permette de visualiser les stations velib à Rennes. Elle pourra être du même genre que celle-ci :</p>
+<p><span class="theorem-title"><strong>Exercice 8.5 (Stations velib à Rennes) </strong></span>Réaliser une application qui permette de visualiser les stations velib à Rennes. Elle pourra être du même genre que celle-ci :</p>
 <div class="cell" name="velib-app_html" data-screenshot.opts="{&quot;delay&quot;:5,&quot;cliprect&quot;:&quot;viewport&quot;,&quot;zoom&quot;:2,&quot;vwidth&quot;:200,&quot;vheight&quot;:200}">
 <iframe src="https://lrouviere.shinyapps.io/velib/?showcase=0" width="760" height="650px" data-external="1">
 </iframe>
@@ -833,12 +836,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./06-interactif.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Quelques outils de visualisation dynamique/interactive</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Quelques outils de visualisation dynamique/interactive</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./08-estimation.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
