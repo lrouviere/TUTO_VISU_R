@@ -114,19 +114,6 @@ div.csl-indent {
     "search-label": "Recherche"
   }
 }</script>
-<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
-<link href="site_libs/vis-9.1.0/vis-network.min.css" rel="stylesheet">
-<script src="site_libs/vis-9.1.0/vis-network.min.js"></script>
-<script src="site_libs/visNetwork-binding-2.1.2/visNetwork.js"></script>
-<script src="site_libs/FileSaver-1.1.20151003/FileSaver.min.js"></script>
-<script src="site_libs/Blob-1.0/Blob.js"></script>
-<script src="site_libs/canvas-toBlob-1.0/canvas-toBlob.js"></script>
-<script src="site_libs/html2canvas-0.5.0/html2canvas.js"></script>
-<script src="site_libs/jspdf-1.3.2/jspdf.debug.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<link href="site_libs/jquery-sparkline-2.1.2/jquery.sparkline.css" rel="stylesheet">
-<script src="site_libs/jquery-sparkline-2.1.2/jquery.sparkline.js"></script>
-<script src="site_libs/sparkline-binding-2.0/sparkline.js"></script>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -364,12 +351,12 @@ div.correction {
   color: black;
   background-color: #F0F0F0;
   font-style: normal;
-  /*display: none;*/
+  display: none;
 }
 
 .corR {
   font-style: italic;
-  /*display: none;*/
+  display: none;
 }
 </style>
 <p>Les problèmes de régression et de classification supervisée consistent à expliquer et/ou prédire une sortie <span class="math inline">\(y\in\mathcal Y\)</span> avec</p>
@@ -536,71 +523,20 @@ div.correction {
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Y=</span>X1<span class="sc">+</span>X2<span class="sc">+</span>X3<span class="sc">+</span>X4<span class="sc">+</span>X5<span class="sc">+</span>eps) <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>eps)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol type="1">
-<li><p>Construire un modèle linéaire permettant d’expliquer <span class="math inline">\(Y\)</span> par <span class="math inline">\(X_1,\dots,X_5\)</span> (utiliser la fonction <strong>lm</strong>) et afficher les estimateurs de <span class="math inline">\(\beta_0,\dots,\beta_5\)</span> (on pourra utiliser les fonctions <strong>coef</strong> et <strong>summary</strong>).</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y<span class="sc">~</span>.,<span class="at">data=</span>df)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(mod1)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>(Intercept)          X1          X2          X3          X4          X5 
-  0.0228707   1.0111903   1.0000752   1.0034085   1.0071250   0.9962842 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod1)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = Y ~ ., data = df)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--1.44876 -0.33840 -0.00769  0.33308  1.76883 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  0.02287    0.01543   1.482    0.139    
-X1           1.01119    0.01550  65.258   &lt;2e-16 ***
-X2           1.00008    0.01575  63.479   &lt;2e-16 ***
-X3           1.00341    0.01524  65.829   &lt;2e-16 ***
-X4           1.00712    0.01552  64.908   &lt;2e-16 ***
-X5           0.99628    0.01589  62.702   &lt;2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.4872 on 994 degrees of freedom
-Multiple R-squared:  0.9556,    Adjusted R-squared:  0.9554 
-F-statistic:  4279 on 5 and 994 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
-</div></li>
+<li><p>Construire un modèle linéaire permettant d’expliquer <span class="math inline">\(Y\)</span> par <span class="math inline">\(X_1,\dots,X_5\)</span> (utiliser la fonction <strong>lm</strong>) et afficher les estimateurs de <span class="math inline">\(\beta_0,\dots,\beta_5\)</span> (on pourra utiliser les fonctions <strong>coef</strong> et <strong>summary</strong>).</p></li>
 <li><p>On considère le jeu de données test suivant.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">500</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">5</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">12345</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>X.mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(m<span class="sc">*</span>p),<span class="at">ncol=</span><span class="dv">5</span>)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>eps <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(m,<span class="at">mean =</span> <span class="dv">0</span>,<span class="at">sd=</span><span class="fl">0.5</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>df.test <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(X.mat,eps)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>df.test <span class="ot">&lt;-</span> df.test <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Y=</span>X1<span class="sc">+</span>X2<span class="sc">+</span>X3<span class="sc">+</span>X4<span class="sc">+</span>X5<span class="sc">+</span>eps) <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>eps)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">12345</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>X.mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(m<span class="sc">*</span>p),<span class="at">ncol=</span><span class="dv">5</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>eps <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(m,<span class="at">mean =</span> <span class="dv">0</span>,<span class="at">sd=</span><span class="fl">0.5</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>df.test <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(X.mat,eps)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>df.test <span class="ot">&lt;-</span> df.test <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Y=</span>X1<span class="sc">+</span>X2<span class="sc">+</span>X3<span class="sc">+</span>X4<span class="sc">+</span>X5<span class="sc">+</span>eps) <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>eps)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Calculer, pour chaque individu de ce nouveau jeu de données, les prédictions faites par le modèle de la question précédente (utiliser la fonction <strong>predict</strong> avec l’option <em>newdata</em>).</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod1,<span class="at">newdata=</span>df.test)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pred)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>          1           2           3           4           5           6 
- 0.09630147 -1.25027415 -0.52549286  0.19569041  3.72923032 -5.79419545 </code></pre>
-</div>
-</div></li>
-<li><p>Créer un nouveau dataframe qui contiennent les valeurs prédites <span class="math inline">\(\widehat y_i\)</span> à la question précédente sur une colonne et les valeurs observées <span class="math inline">\(y_i\)</span> du jeu de données <code>df.test</code> sur une autre colonne.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>pred.df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">pred=</span>pred,<span class="at">obs=</span>df.test<span class="sc">$</span>Y)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></li>
-<li><p>A l’aide du verbe <strong>summarize</strong>, calculer l’erreur quadratique moyenne (estimée) du modèle linéaire : <span class="math display">\[\frac{1}{m}\sum_{i\in test}(\widehat y_i-y_i)^2.\]</span></p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>pred.df <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">MSE=</span><span class="fu">mean</span>((pred<span class="sc">-</span>obs)<span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>        MSE
-1 0.2326355</code></pre>
-</div>
-</div></li>
+<p>Calculer, pour chaque individu de ce nouveau jeu de données, les prédictions faites par le modèle de la question précédente (utiliser la fonction <strong>predict</strong> avec l’option <em>newdata</em>).</p></li>
+<li><p>Créer un nouveau dataframe qui contiennent les valeurs prédites <span class="math inline">\(\widehat y_i\)</span> à la question précédente sur une colonne et les valeurs observées <span class="math inline">\(y_i\)</span> du jeu de données <code>df.test</code> sur une autre colonne.</p></li>
+<li><p>A l’aide du verbe <strong>summarize</strong>, calculer l’erreur quadratique moyenne (estimée) du modèle linéaire : <span class="math display">\[\frac{1}{m}\sum_{i\in test}(\widehat y_i-y_i)^2.\]</span></p></li>
 </ol>
 </div>
 </section>
@@ -609,102 +545,36 @@ F-statistic:  4279 on 5 and 994 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div id="exr-exo-regression-sel-var" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 11.2 (Sélection de variables) </strong></span>On considère les données suivantes</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">105</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>X.mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(n<span class="sc">*</span>p),<span class="at">ncol=</span>p)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>eps <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n,<span class="at">mean =</span> <span class="dv">0</span>,<span class="at">sd=</span><span class="fl">0.5</span>)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(X.mat,eps)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Y=</span>X1<span class="sc">+</span>X2<span class="sc">+</span>X3<span class="sc">+</span>X4<span class="sc">+</span>X5<span class="sc">+</span>eps) <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>eps)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">105</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>X.mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(n<span class="sc">*</span>p),<span class="at">ncol=</span>p)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>eps <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n,<span class="at">mean =</span> <span class="dv">0</span>,<span class="at">sd=</span><span class="fl">0.5</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(X.mat,eps)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Y=</span>X1<span class="sc">+</span>X2<span class="sc">+</span>X3<span class="sc">+</span>X4<span class="sc">+</span>X5<span class="sc">+</span>eps) <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>eps)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>issues du modèle <span class="math display">\[Y=\beta_0+\beta_1X_1+\dots+\beta_pX_p+\varepsilon\]</span> avec <span class="math inline">\(p=105\)</span>. On remarquera que seules les variables <span class="math inline">\(X_1,\dots,X_5\)</span> sont explicatives.</p>
 <ol type="1">
-<li><p>Ajuster un modèle linéaire (fonction <strong>lm</strong>) sur <code>df</code> et afficher les estimateurs de <span class="math inline">\(\beta_0,\dots,\beta_{105}\)</span>.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>mod2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y<span class="sc">~</span>.,<span class="at">data=</span>df)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod2)<span class="sc">$</span>coefficients <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>               Estimate Std. Error   t value      Pr(&gt;|t|)
-(Intercept) -0.01307274 0.01660197 -0.787421  4.312441e-01
-X1           0.98461851 0.01656206 59.450240 7.137528e-313
-X2           0.99625236 0.01668382 59.713691 3.032293e-314
-X3           1.01858539 0.01628043 62.565035  0.000000e+00
-X4           1.00691542 0.01643050 61.283315 2.371515e-322
-X5           1.00752931 0.01718708 58.621324 1.561036e-308</code></pre>
-</div>
-</div></li>
+<li><p>Ajuster un modèle linéaire (fonction <strong>lm</strong>) sur <code>df</code> et afficher les estimateurs de <span class="math inline">\(\beta_0,\dots,\beta_{105}\)</span>.</p></li>
 <li><p>On propose d’utiliser une procédure de sélection de variables <strong>backward</strong> à partir du critère <strong>BIC</strong>. Effectuer cette procédure à l’aide de la fonction <strong>step</strong> (on pourra utiliser les options <strong>direction=“backward”</strong> et <strong>k=log(n)</strong>). On appellera ce modèle <strong>mod.step</strong>.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>mod.step <span class="ot">&lt;-</span> <span class="fu">step</span>(mod2,<span class="at">direction=</span><span class="fu">c</span>(<span class="st">"backward"</span>),<span class="at">k=</span><span class="fu">log</span>(n),<span class="at">trace=</span><span class="dv">0</span>)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod.step)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = Y ~ X1 + X2 + X3 + X4 + X5 + X29 + X69 + X74, data = df)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--1.63923 -0.34301  0.00179  0.32041  1.45661 
-
-Coefficients:
-             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -0.002413   0.015749  -0.153  0.87828    
-X1           0.992339   0.015807  62.777  &lt; 2e-16 ***
-X2           0.991358   0.016097  61.588  &lt; 2e-16 ***
-X3           1.010115   0.015562  64.907  &lt; 2e-16 ***
-X4           1.006043   0.015830  63.552  &lt; 2e-16 ***
-X5           1.008520   0.016242  62.093  &lt; 2e-16 ***
-X29         -0.043358   0.015158  -2.860  0.00432 ** 
-X69          0.042714   0.015292   2.793  0.00532 ** 
-X74         -0.043792   0.016118  -2.717  0.00670 ** 
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.4969 on 991 degrees of freedom
-Multiple R-squared:  0.954, Adjusted R-squared:  0.9537 
-F-statistic:  2571 on 8 and 991 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
-</div>
 <div class="corR">
 <p>On a sélectionné un modèle avec 8 variables : les 5 explicatives et 3 variables de bruit.</p>
 </div></li>
 <li><p>Calculer les erreurs quadratiques de prévision <span class="math display">\[\frac{1}{m}\sum_{i\in test}(\widehat y_i-y_i)^2\]</span> des deux modèles (le modèle complet et le modèle sélectionné) en utilisant le jeu de données test suivant.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">300</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">105</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">12345</span>)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>X.mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(m<span class="sc">*</span>p),<span class="at">ncol=</span>p)</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>eps <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(m,<span class="at">mean =</span> <span class="dv">0</span>,<span class="at">sd=</span><span class="fl">0.5</span>)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>df.test <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(X.mat,eps)</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>df.test <span class="ot">&lt;-</span> df.test <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Y=</span>X1<span class="sc">+</span>X2<span class="sc">+</span>X3<span class="sc">+</span>X4<span class="sc">+</span>X5<span class="sc">+</span>eps) <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>eps)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">300</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">105</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">12345</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>X.mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(m<span class="sc">*</span>p),<span class="at">ncol=</span>p)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>eps <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(m,<span class="at">mean =</span> <span class="dv">0</span>,<span class="at">sd=</span><span class="fl">0.5</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>df.test <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(X.mat,eps)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>df.test <span class="ot">&lt;-</span> df.test <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Y=</span>X1<span class="sc">+</span>X2<span class="sc">+</span>X3<span class="sc">+</span>X4<span class="sc">+</span>X5<span class="sc">+</span>eps) <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>eps)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="corR">
 <p>On calcule les prévisions et on les intègre dans un <code>tibble</code> :</p>
 </div>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>p.full <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod2,<span class="at">newdata=</span>df.test)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>p.step <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod.step,<span class="at">newdata=</span>df.test)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>pred.df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">full=</span>p.full,<span class="at">step=</span>p.step,<span class="at">obs=</span>df.test<span class="sc">$</span>Y)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <div class="corR">
 <p>On en déduit les erreurs quadratiques moyennes :</p>
-</div>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>pred.df <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">MSE.full=</span><span class="fu">mean</span>((full<span class="sc">-</span>obs)<span class="sc">^</span><span class="dv">2</span>),<span class="at">MSE.step=</span><span class="fu">mean</span>((step<span class="sc">-</span>obs)<span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1 × 2
-  MSE.full MSE.step
-     &lt;dbl&gt;    &lt;dbl&gt;
-1    0.300    0.254</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ou</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>pred.df <span class="sc">|&gt;</span> <span class="fu">summarize_at</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,<span class="sc">~</span>(<span class="fu">mean</span>((.<span class="sc">-</span>obs)<span class="sc">^</span><span class="dv">2</span>)))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1 × 2
-   full  step
-  &lt;dbl&gt; &lt;dbl&gt;
-1 0.300 0.254</code></pre>
-</div>
 </div></li>
 </ol>
 </div>
@@ -714,94 +584,20 @@ F-statistic:  2571 on 8 and 991 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div id="exr-exo-logit-arbre" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 11.3 </strong></span>On considère le jeu de données <strong>spam</strong> disponible ici</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kernlab)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(spam)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kernlab)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(spam)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Le problème est d’expliquer la variable <code>type</code> (un email est un spam ou non) par les 57 autres variables.</p>
 <ol type="1">
-<li><p>Séparer les données en un échantillon d’apprentissage <code>dapp</code> de taille 3000 et un échantillon test <code>dtest</code> de taille 1601. On pourra utiliser la fonction <strong>sample</strong>.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4321</span>)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>perm <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(spam),<span class="dv">3000</span>)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>dapp <span class="ot">&lt;-</span> spam[perm,]</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>dtest <span class="ot">&lt;-</span> spam[<span class="sc">-</span>perm,]</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></li>
-<li><p>Construire un modèle logistique permettant de répondre au problème en utilisant uniquement les données d’apprentissage. On utilisera la fonction <strong>glm</strong> avec l’option <code>family="binomial"</code>.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>m.logit <span class="ot">&lt;-</span> <span class="fu">glm</span>(type<span class="sc">~</span>.,<span class="at">data=</span>dapp,<span class="at">family=</span><span class="st">"binomial"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></li>
-<li><p>A l’aide de la fonction <strong>step</strong>, effectuer une sélection backward (ça peut prendre quelques minutes).</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>m.step <span class="ot">&lt;-</span> <span class="fu">step</span>(m.logit,<span class="at">direction=</span><span class="st">"backward"</span>,<span class="at">trace=</span><span class="dv">0</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></li>
-<li><p>A l’aide de la fonction <strong>rpart</strong> du package <strong>rpart</strong>, construire un arbre de régression (toujours sur les données d’apprentissage) pour répondre au problème. On utilisera les paramètres par défaut de la fonction.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>arbre <span class="ot">&lt;-</span> <span class="fu">rpart</span>(type<span class="sc">~</span>.,<span class="at">data=</span>dapp)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></li>
-<li><p>Visualiser l’arbre construit à l’aide des fonctions <strong>rpart.plot</strong> et <strong>visTree</strong> des packages <strong>rpart.plot</strong> et <strong>visNetwork</strong></p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart.plot)</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(arbre)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="09-regression_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(visNetwork)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">visTree</span>(arbre)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div id="htmlwidget-ce25d55a8d4c8ba7fce4" style="width:100%;height:600px;" class="visNetwork html-widget "></div>
-<script type="application/json" data-for="htmlwidget-ce25d55a8d4c8ba7fce4">{"x":{"nodes":{"id":[1,2,4,8,9,5,10,11,3,6,12,24,48,49,98,99,25,13,7],"label":["charExclamation","remove","charDollar","nonspam","spam","george","nonspam","spam","capitalAve","charDollar","remove","charExclamation","nonspam","capitalTotal","nonspam","spam","spam","spam","spam"],"level":[1,2,3,4,4,3,4,4,2,3,4,5,6,6,7,7,5,4,3],"color":["#F1B8C2","#E1C1A1","#BECC9B","#7D91B6","#B9828C","#96D4B5","#7D91B6","#B9828C","#8DD2D8","#BECC9B","#E1C1A1","#F1B8C2","#7D91B6","#B4C7ED","#7D91B6","#B9828C","#B9828C","#B9828C","#B9828C"],"value":[3000,1739,1632,1580,52,107,12,95,1261,543,402,347,282,65,21,44,55,141,718],"shape":["dot","dot","dot","square","square","dot","square","square","dot","dot","dot","dot","square","dot","square","square","square","square","square"],"title":["<div style=\"text-align:center;\">N : <b>100%<\/b> (3000)<br>Complexity : <b>0.5<\/b><br>nonspam : <b>61.1%<\/b> (1833)<br>spam : <b>38.9%<\/b> (1167)<\/div>","<div style=\"text-align:center;\">N : <b>58%<\/b> (1739)<br>Complexity : <b>0.059<\/b><br>nonspam : <b>85.9%<\/b> (1494)<br>spam : <b>14.1%<\/b> (245)<hr class = \"rPartvisNetwork\">\n<div class =\"showOnMe2\"><div style=\"text-align:center;\"><U style=\"color:blue;\"  onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\">Rules<\/U><\/div>\n<div class=\"showMeRpartTTp2\" style=\"display:none;\">\n<b> charExclamation <\/b> < 0.08<\/script><script type=\"text/javascript\">$(document).ready(function(){\n$(\".showOnMe2\").click(function(){\n$(\".showMeRpartTTp2\").toggle();\n$.sparkline_display_visible();\n});\n  });<\/script><\/div><\/div>\n\n<\/div>","<div style=\"text-align:center;\">N : <b>54.4%<\/b> (1632)<br>Complexity : <b>0.022<\/b><br>nonspam : <b>90.4%<\/b> (1475)<br>spam : <b>9.6%<\/b> (157)<hr class = \"rPartvisNetwork\">\n<div class =\"showOnMe2\"><div style=\"text-align:center;\"><U style=\"color:blue;\"  onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\">Rules<\/U><\/div>\n<div class=\"showMeRpartTTp2\" style=\"display:none;\">\n<b> charExclamation <\/b> < 0.08<br><b> remove <\/b> < 0.045<\/script><script type=\"text/javascript\">$(document).ready(function(){\n$(\".showOnMe2\").click(function(){\n$(\".showMeRpartTTp2\").toggle();\n$.sparkline_display_visible();\n});\n  });<\/script><\/div><\/div>\n\n<\/div>","<div style=\"text-align:center;\">N : <b>52.7%<\/b> (1580)<br>Complexity : <b>0.006<\/b><br>nonspam : <b>92.5%<\/b> (1462)<br>spam : <b>7.5%<\/b> (118)<hr class = \"rPartvisNetwork\">\n<div class =\"showOnMe2\"><div style=\"text-align:center;\"><U style=\"color:blue;\"  onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\">Rules<\/U><\/div>\n<div class=\"showMeRpartTTp2\" style=\"display:none;\">\n<b> charExclamation <\/b> < 0.08<br><b> remove <\/b> < 0.045<br><b> charDollar <\/b> < 0.168<\/script><script type=\"text/javascript\">$(document).ready(function(){\n$(\".showOnMe2\").click(function(){\n$(\".showMeRpartTTp2\").toggle();\n$.sparkline_display_visible();\n});\n  });<\/script><\/div><\/div>\n\n<\/div>","<div style=\"text-align:center;\">N : <b>1.7%<\/b> (52)<br>Complexity : <b>0.004<\/b><br>nonspam : <b>25%<\/b> (13)<br>spam : <b>75%<\/b> (39)<hr class = \"rPartvisNetwork\">\n<div class =\"showOnMe2\"><div style=\"text-align:center;\"><U style=\"color:blue;\"  onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\">Rules<\/U><\/div>\n<div class=\"showMeRpartTTp2\" style=\"display:none;\">\n<b> charExclamation <\/b> < 0.08<br><b> remove <\/b> < 0.045<br><b> charDollar <\/b> >= 0.168<\/script><script type=\"text/javascript\">$(document).ready(function(){\n$(\".showOnMe2\").click(function(){\n$(\".showMeRpartTTp2\").toggle();\n$.sparkline_display_visible();\n});\n  });<\/script><\/div><\/div>\n\n<\/div>","<div style=\"text-align:center;\">N : <b>3.6%<\/b> (107)<br>Complexity : <b>0.01<\/b><br>nonspam : <b>17.8%<\/b> (19)<br>spam : <b>82.2%<\/b> (88)<hr class = \"rPartvisNetwork\">\n<div class =\"showOnMe2\"><div style=\"text-align:center;\"><U style=\"color:blue;\"  onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\">Rules<\/U><\/div>\n<div class=\"showMeRpartTTp2\" style=\"display:none;\">\n<b> charExclamation <\/b> < 0.08<br><b> remove <\/b> >= 0.045<\/script><script type=\"text/javascript\">$(document).ready(function(){\n$(\".showOnMe2\").click(function(){\n$(\".showMeRpartTTp2\").toggle();\n$.sparkline_display_visible();\n});\n  });<\/script><\/div><\/div>\n\n<\/div>","<div style=\"text-align:center;\">N : <b>0.4%<\/b> (12)<br>Complexity : <b>0.01<\/b><br>nonspam : <b>100%<\/b> (12)<br>spam : <b>0%<\/b> (0)<hr class = \"rPartvisNetwork\">\n<div class =\"showOnMe2\"><div style=\"text-align:center;\"><U style=\"color:blue;\"  onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\">Rules<\/U><\/div>\n<div class=\"showMeRpartTTp2\" style=\"display:none;\">\n<b> charExclamation <\/b> < 0.08<br><b> remove <\/b> >= 0.045<br><b> george <\/b> >= 0.08<\/script><script type=\"text/javascript\">$(document).ready(function(){\n$(\".showOnMe2\").click(function(){\n$(\".showMeRpartTTp2\").toggle();\n$.sparkline_display_visible();\n});\n  });<\/script><\/div><\/div>\n\n<\/div>","<div style=\"text-align:center;\">N : <b>3.2%<\/b> (95)<br>Complexity : <b>0.01<\/b><br>nonspam : <b>7.4%<\/b> (7)<br>spam : <b>92.6%<\/b> (88)<hr class = \"rPartvisNetwork\">\n<div class =\"showOnMe2\"><div style=\"text-align:center;\"><U style=\"color:blue;\"  onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\">Rules<\/U><\/div>\n<div class=\"showMeRpartTTp2\" style=\"display:none;\">\n<b> charExclamation <\/b> < 0.08<br><b> remove <\/b> >= 0.045<br><b> george <\/b> < 0.08<\/script><script type=\"text/javascript\">$(document).ready(function(){\n$(\".showOnMe2\").click(function(){\n$(\".showMeRpartTTp2\").toggle();\n$.sparkline_display_visible();\n});\n  });<\/script><\/div><\/div>\n\n<\/div>","<div style=\"text-align:center;\">N : <b>42%<\/b> (1261)<br>Complexity : <b>0.06<\/b><br>nonspam : <b>26.9%<\/b> (339)<br>spam : <b>73.1%<\/b> (922)<hr class = \"rPartvisNetwork\">\n<div class =\"showOnMe2\"><div style=\"text-align:center;\"><U style=\"color:blue;\"  onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\">Rules<\/U><\/div>\n<div class=\"showMeRpartTTp2\" style=\"display:none;\">\n<b> charExclamation <\/b> >= 0.08<\/script><script type=\"text/javascript\">$(document).ready(function(){\n$(\".showOnMe2\").click(function(){\n$(\".showMeRpartTTp2\").toggle();\n$.sparkline_display_visible();\n});\n  });<\/script><\/div><\/div>\n\n<\/div>","<div style=\"text-align:center;\">N : <b>18.1%<\/b> (543)<br>Complexity : <b>0.06<\/b><br>nonspam : <b>53%<\/b> (288)<br>spam : <b>47%<\/b> (255)<hr class = \"rPartvisNetwork\">\n<div class =\"showOnMe2\"><div style=\"text-align:center;\"><U style=\"color:blue;\"  onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\">Rules<\/U><\/div>\n<div class=\"showMeRpartTTp2\" style=\"display:none;\">\n<b> charExclamation <\/b> >= 0.08<br><b> capitalAve <\/b> < 2.755<\/script><script type=\"text/javascript\">$(document).ready(function(){\n$(\".showOnMe2\").click(function(){\n$(\".showMeRpartTTp2\").toggle();\n$.sparkline_display_visible();\n});\n  });<\/script><\/div><\/div>\n\n<\/div>","<div style=\"text-align:center;\">N : <b>13.4%<\/b> (402)<br>Complexity : <b>0.039<\/b><br>nonspam : <b>67.4%<\/b> (271)<br>spam : <b>32.6%<\/b> (131)<hr class = \"rPartvisNetwork\">\n<div class =\"showOnMe2\"><div style=\"text-align:center;\"><U style=\"color:blue;\"  onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\">Rules<\/U><\/div>\n<div class=\"showMeRpartTTp2\" style=\"display:none;\">\n<b> charExclamation <\/b> >= 0.08<br><b> capitalAve <\/b> < 2.755<br><b> charDollar <\/b> < 0.007<\/script><script type=\"text/javascript\">$(document).ready(function(){\n$(\".showOnMe2\").click(function(){\n$(\".showMeRpartTTp2\").toggle();\n$.sparkline_display_visible();\n});\n  });<\/script><\/div><\/div>\n\n<\/div>","<div style=\"text-align:center;\">N : <b>11.6%<\/b> (347)<br>Complexity : <b>0.01<\/b><br>nonspam : <b>76.7%<\/b> (266)<br>spam : <b>23.3%<\/b> (81)<hr class = \"rPartvisNetwork\">\n<div class =\"showOnMe2\"><div style=\"text-align:center;\"><U style=\"color:blue;\"  onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\">Rules<\/U><\/div>\n<div class=\"showMeRpartTTp2\" style=\"display:none;\">\n<b> charExclamation <\/b> >= 0.08<br><b> capitalAve <\/b> < 2.755<br><b> charDollar <\/b> < 0.007<br><b> remove <\/b> < 0.09<\/script><script type=\"text/javascript\">$(document).ready(function(){\n$(\".showOnMe2\").click(function(){\n$(\".showMeRpartTTp2\").toggle();\n$.sparkline_display_visible();\n});\n  });<\/script><\/div><\/div>\n\n<\/div>","<div style=\"text-align:center;\">N : <b>9.4%<\/b> (282)<br>Complexity : <b>0.007<\/b><br>nonspam : <b>84.8%<\/b> (239)<br>spam : <b>15.2%<\/b> (43)<hr class = \"rPartvisNetwork\">\n<div class =\"showOnMe2\"><div style=\"text-align:center;\"><U style=\"color:blue;\"  onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\">Rules<\/U><\/div>\n<div class=\"showMeRpartTTp2\" style=\"display:none;\">\n<b>  <\/b> 0.08 <= <b>charExclamation<\/b> < 0.799<br><b> capitalAve <\/b> < 2.755<br><b> charDollar <\/b> < 0.007<br><b> remove <\/b> < 0.09<\/script><script type=\"text/javascript\">$(document).ready(function(){\n$(\".showOnMe2\").click(function(){\n$(\".showMeRpartTTp2\").toggle();\n$.sparkline_display_visible();\n});\n  });<\/script><\/div><\/div>\n\n<\/div>","<div style=\"text-align:center;\">N : <b>2.2%<\/b> (65)<br>Complexity : <b>0.01<\/b><br>nonspam : <b>41.5%<\/b> (27)<br>spam : <b>58.5%<\/b> (38)<hr class = \"rPartvisNetwork\">\n<div class =\"showOnMe2\"><div style=\"text-align:center;\"><U style=\"color:blue;\"  onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\">Rules<\/U><\/div>\n<div class=\"showMeRpartTTp2\" style=\"display:none;\">\n<b> charExclamation <\/b> >= 0.799<br><b> capitalAve <\/b> < 2.755<br><b> charDollar <\/b> < 0.007<br><b> remove <\/b> < 0.09<\/script><script type=\"text/javascript\">$(document).ready(function(){\n$(\".showOnMe2\").click(function(){\n$(\".showMeRpartTTp2\").toggle();\n$.sparkline_display_visible();\n});\n  });<\/script><\/div><\/div>\n\n<\/div>","<div style=\"text-align:center;\">N : <b>0.7%<\/b> (21)<br>Complexity : <b>0.01<\/b><br>nonspam : <b>81%<\/b> (17)<br>spam : <b>19%<\/b> (4)<hr class = \"rPartvisNetwork\">\n<div class =\"showOnMe2\"><div style=\"text-align:center;\"><U style=\"color:blue;\"  onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\">Rules<\/U><\/div>\n<div class=\"showMeRpartTTp2\" style=\"display:none;\">\n<b> charExclamation <\/b> >= 0.799<br><b> capitalAve <\/b> < 2.755<br><b> charDollar <\/b> < 0.007<br><b> remove <\/b> < 0.09<br><b> capitalTotal <\/b> < 14.5<\/script><script type=\"text/javascript\">$(document).ready(function(){\n$(\".showOnMe2\").click(function(){\n$(\".showMeRpartTTp2\").toggle();\n$.sparkline_display_visible();\n});\n  });<\/script><\/div><\/div>\n\n<\/div>","<div style=\"text-align:center;\">N : <b>1.5%<\/b> (44)<br>Complexity : <b>0.01<\/b><br>nonspam : <b>22.7%<\/b> (10)<br>spam : <b>77.3%<\/b> (34)<hr class = \"rPartvisNetwork\">\n<div class =\"showOnMe2\"><div style=\"text-align:center;\"><U style=\"color:blue;\"  onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\">Rules<\/U><\/div>\n<div class=\"showMeRpartTTp2\" style=\"display:none;\">\n<b> charExclamation <\/b> >= 0.799<br><b> capitalAve <\/b> < 2.755<br><b> charDollar <\/b> < 0.007<br><b> remove <\/b> < 0.09<br><b> capitalTotal <\/b> >= 14.5<\/script><script type=\"text/javascript\">$(document).ready(function(){\n$(\".showOnMe2\").click(function(){\n$(\".showMeRpartTTp2\").toggle();\n$.sparkline_display_visible();\n});\n  });<\/script><\/div><\/div>\n\n<\/div>","<div style=\"text-align:center;\">N : <b>1.8%<\/b> (55)<br>Complexity : <b>0.01<\/b><br>nonspam : <b>9.1%<\/b> (5)<br>spam : <b>90.9%<\/b> (50)<hr class = \"rPartvisNetwork\">\n<div class =\"showOnMe2\"><div style=\"text-align:center;\"><U style=\"color:blue;\"  onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\">Rules<\/U><\/div>\n<div class=\"showMeRpartTTp2\" style=\"display:none;\">\n<b> charExclamation <\/b> >= 0.08<br><b> capitalAve <\/b> < 2.755<br><b> charDollar <\/b> < 0.007<br><b> remove <\/b> >= 0.09<\/script><script type=\"text/javascript\">$(document).ready(function(){\n$(\".showOnMe2\").click(function(){\n$(\".showMeRpartTTp2\").toggle();\n$.sparkline_display_visible();\n});\n  });<\/script><\/div><\/div>\n\n<\/div>","<div style=\"text-align:center;\">N : <b>4.7%<\/b> (141)<br>Complexity : <b>0.002<\/b><br>nonspam : <b>12.1%<\/b> (17)<br>spam : <b>87.9%<\/b> (124)<hr class = \"rPartvisNetwork\">\n<div class =\"showOnMe2\"><div style=\"text-align:center;\"><U style=\"color:blue;\"  onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\">Rules<\/U><\/div>\n<div class=\"showMeRpartTTp2\" style=\"display:none;\">\n<b> charExclamation <\/b> >= 0.08<br><b> capitalAve <\/b> < 2.755<br><b> charDollar <\/b> >= 0.007<\/script><script type=\"text/javascript\">$(document).ready(function(){\n$(\".showOnMe2\").click(function(){\n$(\".showMeRpartTTp2\").toggle();\n$.sparkline_display_visible();\n});\n  });<\/script><\/div><\/div>\n\n<\/div>","<div style=\"text-align:center;\">N : <b>23.9%<\/b> (718)<br>Complexity : <b>0.009<\/b><br>nonspam : <b>7.1%<\/b> (51)<br>spam : <b>92.9%<\/b> (667)<hr class = \"rPartvisNetwork\">\n<div class =\"showOnMe2\"><div style=\"text-align:center;\"><U style=\"color:blue;\"  onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\">Rules<\/U><\/div>\n<div class=\"showMeRpartTTp2\" style=\"display:none;\">\n<b> charExclamation <\/b> >= 0.08<br><b> capitalAve <\/b> >= 2.755<\/script><script type=\"text/javascript\">$(document).ready(function(){\n$(\".showOnMe2\").click(function(){\n$(\".showMeRpartTTp2\").toggle();\n$.sparkline_display_visible();\n});\n  });<\/script><\/div><\/div>\n\n<\/div>"],"fixed":[true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],"colorClust":["#7D91B6","#7D91B6","#7D91B6","#7D91B6","#B9828C","#B9828C","#7D91B6","#B9828C","#B9828C","#7D91B6","#7D91B6","#7D91B6","#7D91B6","#B9828C","#7D91B6","#B9828C","#B9828C","#B9828C","#B9828C"],"labelClust":["nonspam","nonspam","nonspam","nonspam","spam","spam","nonspam","spam","spam","nonspam","nonspam","nonspam","nonspam","spam","nonspam","spam","spam","spam","spam"],"Leaf":[0,0,0,1,1,0,1,1,0,0,0,0,1,0,1,1,1,1,1],"font.size":[16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16],"scaling.min":[22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5],"scaling.max":[22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5,22.5]},"edges":{"id":["edge1","edge2","edge3","edge4","edge5","edge6","edge7","edge8","edge9","edge10","edge11","edge12","edge13","edge14","edge15","edge16","edge17","edge18"],"from":[1,2,4,4,2,5,5,1,3,6,12,24,24,49,49,12,6,3],"to":[2,4,8,9,5,10,11,3,6,12,24,48,49,98,99,25,13,7],"label":["< 0.08","< 0.045","< 0.168",">= 0.168",">= 0.045",">= 0.08","< 0.08",">= 0.08","< 2.755","< 0.007","< 0.09","< 0.799",">= 0.799","< 14.5",">= 14.5",">= 0.09",">= 0.007",">= 2.755"],"value":[1739,1632,1580,52,107,12,95,1261,543,402,347,282,65,21,44,55,141,718],"title":["<div style=\"text-align:center;\"><b>charExclamation<\/b><\/div><div style=\"text-align:center;\"><0.08<\/div>","<div style=\"text-align:center;\"><b>remove<\/b><\/div><div style=\"text-align:center;\"><0.045<\/div>","<div style=\"text-align:center;\"><b>charDollar<\/b><\/div><div style=\"text-align:center;\"><0.168<\/div>","<div style=\"text-align:center;\"><b>charDollar<\/b><\/div><div style=\"text-align:center;\">>=0.168<\/div>","<div style=\"text-align:center;\"><b>remove<\/b><\/div><div style=\"text-align:center;\">>=0.045<\/div>","<div style=\"text-align:center;\"><b>george<\/b><\/div><div style=\"text-align:center;\">>=0.08<\/div>","<div style=\"text-align:center;\"><b>george<\/b><\/div><div style=\"text-align:center;\"><0.08<\/div>","<div style=\"text-align:center;\"><b>charExclamation<\/b><\/div><div style=\"text-align:center;\">>=0.08<\/div>","<div style=\"text-align:center;\"><b>capitalAve<\/b><\/div><div style=\"text-align:center;\"><2.755<\/div>","<div style=\"text-align:center;\"><b>charDollar<\/b><\/div><div style=\"text-align:center;\"><0.007<\/div>","<div style=\"text-align:center;\"><b>remove<\/b><\/div><div style=\"text-align:center;\"><0.09<\/div>","<div style=\"text-align:center;\"><b>charExclamation<\/b><\/div><div style=\"text-align:center;\"><0.799<\/div>","<div style=\"text-align:center;\"><b>charExclamation<\/b><\/div><div style=\"text-align:center;\">>=0.799<\/div>","<div style=\"text-align:center;\"><b>capitalTotal<\/b><\/div><div style=\"text-align:center;\"><14.5<\/div>","<div style=\"text-align:center;\"><b>capitalTotal<\/b><\/div><div style=\"text-align:center;\">>=14.5<\/div>","<div style=\"text-align:center;\"><b>remove<\/b><\/div><div style=\"text-align:center;\">>=0.09<\/div>","<div style=\"text-align:center;\"><b>charDollar<\/b><\/div><div style=\"text-align:center;\">>=0.007<\/div>","<div style=\"text-align:center;\"><b>capitalAve<\/b><\/div><div style=\"text-align:center;\">>=2.755<\/div>"],"color":["#8181F7","#8181F7","#8181F7","#8181F7","#8181F7","#8181F7","#8181F7","#8181F7","#8181F7","#8181F7","#8181F7","#8181F7","#8181F7","#8181F7","#8181F7","#8181F7","#8181F7","#8181F7"],"font.size":[14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14],"font.align":["horizontal","horizontal","horizontal","horizontal","horizontal","horizontal","horizontal","horizontal","horizontal","horizontal","horizontal","horizontal","horizontal","horizontal","horizontal","horizontal","horizontal","horizontal"],"smooth.enabled":[true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],"smooth.type":["cubicBezier","cubicBezier","cubicBezier","cubicBezier","cubicBezier","cubicBezier","cubicBezier","cubicBezier","cubicBezier","cubicBezier","cubicBezier","cubicBezier","cubicBezier","cubicBezier","cubicBezier","cubicBezier","cubicBezier","cubicBezier"],"smooth.roundness":[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"UD"}},"interaction":{"dragNodes":false,"selectConnectedEdges":false,"tooltipDelay":500,"zoomSpeed":1},"edges":{"scaling":{"label":{"enabled":false}}}},"groups":null,"width":"100%","height":"600px","idselection":{"enabled":false,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select by id"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)","highlight":false},"main":{"text":"","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":{"text":"","style":"font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;"},"footer":{"text":"","style":"font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;"},"background":"rgba(0, 0, 0, 0)","highlight":{"enabled":true,"hoverNearest":false,"degree":{"from":50000,"to":0},"algorithm":"hierarchical","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":true,"fit":true,"resetHighlight":true,"clusterOptions":{"fixed":true,"physics":false},"keepCoord":true,"labelSuffix":"(cluster)"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;\n                      white-space: nowrap;\n                      font-family: cursive;font-size:12px;font-color:purple;background-color: #E6E6E6;\n                      border-radius: 15px;","OnceEvents":{"stabilized":"function() { \n        this.setOptions({layout:{hierarchical:false}, physics:{solver:'barnesHut', enabled:true, stabilization : false}, nodes : {physics : false, fixed : true}});\n    }"},"legend":{"width":0.1,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["capitalAve","capitalTotal","charDollar","charExclamation","george","remove","nonspam","spam"],"color":["#8DD2D8","#B4C7ED","#BECC9B","#F1B8C2","#96D4B5","#E1C1A1","#7D91B6","#B9828C"],"shape":["dot","dot","dot","dot","dot","dot","square","square"],"size":[22,22,22,22,22,22,22,22],"Leaf":[0,0,0,0,0,0,1,1],"font.size":[16,16,16,16,16,16,16,16],"id":[10000,10001,10002,10003,10004,10005,10006,10007]},"nodesToDataframe":true},"tree":{"updateShape":true,"shapeVar":"dot","shapeY":"square","colorVar":{"variable":["charExclamation","remove","charDollar","george","capitalAve","capitalTotal"],"color":["#F1B8C2","#E1C1A1","#BECC9B","#96D4B5","#8DD2D8","#B4C7ED"]},"colorY":{"colorY":{"modality":["nonspam","spam"],"color":["#7D91B6","#B9828C"]},"vardecidedClust":["nonspam","nonspam","nonspam","nonspam","spam","spam","nonspam","spam","spam","nonspam","nonspam","nonspam","nonspam","spam","nonspam","spam","spam","spam","spam"]}},"export":{"type":"png","css":"float:right;-webkit-border-radius: 10;\n                  -moz-border-radius: 10;\n                  border-radius: 10px;\n                  font-family: Arial;\n                  color: #ffffff;\n                  font-size: 12px;\n                  background: #090a0a;\n                  padding: 4px 8px 4px 4px;\n                  text-decoration: none;","background":"#fff","name":"network.png","label":"Export as png"}},"evals":["OnceEvents.stabilized"],"jsHooks":[]}</script>
-</div>
-</div></li>
-<li><p>Pour les 3 modèles construits (logistique, backward et arbre) calculer les prédictions de la variable <code>type</code> pour les individus de l’échantillon <code>dtest</code>. On pourra regrouper ces prévisions dans un data-frame à 3 colonnes.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>prev <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">logit=</span><span class="fu">predict</span>(m.logit,<span class="at">newdata=</span>dtest,<span class="at">type=</span><span class="st">"response"</span>) <span class="sc">|&gt;</span> <span class="fu">round</span>() <span class="sc">|&gt;</span> <span class="fu">recode_factor</span>(<span class="st">`</span><span class="at">0</span><span class="st">`</span><span class="ot">=</span><span class="st">"nonspam"</span>,<span class="st">`</span><span class="at">1</span><span class="st">`</span><span class="ot">=</span><span class="st">"spam"</span>),</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">step=</span><span class="fu">predict</span>(m.step,<span class="at">newdata=</span>dtest,<span class="at">type=</span><span class="st">"response"</span>) <span class="sc">|&gt;</span> <span class="fu">round</span>() <span class="sc">|&gt;</span> <span class="fu">recode_factor</span>(<span class="st">`</span><span class="at">0</span><span class="st">`</span><span class="ot">=</span><span class="st">"nonspam"</span>,<span class="st">`</span><span class="at">1</span><span class="st">`</span><span class="ot">=</span><span class="st">"spam"</span>),</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">arbre=</span><span class="fu">predict</span>(arbre,<span class="at">newdata=</span>dtest,<span class="at">type=</span><span class="st">"class"</span>))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></li>
-<li><p>Ajouter au data-frame précédent une colonne où on mettra les valeurs observées de la variable à expliquer.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>prev1 <span class="ot">&lt;-</span> prev <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">obs=</span>dtest<span class="sc">$</span>type)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></li>
-<li><p>A l’aide de <strong>summarize_at</strong> calculer les erreurs de classification des 3 modèles.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>prev1 <span class="sc">|&gt;</span> <span class="fu">summarize_at</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="sc">~</span>(<span class="fu">mean</span>(obs<span class="sc">!=</span>.))) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  logit  step arbre
-1  0.07 0.074 0.109</code></pre>
-</div>
-</div></li>
-<li><p>Représenter les courbes <strong>ROC</strong> et calculer les <strong>AUC</strong>. On pourra consulter les pages 346 et 347 dans <span class="citation" data-cites="rstat18">Cornillon et al. (<a href="references.html#ref-rstat18" role="doc-biblioref">2018</a>)</span> pour le tracé de courbes ROC sur <strong>R</strong>.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>score <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">logit=</span><span class="fu">predict</span>(m.logit,<span class="at">newdata=</span>dtest,<span class="at">type=</span><span class="st">"response"</span>),</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">step=</span><span class="fu">predict</span>(m.step,<span class="at">newdata=</span>dtest,<span class="at">type=</span><span class="st">"response"</span>),</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">arbre=</span><span class="fu">predict</span>(arbre,<span class="at">newdata=</span>dtest,<span class="at">type=</span><span class="st">"prob"</span>)[,<span class="dv">2</span>]) <span class="sc">|&gt;</span> </span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">obs=</span>dtest<span class="sc">$</span>type) <span class="sc">|&gt;</span> </span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>obs,<span class="at">names_to =</span> <span class="st">"Methode"</span>,<span class="at">values_to=</span><span class="st">"score"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotROC)</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(score)<span class="sc">+</span><span class="fu">aes</span>(<span class="at">d=</span>obs,<span class="at">m=</span>score,<span class="at">color=</span>Methode)<span class="sc">+</span><span class="fu">geom_roc</span>()<span class="sc">+</span><span class="fu">theme_classic</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="09-regression_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>score <span class="sc">|&gt;</span> <span class="fu">group_by</span>(Methode) <span class="sc">|&gt;</span> </span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">AUC=</span><span class="fu">as.numeric</span>(pROC<span class="sc">::</span><span class="fu">auc</span>(obs,score))) <span class="sc">|&gt;</span> </span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">AUC=</span><span class="fu">round</span>(AUC,<span class="dv">3</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(AUC))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 2
-  Methode   AUC
-  &lt;chr&gt;   &lt;dbl&gt;
-1 logit   0.975
-2 step    0.975
-3 arbre   0.894</code></pre>
-</div>
-</div></li>
+<li><p>Séparer les données en un échantillon d’apprentissage <code>dapp</code> de taille 3000 et un échantillon test <code>dtest</code> de taille 1601. On pourra utiliser la fonction <strong>sample</strong>.</p></li>
+<li><p>Construire un modèle logistique permettant de répondre au problème en utilisant uniquement les données d’apprentissage. On utilisera la fonction <strong>glm</strong> avec l’option <code>family="binomial"</code>.</p></li>
+<li><p>A l’aide de la fonction <strong>step</strong>, effectuer une sélection backward (ça peut prendre quelques minutes).</p></li>
+<li><p>A l’aide de la fonction <strong>rpart</strong> du package <strong>rpart</strong>, construire un arbre de régression (toujours sur les données d’apprentissage) pour répondre au problème. On utilisera les paramètres par défaut de la fonction.</p></li>
+<li><p>Visualiser l’arbre construit à l’aide des fonctions <strong>rpart.plot</strong> et <strong>visTree</strong> des packages <strong>rpart.plot</strong> et <strong>visNetwork</strong></p></li>
+<li><p>Pour les 3 modèles construits (logistique, backward et arbre) calculer les prédictions de la variable <code>type</code> pour les individus de l’échantillon <code>dtest</code>. On pourra regrouper ces prévisions dans un data-frame à 3 colonnes.</p></li>
+<li><p>Ajouter au data-frame précédent une colonne où on mettra les valeurs observées de la variable à expliquer.</p></li>
+<li><p>A l’aide de <strong>summarize_at</strong> calculer les erreurs de classification des 3 modèles.</p></li>
+<li><p>Représenter les courbes <strong>ROC</strong> et calculer les <strong>AUC</strong>. On pourra consulter les pages 346 et 347 dans <span class="citation" data-cites="rstat18">Cornillon et al. (<a href="references.html#ref-rstat18" role="doc-biblioref">2018</a>)</span> pour le tracé de courbes ROC sur <strong>R</strong>.</p></li>
 </ol>
 </div>
 

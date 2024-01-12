@@ -95,23 +95,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Recherche"
   }
 }</script>
-<script src="site_libs/htmlwidgets-1.6.3/htmlwidgets.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<link href="site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
-<script src="site_libs/leaflet-1.3.1/leaflet.js"></script>
-<link href="site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
-<script src="site_libs/proj4-2.6.2/proj4.min.js"></script>
-<script src="site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
-<link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
-<script src="site_libs/leaflet-binding-2.2.1/leaflet.js"></script>
-<script src="site_libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
-<script src="site_libs/leaflet-providers-plugin-2.2.1/leaflet-providers-plugin.js"></script>
-<link href="site_libs/HomeButton-0.0.1/home-button.css" rel="stylesheet">
-<script src="site_libs/HomeButton-0.0.1/home-button.js"></script>
-<script src="site_libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
-<script src="site_libs/clipboard-0.0.1/setClipboardText.js"></script>
-<link href="site_libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet">
-<link href="site_libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet">
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -353,12 +336,12 @@ div.correction {
   color: black;
   background-color: #F0F0F0;
   font-style: normal;
-  /*display: none;*/
+  display: none;
 }
 
 .corR {
   font-style: italic;
-  /*display: none;*/
+  display: none;
 }
 </style>
 <p>Les données requises pour les analyses sont souvent stockées dans des bases de données. <strong>R</strong> propose différents outils permettant d’accéder à ces bases de données. On présente dans cette partie le package <code>DBI</code> qui permet de se connecter à des bases de type <strong>SQL</strong> ainsi que la manière d’appréhender des données au format <strong>JSON</strong>.</p>
@@ -620,486 +603,38 @@ WHERE (`age` &gt; 85.0)</code></pre>
 </ul>
 <ol type="1">
 <li><p>Créer une base de données SQL qui contient ces deux tables et connectez vous à cette base.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>etat <span class="ot">&lt;-</span> <span class="fu">read_csv2</span>(<span class="st">"data/etat_velib_rennes"</span>)</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>topologie <span class="ot">&lt;-</span> <span class="fu">read_csv2</span>(<span class="st">"data/topologie_velib_rennes.csv"</span>)</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co">#con &lt;- dbConnect(RSQLite::SQLite(), dbname = "data/velib_rennes.sqlite")</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(RSQLite<span class="sc">::</span><span class="fu">SQLite</span>(), <span class="at">dbname =</span> <span class="st">":memory:"</span>)</span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dbWriteTable</span>(con,<span class="st">"etat"</span>,etat)</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dbWriteTable</span>(con,<span class="st">"topologie"</span>,topologie)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <div class="corR">
 <p>On peut maintenant se connecter :</p>
-</div>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbListTables</span>(con)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "etat"      "topologie"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(table <span class="cf">in</span> <span class="fu">dbListTables</span>(con)) {</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"--- Table"</span>, table, <span class="st">"---</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">dbListFields</span>(con, table))</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>--- Table etat ---
-[1] "Station (ID)"             "Nom"                     
-[3] "Coordonnées"              "Etat"                    
-[5] "Emplacements actuels"     "Emplacements disponibles"
-[7] "Vélos disponibles"        "Dernière mise à jour"    
---- Table topologie ---
- [1] "Identifiant"                            
- [2] "Date de début de version"               
- [3] "Date de fin de version"                 
- [4] "Est la version active"                  
- [5] "Code"                                   
- [6] "Nom"                                    
- [7] "Adresse (numéro)"                       
- [8] "Adresse (voie)"                         
- [9] "Commune (code INSEE)"                   
-[10] "Commune (nom)"                          
-[11] "Coordonnées"                            
-[12] "Station de métro en correspondance (ID)"
-[13] "Emplacements"                           
-[14] "Station la plus proche 1 (ID)"          
-[15] "Station la plus proche 2 (ID)"          
-[16] "Station la plus proche 3 (ID)"          
-[17] "Avec terminal CB"                       </code></pre>
-</div>
 </div></li>
-<li><p>Sélectionner l’identifiant <code>Identifiant</code>, le nom <code>Nom</code> et l’identifiant de la station proche <code>Station la plus proche 1 (ID)</code> depuis la table <code>topologie</code>.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="st">"SELECT Identifiant, Nom, `Station la plus proche 1 (ID)` FROM topologie"</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(con, query) <span class="sc">|&gt;</span>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  Identifiant               Nom Station la plus proche 1 (ID)
-1        5516     Champs Libres                          5584
-2        5517 Charles de Gaulle                          5516
-3        5520    Pont de Nantes                          5543</code></pre>
-</div>
-</div></li>
-<li><p>Faire une jointure pour créer une table qui contient la liste des stations avec l’identifiant, le nom et le nom de la station la plus proche.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="st">"</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT left.identifiant AS Identifiant,</span></span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="st">       left.Nom AS nom,</span></span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="st">       right.Nom AS nom_proche</span></span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="st">FROM topologie AS left</span></span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="st">LEFT JOIN topologie AS right</span></span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="st">ON (left.`Station la plus proche 1 (ID)` = right.Identifiant)"</span></span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(con, query) <span class="sc">|&gt;</span>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  Identifiant               nom      nom_proche
-1        5516     Champs Libres            &lt;NA&gt;
-2        5517 Charles de Gaulle   Champs Libres
-3        5520    Pont de Nantes Cité Judiciaire</code></pre>
-</div>
-</div></li>
+<li><p>Sélectionner l’identifiant <code>Identifiant</code>, le nom <code>Nom</code> et l’identifiant de la station proche <code>Station la plus proche 1 (ID)</code> depuis la table <code>topologie</code>.</p></li>
+<li><p>Faire une jointure pour créer une table qui contient la liste des stations avec l’identifiant, le nom et le nom de la station la plus proche.</p></li>
 <li><p>Ajouter à la table précédente la distance euclidienne entre la station et la station proche associée à l’identifiant <code>Station la plus proche 1 (ID)</code> de la table <code>Topologie</code>.</p>
 <div class="corR">
 <p>On commence par créer les colonnes latitude et longitude :</p>
 </div>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># une seule colonne en sqlite</span></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>query_add_latitude <span class="ot">&lt;-</span> <span class="st">"</span></span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="st">ALTER TABLE topologie </span></span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="st">ADD COLUMN latitude DOUBLE</span></span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="st">;</span></span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dbExecute</span>(con, query_add_latitude)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>query_add_longitude <span class="ot">&lt;-</span> <span class="st">"</span></span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="st">ALTER TABLE topologie </span></span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="st">ADD COLUMN longitude DOUBLE</span></span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="st">;</span></span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dbExecute</span>(con, query_add_longitude)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
-</div>
-</div>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>query_update_lon_lat <span class="ot">&lt;-</span> <span class="st">"</span></span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="st">UPDATE topologie SET latitude = SUBSTR(`Coordonnées`, 1, INSTR(`Coordonnées`, ',') - 1), </span></span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="st">                     longitude=SUBSTR(`Coordonnées`, INSTR(`Coordonnées`, ' ') + 1);"</span></span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dbExecute</span>(con, query_update_lon_lat)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 57</code></pre>
-</div>
-</div>
 <div class="corR">
 <p>On peut maintenant calculer la distance :</p>
-</div>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="st">"</span></span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT left.identifiant AS identifiant,</span></span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="st">       left.nom AS nom,</span></span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="st">       right.nom AS nom_proche,</span></span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="st">       (</span></span>
-<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a><span class="st">         POWER((left.latitude - right.latitude), 2.0) +</span></span>
-<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a><span class="st">         POWER((left.longitude - right.longitude), 2.0)</span></span>
-<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a><span class="st">       ) AS distance</span></span>
-<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a><span class="st">FROM topologie AS left</span></span>
-<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a><span class="st">LEFT JOIN topologie AS right</span></span>
-<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a><span class="st">ON (left.`Station la plus proche 1 (ID)` = right.identifiant)</span></span>
-<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
-<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(con, query) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  identifiant               nom      nom_proche     distance
-1        5516     Champs Libres            &lt;NA&gt;           NA
-2        5517 Charles de Gaulle   Champs Libres 7.971157e-06
-3        5520    Pont de Nantes Cité Judiciaire 7.604561e-06</code></pre>
-</div>
 </div></li>
-<li><p>Nous nous trouvons au point de coordonnées (48.1179151,-1.7028661). Créer une table avec le nom des trois stations les plus proches classées par ordre de distance et le nombre d’emplacements libres dans ces stations.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>query_add_latitude <span class="ot">&lt;-</span> <span class="st">"</span></span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="st">ALTER TABLE etat </span></span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="st">ADD COLUMN latitude DOUBLE</span></span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="st">;</span></span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dbExecute</span>(con, query_add_latitude)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>query_add_longitude <span class="ot">&lt;-</span> <span class="st">"</span></span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="st">ALTER TABLE etat </span></span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="st">ADD COLUMN longitude DOUBLE</span></span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a><span class="st">;</span></span>
-<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
-<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dbExecute</span>(con, query_add_longitude)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
-</div>
-</div>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>query_update_lon_lat <span class="ot">&lt;-</span> <span class="st">"</span></span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="st">UPDATE etat SET latitude = SUBSTR(`Coordonnées`, 1, INSTR(`Coordonnées`, ',') - 1), longitude=SUBSTR(`Coordonnées`, INSTR(`Coordonnées`, ' ') + 1);"</span></span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dbExecute</span>(con, query_update_lon_lat)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 57</code></pre>
-</div>
-</div>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>ma_latitude <span class="ot">&lt;-</span> <span class="fl">48.1179151</span></span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>ma_longitude <span class="ot">=</span> <span class="sc">-</span><span class="fl">1.7028661</span></span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"</span></span>
-<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT nom,</span></span>
-<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a><span class="st">       (</span></span>
-<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a><span class="st">         POWER((latitude - "</span>, ma_latitude, <span class="st">"), 2.0) +</span></span>
-<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a><span class="st">         POWER((longitude - "</span>, ma_longitude, <span class="st">"), 2.0)</span></span>
-<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a><span class="st">       ) AS distance,</span></span>
-<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a><span class="st">       `emplacements disponibles`</span></span>
-<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a><span class="st">FROM Etat</span></span>
-<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a><span class="st">ORDER BY distance</span></span>
-<span id="cb63-13"><a href="#cb63-13" aria-hidden="true" tabindex="-1"></a><span class="st">LIMIT 3</span></span>
-<span id="cb63-14"><a href="#cb63-14" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)</span>
-<span id="cb63-15"><a href="#cb63-15" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(con, query)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                   Nom     distance Emplacements disponibles
-1               Berger 7.540436e-06                        3
-2 Villejean-Université 1.197776e-05                       14
-3              Marbeuf 3.864347e-05                       11</code></pre>
-</div>
-</div></li>
-<li><p>Reprendre les questions précédentes en utilisant les fonctions de <code>dplyr</code>.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>db_etat <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">"Etat"</span>)</span>
-<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_etat)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "Station (ID)"             "Nom"                     
- [3] "Coordonnées"              "Etat"                    
- [5] "Emplacements actuels"     "Emplacements disponibles"
- [7] "Vélos disponibles"        "Dernière mise à jour"    
- [9] "latitude"                 "longitude"               </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>db_topologie <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">"Topologie"</span>)</span>
-<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(db_topologie)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "Identifiant"                            
- [2] "Date de début de version"               
- [3] "Date de fin de version"                 
- [4] "Est la version active"                  
- [5] "Code"                                   
- [6] "Nom"                                    
- [7] "Adresse (numéro)"                       
- [8] "Adresse (voie)"                         
- [9] "Commune (code INSEE)"                   
-[10] "Commune (nom)"                          
-[11] "Coordonnées"                            
-[12] "Station de métro en correspondance (ID)"
-[13] "Emplacements"                           
-[14] "Station la plus proche 1 (ID)"          
-[15] "Station la plus proche 2 (ID)"          
-[16] "Station la plus proche 3 (ID)"          
-[17] "Avec terminal CB"                       
-[18] "latitude"                               
-[19] "longitude"                              </code></pre>
-</div>
-</div>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>db_topologie <span class="sc">|&gt;</span></span>
-<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Identifiant, Nom, <span class="st">`</span><span class="at">Station la plus proche 1 (ID)</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
-<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>) <span class="sc">|&gt;</span></span>
-<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 3
-  Identifiant Nom               `Station la plus proche 1 (ID)`
-        &lt;dbl&gt; &lt;chr&gt;                                       &lt;dbl&gt;
-1        5516 Champs Libres                                5584
-2        5517 Charles de Gaulle                            5516
-3        5520 Pont de Nantes                               5543</code></pre>
-</div>
-</div>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>db_topologie <span class="sc">|&gt;</span></span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_topologie, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">`</span><span class="at">Station la plus proche 1 (ID)</span><span class="st">`</span> <span class="sc">==</span> Identifiant)) <span class="sc">|&gt;</span> </span>
-<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Nom =</span> Nom.x, <span class="at">nom_proche =</span> Nom.y) <span class="sc">|&gt;</span></span>
-<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Identifiant, Nom, nom_proche) <span class="sc">|&gt;</span></span>
-<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>) <span class="sc">|&gt;</span></span>
-<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 3
-  Identifiant Nom               nom_proche     
-        &lt;dbl&gt; &lt;chr&gt;             &lt;chr&gt;          
-1        5516 Champs Libres     &lt;NA&gt;           
-2        5517 Charles de Gaulle Champs Libres  
-3        5520 Pont de Nantes    Cité Judiciaire</code></pre>
-</div>
-</div>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>db_topologie <span class="sc">|&gt;</span></span>
-<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_topologie, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">`</span><span class="at">Station la plus proche 1 (ID)</span><span class="st">`</span> <span class="sc">==</span> Identifiant)) <span class="sc">|&gt;</span></span>
-<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">distance =</span> (latitude.x <span class="sc">-</span> latitude.y)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> (longitude.x <span class="sc">-</span> longitude.y)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">|&gt;</span></span>
-<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">nom =</span> Nom.x, <span class="at">nom_proche =</span> Nom.y) <span class="sc">|&gt;</span></span>
-<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Identifiant, nom, nom_proche, distance) <span class="sc">|&gt;</span></span>
-<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>) <span class="sc">|&gt;</span></span>
-<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 4
-  Identifiant nom               nom_proche         distance
-        &lt;dbl&gt; &lt;chr&gt;             &lt;chr&gt;                 &lt;dbl&gt;
-1        5516 Champs Libres     &lt;NA&gt;            NA         
-2        5517 Charles de Gaulle Champs Libres    0.00000797
-3        5520 Pont de Nantes    Cité Judiciaire  0.00000760</code></pre>
-</div>
-</div>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>db_etat <span class="sc">|&gt;</span></span>
-<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">distance =</span> (latitude <span class="sc">-</span> ma_latitude)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> (longitude <span class="sc">-</span> ma_longitude)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">|&gt;</span></span>
-<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(distance) <span class="sc">|&gt;</span></span>
-<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Nom, distance, <span class="st">`</span><span class="at">Emplacements disponibles</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
-<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>) <span class="sc">|&gt;</span></span>
-<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 3
-  Nom                    distance `Emplacements disponibles`
-  &lt;chr&gt;                     &lt;dbl&gt;                      &lt;dbl&gt;
-1 Berger               0.00000754                          3
-2 Villejean-Université 0.0000120                          14
-3 Marbeuf              0.0000386                          11</code></pre>
-</div>
-</div></li>
+<li><p>Nous nous trouvons au point de coordonnées (48.1179151,-1.7028661). Créer une table avec le nom des trois stations les plus proches classées par ordre de distance et le nombre d’emplacements libres dans ces stations.</p></li>
+<li><p>Reprendre les questions précédentes en utilisant les fonctions de <code>dplyr</code>.</p></li>
 <li><p>Viualiser les 3 stations de la question 5 sur une carte <code>mapview</code>.</p>
 <div class="corR">
 <p>On créé tout d’abors un objet <code>sf</code> avec les informations nécessaires :</p>
 </div>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>stations <span class="ot">&lt;-</span> </span>
-<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>  db_etat <span class="sc">|&gt;</span></span>
-<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">distance =</span> (latitude <span class="sc">-</span> ma_latitude)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> (longitude <span class="sc">-</span> ma_longitude)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">|&gt;</span></span>
-<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">arrange</span>(distance) <span class="sc">|&gt;</span></span>
-<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select</span>(Nom, distance, <span class="st">`</span><span class="at">Emplacements disponibles</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
-<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">head</span>(<span class="dv">3</span>) <span class="sc">|&gt;</span></span>
-<span id="cb77-7"><a href="#cb77-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">collect</span>()</span>
-<span id="cb77-8"><a href="#cb77-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb77-9"><a href="#cb77-9" aria-hidden="true" tabindex="-1"></a>stations1 <span class="ot">&lt;-</span> stations <span class="sc">|&gt;</span> </span>
-<span id="cb77-10"><a href="#cb77-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">collect</span>(db_etat),<span class="at">by=</span><span class="fu">join_by</span>(Nom<span class="sc">==</span>Nom)) <span class="sc">|&gt;</span> </span>
-<span id="cb77-11"><a href="#cb77-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Dispo=</span><span class="st">`</span><span class="at">Emplacements disponibles.x</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb77-12"><a href="#cb77-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Nom,Dispo,longitude,latitude)</span>
-<span id="cb77-13"><a href="#cb77-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb77-14"><a href="#cb77-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb77-15"><a href="#cb77-15" aria-hidden="true" tabindex="-1"></a>sta_geom <span class="ot">&lt;-</span> stations1 <span class="sc">|&gt;</span> </span>
-<span id="cb77-16"><a href="#cb77-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(longitude,latitude) <span class="sc">|&gt;</span> </span>
-<span id="cb77-17"><a href="#cb77-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb77-18"><a href="#cb77-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_multipoint</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb77-19"><a href="#cb77-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_geometry</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb77-20"><a href="#cb77-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_cast</span>(<span class="at">to=</span><span class="st">"POINT"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb77-21"><a href="#cb77-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_sfc</span>(<span class="at">crs=</span><span class="dv">4326</span>)</span>
-<span id="cb77-22"><a href="#cb77-22" aria-hidden="true" tabindex="-1"></a><span class="fu">st_geometry</span>(stations1) <span class="ot">&lt;-</span> sta_geom</span>
-<span id="cb77-23"><a href="#cb77-23" aria-hidden="true" tabindex="-1"></a>stations1</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Simple feature collection with 3 features and 4 fields
-Geometry type: POINT
-Dimension:     XY
-Bounding box:  xmin: -1.705097 ymin: 48.11175 xmax: -1.702077 ymax: 48.12107
-Geodetic CRS:  WGS 84
-# A tibble: 3 × 5
-  Nom                  Dispo longitude latitude             geometry
-  &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;          &lt;POINT [°]&gt;
-1 Berger                   3     -1.71     48.1 (-1.705097 48.11631)
-2 Villejean-Université    14     -1.70     48.1  (-1.70428 48.12107)
-3 Marbeuf                 11     -1.70     48.1 (-1.702077 48.11175)</code></pre>
-</div>
-</div>
 <div class="corR">
 <p>On construit la carte</p>
-</div>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>mapview<span class="sc">::</span><span class="fu">mapview</span>(stations1,</span>
-<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">cex=</span><span class="st">"Dispo"</span>,</span>
-<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">popup=</span>leafpop<span class="sc">::</span><span class="fu">popupTable</span>(stations1,</span>
-<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">zcol=</span><span class="fu">c</span>(<span class="st">"Nom"</span>,<span class="st">"Dispo"</span>)),</span>
-<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">legend=</span><span class="cn">FALSE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-e0f29c401db8dbab3cd2" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-e0f29c401db8dbab3cd2">{"x":{"options":{"minZoom":1,"maxZoom":52,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"preferCanvas":false,"bounceAtZoomLimits":false,"maxBounds":[[[-90,-370]],[[90,370]]]},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron","CartoDB.Positron","CartoDB.Positron",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["CartoDB.DarkMatter","CartoDB.DarkMatter","CartoDB.DarkMatter",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap","OpenStreetMap","OpenStreetMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldImagery","Esri.WorldImagery","Esri.WorldImagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenTopoMap","OpenTopoMap","OpenTopoMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"createMapPane","args":["point",440]},{"method":"addCircleMarkers","args":[[48.116314,48.121074,48.111749],[-1.705097,-1.70428,-1.702077],[3,15,11.72727272727273],null,"stations1",{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"pane":"point","stroke":true,"color":"#333333","weight":1,"opacity":0.9,"fill":true,"fillColor":"#6666FF","fillOpacity":0.6},null,null,["<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>1&emsp;<\/td><\/tr><tr><td>1<\/td><th>Nom&emsp;<\/th><td>Berger&emsp;<\/td><\/tr><tr><td>2<\/td><th>Dispo&emsp;<\/th><td> 3&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>2&emsp;<\/td><\/tr><tr><td>1<\/td><th>Nom&emsp;<\/th><td>Villejean-Université&emsp;<\/td><\/tr><tr><td>2<\/td><th>Dispo&emsp;<\/th><td>14&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>3&emsp;<\/td><\/tr><tr><td>1<\/td><th>Nom&emsp;<\/th><td>Marbeuf&emsp;<\/td><\/tr><tr><td>2<\/td><th>Dispo&emsp;<\/th><td>11&emsp;<\/td><\/tr><\/table><\/div>"],{"maxWidth":800,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"closeOnClick":true,"className":""},["1","2","3"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]},{"method":"addHomeButton","args":[-1.705097,48.111749,-1.702077,48.121074,true,"stations1","Zoom to stations1","<strong> stations1 <\/strong>","bottomright"]},{"method":"addLayersControl","args":[["CartoDB.Positron","CartoDB.DarkMatter","OpenStreetMap","Esri.WorldImagery","OpenTopoMap"],"stations1",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[48.111749,48.121074],"lng":[-1.705097,-1.702077]},"fitBounds":[48.111749,-1.705097,48.121074,-1.702077,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\n      function(el, x, data) {\n      // get the leaflet map\n      var map = this; //HTMLWidgets.find('#' + el.id);\n      // we need a new div element because we have to handle\n      // the mouseover output separately\n      // debugger;\n      function addElement () {\n      // generate new div Element\n      var newDiv = $(document.createElement('div'));\n      // append at end of leaflet htmlwidget container\n      $(el).append(newDiv);\n      //provide ID and style\n      newDiv.addClass('lnlt');\n      newDiv.css({\n      'position': 'relative',\n      'bottomleft':  '0px',\n      'background-color': 'rgba(255, 255, 255, 0.7)',\n      'box-shadow': '0 0 2px #bbb',\n      'background-clip': 'padding-box',\n      'margin': '0',\n      'padding-left': '5px',\n      'color': '#333',\n      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',\n      'z-index': '700',\n      });\n      return newDiv;\n      }\n\n\n      // check for already existing lnlt class to not duplicate\n      var lnlt = $(el).find('.lnlt');\n\n      if(!lnlt.length) {\n      lnlt = addElement();\n\n      // grab the special div we generated in the beginning\n      // and put the mousmove output there\n\n      map.on('mousemove', function (e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                           ' lon: ' + (e.latlng.lng).toFixed(5) +\n                           ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                           ' | zoom: ' + map.getZoom() +\n                           ' | x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +\n                           ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +\n                           ' | epsg: 3857 ' +\n                           ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ');\n      } else {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      }\n      });\n\n      // remove the lnlt div when mouse leaves map\n      map.on('mouseout', function (e) {\n      var strip = document.querySelector('.lnlt');\n      if( strip !==null) strip.remove();\n      });\n\n      };\n\n      //$(el).keypress(67, function(e) {\n      map.on('preclick', function(e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      var txt = document.querySelector('.lnlt').textContent;\n      console.log(txt);\n      //txt.innerText.focus();\n      //txt.select();\n      setClipboardText('\"' + txt + '\"');\n      }\n      });\n\n      }\n      ).call(this.getMap(), el, x, data);\n}","data":null},{"code":"function(el, x, data) {\n  return (function(el,x,data){\n           var map = this;\n\n           map.on('keypress', function(e) {\n               console.log(e.originalEvent.code);\n               var key = e.originalEvent.code;\n               if (key === 'KeyE') {\n                   var bb = this.getBounds();\n                   var txt = JSON.stringify(bb);\n                   console.log(txt);\n\n                   setClipboardText('\\'' + txt + '\\'');\n               }\n           })\n        }).call(this.getMap(), el, x, data);\n}","data":null}]}}</script>
-</div>
 </div></li>
-<li><p>Terminer correctement en fermant la connexion à la base de données.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(con)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></li>
+<li><p>Terminer correctement en fermant la connexion à la base de données.</p></li>
 </ol>
 </div>
 <div id="exr-sql-musique" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 5.2 (Un peu de musique) </strong></span>Sur le site https://github.com/lerocha/chinook-database, nous pouvons trouver des bases de données de bibliothèques musicales. Une copie de la base SQLite est disponible dans le fichier <code>Chinook_Sqlite.sqlite</code>.</p>
 <ol type="1">
-<li><p>Se connecter à la base de données et afficher les tables. Explorer le jeu de données pour le découvrir. En particulier, étudier comment les tables <code>Playlist</code>, <code>PlaylistTrack</code> et <code>Track</code> sont liées.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(RSQLite<span class="sc">::</span><span class="fu">SQLite</span>(), <span class="at">dbname =</span> <span class="st">"data/Chinook_Sqlite.sqlite"</span>)</span>
-<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbListTables</span>(con)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "Album"         "Artist"        "Customer"      "Employee"     
- [5] "Genre"         "Invoice"       "InvoiceLine"   "MediaType"    
- [9] "Playlist"      "PlaylistTrack" "Track"        </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>db_playlist <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">"Playlist"</span>)</span>
-<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>db_playlist <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">3</span>) <span class="sc">|&gt;</span> <span class="fu">collect</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 2
-  PlaylistId Name    
-       &lt;int&gt; &lt;chr&gt;   
-1          1 Music   
-2          2 Movies  
-3          3 TV Shows</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>db_playlist_track <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">"PlaylistTrack"</span>)</span>
-<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>db_playlist_track <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">3</span>) <span class="sc">|&gt;</span> <span class="fu">collect</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 2
-  PlaylistId TrackId
-       &lt;int&gt;   &lt;int&gt;
-1          1    3402
-2          1    3389
-3          1    3390</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>db_track <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">"Track"</span>)</span>
-<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>db_track <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">3</span>) <span class="sc">|&gt;</span> <span class="fu">collect</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 9
-  TrackId Name          AlbumId MediaTypeId GenreId Composer Milliseconds  Bytes
-    &lt;int&gt; &lt;chr&gt;           &lt;int&gt;       &lt;int&gt;   &lt;int&gt; &lt;chr&gt;           &lt;int&gt;  &lt;int&gt;
-1       1 For Those Ab…       1           1       1 Angus Y…       343719 1.12e7
-2       2 Balls to the…       2           2       1 &lt;NA&gt;           342562 5.51e6
-3       3 Fast As a Sh…       3           2       1 F. Balt…       230619 3.99e6
-# ℹ 1 more variable: UnitPrice &lt;dbl&gt;</code></pre>
-</div>
-</div></li>
-<li><p>Utiliser les verbes de <code>dplyr</code> pour savoir quelles sont les playlists qui contiennent le plus de pistes.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>db_playlist_track <span class="sc">|&gt;</span></span>
-<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(PlaylistId) <span class="sc">|&gt;</span></span>
-<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_playlist, <span class="at">by =</span> <span class="st">"PlaylistId"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) <span class="sc">|&gt;</span></span>
-<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 14 × 3
-   PlaylistId     n Name                      
-        &lt;int&gt; &lt;int&gt; &lt;chr&gt;                     
- 1          1  3290 Music                     
- 2          8  3290 Music                     
- 3          5  1477 90’s Music                
- 4          3   213 TV Shows                  
- 5         10   213 TV Shows                  
- 6         12    75 Classical                 
- 7         11    39 Brazilian Music           
- 8         17    26 Heavy Metal Classic       
- 9         13    25 Classical 101 - Deep Cuts 
-10         14    25 Classical 101 - Next Steps
-11         15    25 Classical 101 - The Basics
-12         16    15 Grunge                    
-13          9     1 Music Videos              
-14         18     1 On-The-Go 1               </code></pre>
-</div>
-</div></li>
-<li><p>En utilisant <code>dplyr</code>, construire une table contenant les informations suivantes sur la playlist appelée <code>Classical</code> : le titre de chaque piste ainsi que le titre de l’album dont cette piste est tirée.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>db_album <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">"Album"</span>)</span>
-<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>db_playlist_track <span class="sc">|&gt;</span></span>
-<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_playlist, <span class="at">by =</span> <span class="st">"PlaylistId"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">PlaylistName =</span> Name) <span class="sc">|&gt;</span></span>
-<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(PlaylistName <span class="sc">==</span> <span class="st">"Classical"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb91-6"><a href="#cb91-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_track, <span class="at">by =</span> <span class="st">"TrackId"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb91-7"><a href="#cb91-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(db_album, <span class="at">by =</span> <span class="st">"AlbumId"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb91-8"><a href="#cb91-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Name, Title) <span class="sc">|&gt;</span></span>
-<span id="cb91-9"><a href="#cb91-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 75 × 2
-   Name                                                                   Title 
-   &lt;chr&gt;                                                                  &lt;chr&gt; 
- 1 "Intoitus: Adorate Deum"                                               Adora…
- 2 "Miserere mei, Deus"                                                   Alleg…
- 3 "Canon and Gigue in D Major: I. Canon"                                 Pache…
- 4 "Concerto No. 1 in E Major, RV 269 \"Spring\": I. Allegro"             Vival…
- 5 "Concerto for 2 Violins in D Minor, BWV 1043: I. Vivace"               Bach:…
- 6 "Aria Mit 30 Veränderungen, BWV 988 \"Goldberg Variations\": Aria"     Bach:…
- 7 "Suite for Solo Cello No. 1 in G Major, BWV 1007: I. Prélude"          Bach:…
- 8 "The Messiah: Behold, I Tell You a Mystery... The Trumpet Shall Sound" Hande…
- 9 "Solomon HWV 67: The Arrival of the Queen of Sheba"                    The W…
-10 "\"Eine Kleine Nachtmusik\" Serenade In G, K. 525: I. Allegro"         Sir N…
-# ℹ 65 more rows</code></pre>
-</div>
-</div></li>
-<li><p>Même question en écrivant directement la requête en SQL.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="st">"</span></span>
-<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT Name, Title</span></span>
-<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="st">FROM (</span></span>
-<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT Name, AlbumId</span></span>
-<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM (</span></span>
-<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT TrackId</span></span>
-<span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM PlaylistTrack AS left</span></span>
-<span id="cb93-8"><a href="#cb93-8" aria-hidden="true" tabindex="-1"></a><span class="st">    LEFT JOIN Playlist AS right</span></span>
-<span id="cb93-9"><a href="#cb93-9" aria-hidden="true" tabindex="-1"></a><span class="st">    ON (left.PlaylistId = right.PlaylistId)</span></span>
-<span id="cb93-10"><a href="#cb93-10" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE (Name = 'Classical')</span></span>
-<span id="cb93-11"><a href="#cb93-11" aria-hidden="true" tabindex="-1"></a><span class="st">  ) AS left</span></span>
-<span id="cb93-12"><a href="#cb93-12" aria-hidden="true" tabindex="-1"></a><span class="st">  LEFT JOIN Track AS right</span></span>
-<span id="cb93-13"><a href="#cb93-13" aria-hidden="true" tabindex="-1"></a><span class="st">  ON (left.TrackId = right.TrackId)</span></span>
-<span id="cb93-14"><a href="#cb93-14" aria-hidden="true" tabindex="-1"></a><span class="st">) AS left</span></span>
-<span id="cb93-15"><a href="#cb93-15" aria-hidden="true" tabindex="-1"></a><span class="st">LEFT JOIN Album AS right</span></span>
-<span id="cb93-16"><a href="#cb93-16" aria-hidden="true" tabindex="-1"></a><span class="st">ON (left.AlbumId = right.AlbumId)</span></span>
-<span id="cb93-17"><a href="#cb93-17" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
-<span id="cb93-18"><a href="#cb93-18" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(con, query) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                                  Name
-1               Intoitus: Adorate Deum
-2                   Miserere mei, Deus
-3 Canon and Gigue in D Major: I. Canon
-                                                      Title
-1 Adorate Deum: Gregorian Chant from the Proper of the Mass
-2                                         Allegri: Miserere
-3                                  Pachelbel: Canon &amp; Gigue</code></pre>
-</div>
-</div></li>
-<li><p>Terminer correctement en fermant la connexion à la base de données.</p>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(con)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></li>
+<li><p>Se connecter à la base de données et afficher les tables. Explorer le jeu de données pour le découvrir. En particulier, étudier comment les tables <code>Playlist</code>, <code>PlaylistTrack</code> et <code>Track</code> sont liées.</p></li>
+<li><p>Utiliser les verbes de <code>dplyr</code> pour savoir quelles sont les playlists qui contiennent le plus de pistes.</p></li>
+<li><p>En utilisant <code>dplyr</code>, construire une table contenant les informations suivantes sur la playlist appelée <code>Classical</code> : le titre de chaque piste ainsi que le titre de l’album dont cette piste est tirée.</p></li>
+<li><p>Même question en écrivant directement la requête en SQL.</p></li>
+<li><p>Terminer correctement en fermant la connexion à la base de données.</p></li>
 </ol>
 </div>
 </section>
@@ -1116,29 +651,29 @@ Geodetic CRS:  WGS 84
 <ul>
 <li><p>les <strong>objets</strong>, proches des <em>dictionnaires</em> <strong>Python</strong> ou des listes <strong>R</strong>. Ils permettent de structurer les données selon un principe clé/valeur et sont codés de la façon suivante :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"clé1"</span><span class="sc">:</span> valeur1,</span>
-<span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"clé2"</span><span class="sc">:</span> valeur2,</span>
-<span id="cb96-4"><a href="#cb96-4" aria-hidden="true" tabindex="-1"></a>  ...</span>
-<span id="cb96-5"><a href="#cb96-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"clé1"</span><span class="sc">:</span> valeur1,</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"clé2"</span><span class="sc">:</span> valeur2,</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></li>
 <li><p>les tableaux, proches des <em>listes</em> <strong>Python</strong> ou des vecteurs <strong>R</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>[</span>
-<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>  valeur1,</span>
-<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>  valeur2,</span>
-<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a>  ...</span>
-<span id="cb97-5"><a href="#cb97-5" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>[</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  valeur1,</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  valeur2,</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></li>
 </ul>
 <p>Les valeurs peuvent prendre différents types comme des chaînes de caractères, des nombres, des booléens… Par exemple</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"prénom"</span><span class="sc">:</span> <span class="st">"Jean-Sébastien"</span>,</span>
-<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"nom"</span><span class="sc">:</span> <span class="st">"Bach"</span>,</span>
-<span id="cb98-4"><a href="#cb98-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"nombre_enfants"</span><span class="sc">:</span> <span class="dv">20</span></span>
-<span id="cb98-5"><a href="#cb98-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"compositeur"</span><span class="sc">:</span> true</span>
-<span id="cb98-6"><a href="#cb98-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"prénom"</span><span class="sc">:</span> <span class="st">"Jean-Sébastien"</span>,</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"nom"</span><span class="sc">:</span> <span class="st">"Bach"</span>,</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"nombre_enfants"</span><span class="sc">:</span> <span class="dv">20</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"compositeur"</span><span class="sc">:</span> true</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Sur <strong>R</strong>, la manipulation du format JSON se fait avec le package <code>jsonlite</code>. Il propose notamment les fonctions :</p>
 <ul>
@@ -1147,9 +682,9 @@ Geodetic CRS:  WGS 84
 </ul>
 <p>Par exemple</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
-<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">0</span>, pi),<span class="at">y =</span> <span class="fu">cos</span>(x))</span>
-<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a><span class="fu">toJSON</span>(df);<span class="fu">class</span>(df)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">0</span>, pi),<span class="at">y =</span> <span class="fu">cos</span>(x))</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">toJSON</span>(df);<span class="fu">class</span>(df)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[{"x":0,"y":1},{"x":3.1416,"y":-1}] </code></pre>
 </div>
@@ -1159,7 +694,7 @@ Geodetic CRS:  WGS 84
 </div>
 <p>et</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> <span class="fu">toJSON</span>() <span class="sc">|&gt;</span> <span class="fu">fromJSON</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> <span class="fu">toJSON</span>() <span class="sc">|&gt;</span> <span class="fu">fromJSON</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       x  y
 1 0.0000  1
@@ -1172,103 +707,34 @@ Geodetic CRS:  WGS 84
 <li><p>On considère les données suivantes :</p>
 <p>Construire dans <strong>R</strong> un tableau au format JSON et le convertir en <code>tibble</code> à l’aide de la fonction <code>fromJSON</code>.</p></li>
 </ol>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fromJSON</span>(<span class="st">'[{"nom": "Peter","age": 24},</span></span>
-<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="st">           {"nom": "Marie","age": 18},</span></span>
-<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a><span class="st">           {"nom": "Eric","age": 32}</span></span>
-<span id="cb104-4"><a href="#cb104-4" aria-hidden="true" tabindex="-1"></a><span class="st">         ]'</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>    nom age
-1 Peter  24
-2 Marie  18
-3  Eric  32</code></pre>
-</div>
-</div>
 <ol start="2" type="1">
 <li><p>On construit l’objet suivant :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>aa <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(</span>
-<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">'[{</span></span>
-<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a><span class="st">      "prénom": "Jean-Sébastien",</span></span>
-<span id="cb106-4"><a href="#cb106-4" aria-hidden="true" tabindex="-1"></a><span class="st">      "nom": "Bach",</span></span>
-<span id="cb106-5"><a href="#cb106-5" aria-hidden="true" tabindex="-1"></a><span class="st">      "épouses": [</span></span>
-<span id="cb106-6"><a href="#cb106-6" aria-hidden="true" tabindex="-1"></a><span class="st">        {</span></span>
-<span id="cb106-7"><a href="#cb106-7" aria-hidden="true" tabindex="-1"></a><span class="st">          "prénom": ["Maria", "Barbara"],</span></span>
-<span id="cb106-8"><a href="#cb106-8" aria-hidden="true" tabindex="-1"></a><span class="st">          "nom": "Bach"</span></span>
-<span id="cb106-9"><a href="#cb106-9" aria-hidden="true" tabindex="-1"></a><span class="st">        },</span></span>
-<span id="cb106-10"><a href="#cb106-10" aria-hidden="true" tabindex="-1"></a><span class="st">        {</span></span>
-<span id="cb106-11"><a href="#cb106-11" aria-hidden="true" tabindex="-1"></a><span class="st">          "prénom": ["Anna", "Magdalena"],</span></span>
-<span id="cb106-12"><a href="#cb106-12" aria-hidden="true" tabindex="-1"></a><span class="st">          "nom": "Wilcke"</span></span>
-<span id="cb106-13"><a href="#cb106-13" aria-hidden="true" tabindex="-1"></a><span class="st">        }]</span></span>
-<span id="cb106-14"><a href="#cb106-14" aria-hidden="true" tabindex="-1"></a><span class="st">  }]'</span></span>
-<span id="cb106-15"><a href="#cb106-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>aa <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">'[{</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="st">      "prénom": "Jean-Sébastien",</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="st">      "nom": "Bach",</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="st">      "épouses": [</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="st">        {</span></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="st">          "prénom": ["Maria", "Barbara"],</span></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="st">          "nom": "Bach"</span></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a><span class="st">        },</span></span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a><span class="st">        {</span></span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a><span class="st">          "prénom": ["Anna", "Magdalena"],</span></span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a><span class="st">          "nom": "Wilcke"</span></span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a><span class="st">        }]</span></span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a><span class="st">  }]'</span></span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Analyser cet objet et plus particulièrement la colonne <code>épouses</code>.</p>
 <div class="corR">
 <p>On observe que l’objet suivant est un data-frame avec une ligne et 3 colonnes. Néanmoins l’élement de la troisième colonne est étrange lorsqu’il s’affiche :</p>
 </div>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(aa)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "data.frame"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(aa)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1 3</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>aa</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>          prénom  nom                                       épouses
-1 Jean-Sébastien Bach Maria, Barbara, Anna, Magdalena, Bach, Wilcke</code></pre>
-</div>
-</div>
 <div class="corR">
 <p>Il s’agit d’une liste qui contient un data-frame :</p>
 </div>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(aa[<span class="dv">1</span>,<span class="dv">3</span>])</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "list"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(aa[<span class="dv">1</span>,<span class="dv">3</span>][[<span class="dv">1</span>]])</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "data.frame"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>aa[<span class="dv">1</span>,<span class="dv">3</span>][[<span class="dv">1</span>]]</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>           prénom    nom
-1  Maria, Barbara   Bach
-2 Anna, Magdalena Wilcke</code></pre>
-</div>
-</div>
 <div class="corR">
 <p>On peut retrouver ces informations avec la fonction <code>glimpse</code>:</p>
-</div>
-<div class="cell" data-teacher="true">
-<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(aa)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 1
-Columns: 3
-$ prénom  &lt;chr&gt; "Jean-Sébastien"
-$ nom     &lt;chr&gt; "Bach"
-$ épouses &lt;list&gt; [&lt;data.frame[2 x 2]&gt;]</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(aa[<span class="dv">1</span>,<span class="dv">3</span>])</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>List of 1
- $ :'data.frame':   2 obs. of  2 variables:
-  ..$ prénom:List of 2
-  .. ..$ : chr [1:2] "Maria" "Barbara"
-  .. ..$ : chr [1:2] "Anna" "Magdalena"
-  ..$ nom   : chr [1:2] "Bach" "Wilcke"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(aa[<span class="dv">1</span>,<span class="dv">3</span>][[<span class="dv">1</span>]])</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 2
-Columns: 2
-$ prénom &lt;list&gt; &lt;"Maria", "Barbara"&gt;, &lt;"Anna", "Magdalena"&gt;
-$ nom    &lt;chr&gt; "Bach", "Wilcke"</code></pre>
-</div>
 </div></li>
 </ol>
 </div>
