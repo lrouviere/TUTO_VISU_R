@@ -739,7 +739,16 @@ WHERE (`age` &gt; 85.0)</code></pre>
 </ol>
 </div>
 <div id="exr-json-velostar" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 5.4 (Importation JSON et API) </strong></span>&nbsp;</p>
+<p><span class="theorem-title"><strong>Exercice 5.4 (Importation JSON et API) </strong></span>On s’intéresse aux données sur l’état des stations de vélo à Rennes disponibles ici : <a href="https://data.rennesmetropole.fr/explore/dataset/etat-des-stations-le-velo-star-en-temps-reel/information/" class="uri">https://data.rennesmetropole.fr/explore/dataset/etat-des-stations-le-velo-star-en-temps-reel/information/</a>.</p>
+<ol type="1">
+<li><p>Télécharger le fichier <code>json</code> qui contient ces données et les importer dans <strong>R</strong> avec <code>fromJSON</code>.</p></li>
+<li><p>Analyser la colonne qui contient la géolocalisation de la station.</p>
+<div class="corR">
+<p>La colonne <code>coordonnees</code> contient un <code>data-frame</code> à deux colonnes où on pourra lire les longitudes et latitude.</p>
+</div></li>
+<li><p>Importer les données en utilisant l’<strong>API</strong> proposée sur le site. On importera uniquement les colonnes qui contiennent le <em>nom</em>, la <em>géolocalisation</em> et le <em>nombre d’emplacements disponibles</em> des stations.</p></li>
+<li><p>Visualiser les stations sur une carte <code>mapview</code>.</p></li>
+</ol>
 </div>
 
 

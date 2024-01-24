@@ -424,8 +424,8 @@ div.correction {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">10</span>,<span class="at">mean=</span><span class="dv">0</span>,<span class="at">sd=</span><span class="dv">1</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1]  0.0009502539  0.6855474698  2.1948439603  1.3249333453 -0.8983571016
- [6] -1.7568727259  1.7232209857 -2.3863947392  1.5056341530 -0.1226092675</code></pre>
+<pre><code> [1]  0.6283115 -0.4290716 -0.8306465 -1.1012015  0.3355216 -0.4501003
+ [7]  0.2415505 -1.2344196  1.0715600 -0.1192967</code></pre>
 </div>
 </div></li>
 </ul>
@@ -480,8 +480,8 @@ div.correction {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> <span class="fu">summarise_all</span>(mean)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       ech1     ech2
-1 0.5288732 0.560071</code></pre>
+<pre><code>       ech1      ech2
+1 0.4768731 0.5524764</code></pre>
 </div>
 </div>
 <p>La moyenne empirique peut-être considérée comme une <strong>variable aléatoire</strong> : elle va donc posséder une loi de probabilité, une espérance… Si on considère l’exemple précédent, on sent bien que la distribution de la moyenne empirique doit</p>
