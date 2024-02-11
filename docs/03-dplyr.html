@@ -464,7 +464,10 @@ div.correction {
 </div>
 <p>On souhaite assembler ces tables en utilisant les <em>fonctions de jointure</em> du <strong>tidyverse</strong> (<strong>left_join</strong>, <strong>full_join</strong> par exemple). On pourra consulter la cheatsheet <strong>Data transformation with dplyr</strong> (<em>help -&gt; cheatsheets -&gt; …</em>).</p>
 <ol type="1">
-<li><p>Assembler <code>df1</code> avec <code>df2</code> en utilisant <strong>bind_rows</strong> et calculer la moyenne de la variable <code>age</code>. On appellera <code>df</code> cette nouvelle table.</p></li>
+<li><p>Assembler <code>df1</code> avec <code>df2</code> en utilisant <strong>bind_rows</strong> et calculer la moyenne de la variable <code>age</code>. On appellera <code>df</code> cette nouvelle table.</p>
+<div class="corR">
+<p>On aurait aussi pu utiliser la fonction <strong>full_join</strong> :</p>
+</div></li>
 <li><p>Assembler <code>df</code> avec <code>df3</code> en utilisant <strong>full_join</strong>.</p></li>
 <li><p>Faire la même chose avec <strong>inner_join</strong>.</p></li>
 <li><p>Expliquer les différences entre <strong>full_join</strong> et <strong>inner_join</strong>.</p>
@@ -1064,7 +1067,7 @@ div.correction {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df1)<span class="sc">+</span><span class="fu">aes</span>(<span class="at">x=</span>Année,<span class="at">y=</span>TCHOM)<span class="sc">+</span><span class="fu">geom_boxplot</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="03-dplyr_files/figure-html/unnamed-chunk-81-1.png" class="img-fluid" width="672"></p>
+<p><img src="03-dplyr_files/figure-html/unnamed-chunk-82-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>L’opération inverse peut être effectuée avec <strong>pivot_wider</strong> :</p>

@@ -586,10 +586,10 @@ $Petal.Width
 <section id="exercices" class="level2" data-number="4.4">
 <h2 data-number="4.4" class="anchored" data-anchor-id="exercices"><span class="header-section-number">4.4</span> Exercices</h2>
 <div id="exr-program-iris" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 4.1 (Calculs d’indicateurs) </strong></span>&nbsp;</p>
+<p><span class="theorem-title"><strong>Exercice 4.1 (Écrire des Fonctions) </strong></span>&nbsp;</p>
 <ol type="1">
 <li><p>Écrire une fonction qui admet en entrée un entier positif <code>n</code> et qui renvoie la somme des entiers qui vont de 1 à <code>n</code>.</p></li>
-<li><p>Écrire une fonction qui remplace les données manquantes d’un jeu de données par la moyenne ou la médiane de la variable. Choisir la moyenne ou la médiane doit être un paramètre de la fonction. On pourra tester la fonction sur le <code>tibble</code> suivant :</p>
+<li><p>On considère le <code>tibble</code></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>tbl <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">X1=</span><span class="fu">as.numeric</span>(<span class="fu">sample</span>(<span class="dv">10</span>,<span class="dv">5</span>)),<span class="at">X2=</span><span class="fu">as.numeric</span>(<span class="fu">sample</span>(<span class="dv">10</span>,<span class="dv">5</span>)))</span>
@@ -606,9 +606,10 @@ $Petal.Width
 5     6     1</code></pre>
 </div>
 </div>
-<div class="corR">
-<p>On peut également utiliser la fonction <strong>replace_na</strong> de <strong>tidyr</strong> :</p>
-</div></li>
+<p>Remplacer les données manquantes de chaque colonne par la moyenne de la colonne en utilisant une boucle <strong>for</strong>.</p></li>
+<li><p>Même question en utilisant la fonction <strong>replace_na</strong> de <code>tidyr</code>.</p></li>
+<li><p>Même question en utilisant les pipes <code>%&gt;%</code> et <code>|&gt;</code></p></li>
+<li><p>Écrire une fonction qui remplace les données manquantes d’un jeu de données par la moyenne ou la médiane de la variable. Choisir la moyenne ou la médiane doit être un paramètre de la fonction.</p></li>
 </ol>
 </div>
 <div id="exr-program-iris" class="theorem exercise">
