@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Visualisation avec R - 5&nbsp; Base de données</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./06-scraping.html" rel="next">
+<link href="./04-programmer.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Pas de résultats",
+    "search-matching-documents-text": "documents trouvés",
+    "search-copy-link-title": "Copier le lien vers la recherche",
+    "search-hide-matches-text": "Cacher les correspondances additionnelles",
+    "search-more-match-text": "correspondance de plus dans ce document",
+    "search-more-matches-text": "correspondances de plus dans ce document",
+    "search-clear-button-title": "Effacer",
+    "search-detached-cancel-button-title": "Annuler",
+    "search-submit-button-title": "Envoyer",
+    "search-label": "Recherche"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-programmer.html">Outils avancés</a></li><li class="breadcrumb-item"><a href="./05-bdd.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Base de données</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Visualisation avec R</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Visualisation-avec-R.pdf">
+              <i class="bi bi-bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Visualisation-avec-R.epub">
+              <i class="bi bi-bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-1" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-1">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+              <i class="bi bi-bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Basculer en mode lecteur">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Recherche"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Présentation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Logiciel R - Les bases</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-objetsR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Les objets R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-dplyr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Manipuler les données avec dplyr</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Outils avancés</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-programmer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Programmer</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-bdd.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Base de données</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-scraping.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Web scrapping</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Visualisation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-ggplot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Visualisation avec ggplot2</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-carto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Faire des cartes avec R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-interactif.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Quelques outils de visualisation dynamique/interactive</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-shiny.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Applications web avec Shiny</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Statistique avec R</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-estimation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Régression avec R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Références</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table des matières</h2>
+   
+  <ul>
+  <li><a href="#sql-structured-query-language" id="toc-sql-structured-query-language" class="nav-link active" data-scroll-target="#sql-structured-query-language"><span class="header-section-number">5.1</span> SQL : Structured Query Language</a>
+  <ul class="collapse">
+  <li><a href="#requêtes-sql" id="toc-requêtes-sql" class="nav-link" data-scroll-target="#requêtes-sql"><span class="header-section-number">5.1.1</span> Requêtes SQL</a></li>
+  <li><a href="#requêter-avec-dplyr" id="toc-requêter-avec-dplyr" class="nav-link" data-scroll-target="#requêter-avec-dplyr"><span class="header-section-number">5.1.2</span> Requêter avec dplyr</a></li>
+  </ul></li>
+  <li><a href="#exercices" id="toc-exercices" class="nav-link" data-scroll-target="#exercices"><span class="header-section-number">5.2</span> Exercices</a></li>
+  <li><a href="#json-javascript-object-notation" id="toc-json-javascript-object-notation" class="nav-link" data-scroll-target="#json-javascript-object-notation"><span class="header-section-number">5.3</span> JSON : JavaScript Object Notation</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-bdd" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Base de données</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<style>
+div.correction {
+  color: black;
+  background-color: #F0F0F0;
+  font-style: normal;
+  display: none;
+}
+
+.corR {
+  font-style: italic;
+  display: none;
+}
+</style>
+<p>Les données requises pour les analyses sont souvent stockées dans des bases de données. <strong>R</strong> propose différents outils permettant d’accéder à ces bases de données. On présente dans cette partie le package <code>DBI</code> qui permet de se connecter à des bases de type <strong>SQL</strong> ainsi que la manière d’appréhender des données au format <strong>JSON</strong>.</p>
+<section id="sql-structured-query-language" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="sql-structured-query-language"><span class="header-section-number">5.1</span> SQL : Structured Query Language</h2>
+<p>La package <code>DBI</code> (DataBase Interface) offre une <em>interface de communication</em> entre <strong>R</strong> et différentes bases de données de type SQL à l’aide de pilotes dédiés : <a href="https://dbi.r-dbi.org" class="uri">https://dbi.r-dbi.org</a>. <strong>R</strong> possède différents packages permettant d’accéder à des bases SQL :</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Base</th>
+<th style="text-align: center;">Package</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">MysSQL</td>
+<td style="text-align: center;">RMySQL</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">MariaDB</td>
+<td style="text-align: center;">RMariaDB</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Postgres</td>
+<td style="text-align: center;">RPostgres</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">SQLite</td>
+<td style="text-align: center;">RSQLite</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DBI</strong> propose une manière unifiée d’accéder à ces différentes bases en précisant le nom de la base de données, le nom de l’hôte, le port ) écouter ainsi que l’identifiant et le mot de passe de l’utilisateur. Par exemple, dans le cas d’une base <code>PostGreSQL</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  RPostgres<span class="sc">::</span><span class="fu">Postgres</span>(),</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dbname =</span> <span class="st">"DATABASE_NAME"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">host =</span> <span class="st">"HOST"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">port =</span> <span class="dv">5432</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">user =</span> <span class="st">"USERNAME"</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">password =</span> <span class="st">"PASSWORD"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Afin de simplifier les choses, on propose de se connecter à une base de données éphémère créée en mémoire vive :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DBI)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(RSQLite<span class="sc">::</span><span class="fu">SQLite</span>(), <span class="at">dbname =</span> <span class="st">":memory:"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>À ce stade la base ne contient aucune table :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbListTables</span>(con)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>character(0)</code></pre>
+</div>
+</div>
+<p>On peuple la base de deux tables simples :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>tbl1 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">ID=</span><span class="fu">sample</span>(LETTERS),<span class="at">age=</span><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,<span class="dv">26</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>tbl2 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">ID=</span><span class="fu">sample</span>(LETTERS),<span class="at">taille=</span><span class="fu">sample</span>(<span class="dv">160</span><span class="sc">:</span><span class="dv">180</span>,<span class="dv">26</span>,<span class="at">replace =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">runif</span>(<span class="dv">25</span>),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">label =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>), <span class="at">size =</span> <span class="dv">25</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">dbWriteTable</span>(con, <span class="at">name =</span> <span class="st">"table1"</span>,<span class="at">value =</span> tbl1)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">dbWriteTable</span>(con, <span class="at">name =</span> <span class="st">"table2"</span>,<span class="at">value =</span> tbl2)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dbListTables</span>(con)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "table1" "table2"</code></pre>
+</div>
+</div>
+<p>On peut lire la liste des colonnes d’une table avec</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbListFields</span>(con,<span class="st">"table1"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "ID"  "age"</code></pre>
+</div>
+</div>
+<p>Il est possible de lire la table avec</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbReadTable</span>(con,<span class="st">"table1"</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  ID age
+1  P   5
+2  V  66
+3  E  47
+4  L  40
+5  O  84
+6  I  48</code></pre>
+</div>
+</div>
+<section id="requêtes-sql" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="requêtes-sql"><span class="header-section-number">5.1.1</span> Requêtes SQL</h3>
+<p><code>DBI</code> permet d’effectuer des requêtes SQL du genre</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> j <span class="kw">FROM</span> df <span class="kw">WHERE</span> i <span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">by</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>sur les bases de données. Par exemple</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>req1 <span class="ot">&lt;-</span> <span class="fu">dbSendQuery</span>(con,<span class="st">"SELECT * FROM table1 WHERE age&gt;85"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>req1</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;SQLiteResult&gt;
+  SQL  SELECT * FROM table1 WHERE age&gt;85
+  ROWS Fetched: 0 [incomplete]
+       Changed: 0</code></pre>
+</div>
+</div>
+<p>On peut collecter, ramener vers <strong>R</strong>, les données issues de la requête avec <code>dbFetch</code> :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>res1 <span class="ot">&lt;-</span> <span class="fu">dbFetch</span>(req1)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(res1)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>res1</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  ID age
+1  F  87
+2  M  96</code></pre>
+</div>
+</div>
+<p>La requête peut être soumise et exécutée directement avec <code>dbGetQuery</code> :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(con,<span class="st">"SELECT * FROM table1 WHERE age&gt;85"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  ID age
+1  F  87
+2  M  96</code></pre>
+</div>
+</div>
+<p>À titre d’autre exemple, on peut effectuer une jointure des deux tables de la base avec</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(con,<span class="st">"</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="st">                   SELECT *</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="st">                   FROM table1</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="st">                   INNER JOIN table2 ON table1.id = table2.id</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="st">                   ORDER BY ID</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="st">                   "</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(res)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  ID age ID taille
+1  A  26  A    180
+2  B  32  B    165
+3  C  80  C    167
+4  D  72  D    165
+5  E  47  E    180
+6  F  87  F    161</code></pre>
+</div>
+</div>
+<p><code>DBI</code> possède de nombreuses autres fonctions pour gérer les bases de données, par exemple</p>
+<ul>
+<li><code>dbExistsTable(con,name)</code> <span class="math inline">\(\Longrightarrow\)</span> vérifier si la table <strong>name</strong> existe pour la connexion <strong>con</strong>.</li>
+<li><code>dbRemoveTable(con,name,...)</code> <span class="math inline">\(\Longrightarrow\)</span> effacer la table <strong>name</strong> de la connexion <strong>con</strong>.</li>
+<li><code>dbGetRowsAffected(req,...)</code> <span class="math inline">\(\Longrightarrow\)</span> nombre de lignes affectés (extraction, effacement, modification) par la requête <strong>req</strong>.</li>
+<li><code>dbGetRowCount(req,...)</code> <span class="math inline">\(\Longrightarrow\)</span> nombre de lignes collectées lors de la requête <strong>req</strong>.</li>
+</ul>
+</section>
+<section id="requêter-avec-dplyr" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="requêter-avec-dplyr"><span class="header-section-number">5.1.2</span> Requêter avec dplyr</h3>
+<p>L’approche présentée dans la partie précédente requiert des connaissances solides en SQL. Elle n’est pas forcément nécessaire puisqu’il est également possible d’utiliser <code>dplyr</code> (voir <a href="03-dplyr.html"><span>Chapitre&nbsp;3</span></a>) sur des bases SQL.</p>
+<p>La fonction <strong>tbl</strong> permet notamment de se connecter à une table de la base de données.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>T1 <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con,<span class="st">"table1"</span>) </span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Il est intéressante de regarder la classe de l’objet construit :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(T1)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "tbl_SQLiteConnection" "tbl_dbi"              "tbl_sql"             
+[4] "tbl_lazy"             "tbl"                 </code></pre>
+</div>
+</div>
+<p>Sans surprise on retrouve un tibble mais également la présence du mot <em>paresseux</em> (<em>lazy</em>). En affichant <code>T1</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>T1</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   table&lt;table1&gt; [?? x 2]
+# Database: sqlite 3.43.2 [:memory:]
+   ID      age
+   &lt;chr&gt; &lt;int&gt;
+ 1 P         5
+ 2 V        66
+ 3 E        47
+ 4 L        40
+ 5 O        84
+ 6 I        48
+ 7 X         3
+ 8 F        87
+ 9 Z        41
+10 D        72
+# ℹ more rows</code></pre>
+</div>
+</div>
+<p>on remarque que le nombre de lignes n’est pas connu. En effet</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(T1)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA  2</code></pre>
+</div>
+</div>
+<p>Lorsqu’elle s’applique à un tableau distant, une suite de commandes <code>dplyr</code> ne fait rien. En effet, la requête</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>(req <span class="ot">&lt;-</span> T1 <span class="sc">|&gt;</span> <span class="fu">filter</span>(age<span class="sc">&gt;</span><span class="dv">85</span>))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [2 x 2]
+# Database: sqlite 3.43.2 [:memory:]
+  ID      age
+  &lt;chr&gt; &lt;int&gt;
+1 F        87
+2 M        96</code></pre>
+</div>
+</div>
+<p>ne peut être utilisé directement sur <strong>R</strong>. Par exemple</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>req<span class="sc">$</span>age<span class="sc">+</span><span class="dv">1</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `req$age`:
+! The `$` method of &lt;tbl_lazy&gt; is for internal use only.
+ℹ Use `dplyr::pull()` to get the values in a column.</code></pre>
+</div>
+</div>
+<p>Ce n’est que lorsqu’on demande un résultat que <code>dplyr</code> effectue une action. On peut le faire avec la fonction <strong>collect</strong> :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">collect</span>(req)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(res)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2 2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>res<span class="sc">$</span>age<span class="sc">+</span><span class="dv">1</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 88 97</code></pre>
+</div>
+</div>
+<p>Ce principe d’évaluation retardée se retrouver fréquemment dans <strong>R</strong> sous le nom d’évaluation paresseuse, d’où <code>lazy</code> dans <code>tbl_lazy</code>.</p>
+<p>Notons qu’on peut visualiser la requête construite avec la fonction <strong>show_query</strong> :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>req <span class="sc">|&gt;</span> <span class="fu">show_query</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;SQL&gt;
+SELECT `table1`.*
+FROM `table1`
+WHERE (`age` &gt; 85.0)</code></pre>
+</div>
+</div>
+<p>Enfin, on n’oublie pas de se déconnecter de la base à la fin de l’étude :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(con)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="exercices" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="exercices"><span class="header-section-number">5.2</span> Exercices</h2>
+<div id="exr-sql-velostar" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 5.1 (Le vélo star) </strong></span>On s’intéresse dans cet exercice aux données sur les stations velib présentes sur le site de Rennes Métropole <a href="https://data.rennesmetropole.fr/explore/?sort=modified" class="uri">https://data.rennesmetropole.fr/explore/?sort=modified</a>. Plus particulièrement, aux tables</p>
+<ul>
+<li><p><a href="https://data.rennesmetropole.fr/explore/dataset/etat-des-stations-le-velo-star-en-temps-reel/information/">Etat</a> qui propose des informations sur l’état des stations velib en temps réel</p></li>
+<li><p><a href="https://data.rennesmetropole.fr/explore/dataset/topologie-des-stations-le-velo-star0/information/">Topologie</a> qui contient la liste des stations et la géolocalisation.</p></li>
+</ul>
+<ol type="1">
+<li><p>Créer une base de données SQL qui contient ces deux tables et connectez vous à cette base.</p>
+<div class="corR">
+<p>On peut maintenant se connecter :</p>
+</div></li>
+<li><p>Sélectionner l’identifiant <code>Identifiant</code>, le nom <code>Nom</code> et l’identifiant de la station proche <code>Station la plus proche 1 (ID)</code> depuis la table <code>topologie</code>.</p></li>
+<li><p>Faire une jointure pour créer une table qui contient la liste des stations avec l’identifiant, le nom et le nom de la station la plus proche.</p></li>
+<li><p>Ajouter à la table précédente la distance euclidienne entre la station et la station proche associée à l’identifiant <code>Station la plus proche 1 (ID)</code> de la table <code>Topologie</code>.</p>
+<div class="corR">
+<p>On commence par créer les colonnes latitude et longitude :</p>
+</div>
+<div class="corR">
+<p>On peut maintenant calculer la distance :</p>
+</div></li>
+<li><p>Nous nous trouvons au point de coordonnées (48.1179151,-1.7028661). Créer une table avec le nom des trois stations les plus proches classées par ordre de distance et le nombre d’emplacements libres dans ces stations.</p></li>
+<li><p>Reprendre les questions précédentes en utilisant les fonctions de <code>dplyr</code>.</p></li>
+<li><p>Viualiser les 3 stations de la question 5 sur une carte <code>mapview</code>.</p>
+<div class="corR">
+<p>On créé tout d’abors un objet <code>sf</code> avec les informations nécessaires :</p>
+</div>
+<div class="corR">
+<p>On construit la carte</p>
+</div></li>
+<li><p>Terminer correctement en fermant la connexion à la base de données.</p></li>
+</ol>
+</div>
+<div id="exr-sql-musique" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 5.2 (Un peu de musique) </strong></span>Sur le site https://github.com/lerocha/chinook-database, nous pouvons trouver des bases de données de bibliothèques musicales. Une copie de la base SQLite est disponible dans le fichier <code>Chinook_Sqlite.sqlite</code>.</p>
+<ol type="1">
+<li><p>Se connecter à la base de données et afficher les tables. Explorer le jeu de données pour le découvrir. En particulier, étudier comment les tables <code>Playlist</code>, <code>PlaylistTrack</code> et <code>Track</code> sont liées.</p></li>
+<li><p>Utiliser les verbes de <code>dplyr</code> pour savoir quelles sont les playlists qui contiennent le plus de pistes.</p></li>
+<li><p>En utilisant <code>dplyr</code>, construire une table contenant les informations suivantes sur la playlist appelée <code>Classical</code> : le titre de chaque piste ainsi que le titre de l’album dont cette piste est tirée.</p></li>
+<li><p>Même question en écrivant directement la requête en SQL.</p></li>
+<li><p>Terminer correctement en fermant la connexion à la base de données.</p></li>
+</ol>
+</div>
+</section>
+<section id="json-javascript-object-notation" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="json-javascript-object-notation"><span class="header-section-number">5.3</span> JSON : JavaScript Object Notation</h2>
+<p>Il s’agit d’une alternative aux bases de données relationnelles qui encode les infromations dans des fichiers structurés. Il est très utilisé dans :</p>
+<ul>
+<li>les bases de données NoSQL avec <strong>MongoDB</strong></li>
+<li>les <strong>API WEB</strong></li>
+<li>le monde de l’open data, par exemple sur le site des données publiques de l’état français <a href="https://www.data.gouv.fr/fr/" class="uri">https://www.data.gouv.fr/fr/</a>.</li>
+</ul>
+<p>Un fichier <strong>JSON</strong> est articulé autour d’une syntaxe simple et d’un petit nombre de type de données. Deux types sont <strong>structurés</strong>, les autres sont des types <strong>simples</strong>.</p>
+<p>Les types structurés sont :</p>
+<ul>
+<li><p>les <strong>objets</strong>, proches des <em>dictionnaires</em> <strong>Python</strong> ou des listes <strong>R</strong>. Ils permettent de structurer les données selon un principe clé/valeur et sont codés de la façon suivante :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"clé1"</span><span class="sc">:</span> valeur1,</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"clé2"</span><span class="sc">:</span> valeur2,</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+<li><p>les tableaux, proches des <em>listes</em> <strong>Python</strong> ou des vecteurs <strong>R</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>[</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  valeur1,</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  valeur2,</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+</ul>
+<p>Les valeurs peuvent prendre différents types comme des chaînes de caractères, des nombres, des booléens… Par exemple</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"prénom"</span><span class="sc">:</span> <span class="st">"Jean-Sébastien"</span>,</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"nom"</span><span class="sc">:</span> <span class="st">"Bach"</span>,</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"nombre_enfants"</span><span class="sc">:</span> <span class="dv">20</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"compositeur"</span><span class="sc">:</span> true</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Sur <strong>R</strong>, la manipulation du format JSON se fait avec le package <code>jsonlite</code>. Il propose notamment les fonctions :</p>
+<ul>
+<li><code>fromJSON</code> pour importer du texte ou des fichier au format JSON ;</li>
+<li><code>toJSON</code> pour exporter au format JSON.</li>
+</ul>
+<p>Par exemple</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">0</span>, pi),<span class="at">y =</span> <span class="fu">cos</span>(x))</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">toJSON</span>(df);<span class="fu">class</span>(df)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[{"x":0,"y":1},{"x":3.1416,"y":-1}] </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "tbl_df"     "tbl"        "data.frame"</code></pre>
+</div>
+</div>
+<p>et</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> <span class="fu">toJSON</span>() <span class="sc">|&gt;</span> <span class="fu">fromJSON</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       x  y
+1 0.0000  1
+2 3.1416 -1</code></pre>
+</div>
+</div>
+<div id="exr-json-intro" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 5.3 (Première commandes) </strong></span>&nbsp;</p>
+<ol type="1">
+<li><p>On considère les données suivantes :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>tbl <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">nom=</span><span class="fu">c</span>(<span class="st">"Peter"</span>,<span class="st">"Marie"</span>,<span class="st">"Eric"</span>),</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">age=</span><span class="fu">c</span>(<span class="dv">24</span>,<span class="dv">18</span>,<span class="dv">32</span>))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Construire dans <strong>R</strong> un tableau au format JSON et le convertir en <code>tibble</code> à l’aide de la fonction <code>fromJSON</code>.</p></li>
+<li><p>On construit l’objet suivant :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>aa <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">'[{</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="st">      "prénom": "Jean-Sébastien",</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="st">      "nom": "Bach",</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="st">      "épouses": [</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="st">        {</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="st">          "prénom": ["Maria", "Barbara"],</span></span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="st">          "nom": "Bach"</span></span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a><span class="st">        },</span></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a><span class="st">        {</span></span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a><span class="st">          "prénom": ["Anna", "Magdalena"],</span></span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a><span class="st">          "nom": "Wilcke"</span></span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a><span class="st">        }]</span></span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a><span class="st">  }]'</span></span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Analyser cet objet et plus particulièrement la colonne <code>épouses</code>.</p>
+<div class="corR">
+<p>On observe que l’objet suivant est un data-frame avec une ligne et 3 colonnes. Néanmoins l’élement de la troisième colonne est étrange lorsqu’il s’affiche :</p>
+</div>
+<div class="corR">
+<p>Il s’agit d’une liste qui contient un data-frame :</p>
+</div>
+<div class="corR">
+<p>On peut retrouver ces informations avec la fonction <code>glimpse</code>:</p>
+</div></li>
+</ol>
+</div>
+<div id="exr-json-velostar" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 5.4 (Importation JSON et API) </strong></span>On s’intéresse aux données sur l’état des stations de vélo à Rennes disponibles ici : <a href="https://data.rennesmetropole.fr/explore/dataset/etat-des-stations-le-velo-star-en-temps-reel/information/" class="uri">https://data.rennesmetropole.fr/explore/dataset/etat-des-stations-le-velo-star-en-temps-reel/information/</a>.</p>
+<ol type="1">
+<li><p>Télécharger le fichier <code>json</code> qui contient ces données et les importer dans <strong>R</strong> avec <code>fromJSON</code>.</p></li>
+<li><p>Analyser la colonne qui contient la géolocalisation de la station.</p>
+<div class="corR">
+<p>La colonne <code>coordonnees</code> contient un <code>data-frame</code> à deux colonnes où on pourra lire les longitudes et latitude.</p>
+</div></li>
+<li><p>Importer les données en utilisant l’<strong>API</strong> proposée sur le site. On importera uniquement les colonnes qui contiennent le <em>nom</em>, la <em>géolocalisation</em> et le <em>nombre d’emplacements disponibles</em> des stations.</p></li>
+<li><p>Visualiser les stations sur une carte <code>mapview</code>.</p></li>
+</ol>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copié");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copié");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./04-programmer.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Programmer</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./06-scraping.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Web scrapping</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
