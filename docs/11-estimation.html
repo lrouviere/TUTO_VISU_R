@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -81,7 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "Pas de résultats",
     "search-matching-documents-text": "documents trouvés",
@@ -90,12 +96,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "correspondance de plus dans ce document",
     "search-more-matches-text": "correspondances de plus dans ce document",
     "search-clear-button-title": "Effacer",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Annuler",
     "search-submit-button-title": "Envoyer",
     "search-label": "Recherche"
   }
 }</script>
-
 <script src="site_libs/htmlwidgets-1.6.3/htmlwidgets.js"></script>
 <link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
 <script src="site_libs/datatables-binding-0.30/datatables.js"></script>
@@ -109,6 +115,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -118,12 +151,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11-estimation.html">Statistique avec R</a></li><li class="breadcrumb-item"><a href="./11-estimation.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11-estimation.html">Statistique avec R</a></li><li class="breadcrumb-item"><a href="./11-estimation.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -133,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Visualisation avec R</a> 
@@ -246,7 +279,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06-scraping.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Web scrapping</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Web scraping</span></span></a>
   </div>
 </li>
       </ul>
@@ -318,7 +351,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -342,7 +375,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11-estimation.html">Statistique avec R</a></li><li class="breadcrumb-item"><a href="./11-estimation.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span id="estimation" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></span></h1>
 </div>
@@ -357,7 +390,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <div class="cell">
 
@@ -441,13 +476,13 @@ div.correction {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">10</span>,<span class="at">mean=</span><span class="dv">0</span>,<span class="at">sd=</span><span class="dv">1</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1]  0.2145545  0.3525879 -2.7822617 -1.2226873 -0.7948146 -0.6649276
- [7]  1.3667958  1.3202186  0.5028862  0.7615794</code></pre>
+<pre><code> [1] -1.04967957  0.70569401 -1.17856362 -1.12321538 -0.78287906 -0.79454013
+ [7] -0.02618193 -0.11093118  0.38969650 -1.50780727</code></pre>
 </div>
 </div></li>
 </ul>
 <div id="exr-exo-loibinomiale" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 11.1 (Loi binomiale) </strong></span>On étudie les fonctions <code>R</code> associées à la loi binomiale.</p>
+<p><span class="theorem-title"><strong>Exercice 11.1 (Loi binomiale)</strong></span> On étudie les fonctions <code>R</code> associées à la loi binomiale.</p>
 <ol type="1">
 <li><p>Soit <span class="math inline">\(X\)</span> un variable de loi binomiale <span class="math inline">\(B(20,0.6)\)</span>. Calculer la probabilité que <span class="math inline">\(X\)</span> soit égale à 1,5,10,15.</p></li>
 <li><p>Pour la même loi calculer la probabilités : <span class="math display">\[\mathbf P(X\leq 13),\quad\mathbf P(X&gt;13),\quad \mathbf P(X\geq 13)\quad\text{et}\quad \mathbf P(X\in[8,15]).\]</span></p>
@@ -466,7 +501,7 @@ div.correction {
 </ol>
 </div>
 <div id="exr-exo-loinormale" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 11.2 (Loi normale) </strong></span>On considère ici la loi normale <span class="math inline">\(\mathcal N(\mu,\sigma^2)\)</span>.</p>
+<p><span class="theorem-title"><strong>Exercice 11.2 (Loi normale)</strong></span> On considère ici la loi normale <span class="math inline">\(\mathcal N(\mu,\sigma^2)\)</span>.</p>
 <ol type="1">
 <li><p>Tracer la densité de la loi <span class="math inline">\(\mathcal N(0,1)\)</span>.</p></li>
 <li><p>Soit <span class="math inline">\(X\)</span> une variable aléatoire de loi <span class="math inline">\(\mathcal N(2,2^2)\)</span> (variance 4, écart-type 2). Calculer les probabilités suivantes : <span class="math display">\[\mathbf P(X=2),\quad \mathbf P(X\leq 2),\quad \mathbf P(X&lt;2),\quad \mathbf P(X&gt;3).\]</span></p>
@@ -498,7 +533,7 @@ div.correction {
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> <span class="fu">summarise_all</span>(mean)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       ech1      ech2
-1 0.4245786 0.5827363</code></pre>
+1 0.4481367 0.5711172</code></pre>
 </div>
 </div>
 <p>La moyenne empirique peut-être considérée comme une <strong>variable aléatoire</strong> : elle va donc posséder une loi de probabilité, une espérance… Si on considère l’exemple précédent, on sent bien que la distribution de la moyenne empirique doit</p>
@@ -532,7 +567,11 @@ V6 0.3734092</code></pre>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>moy <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">M=</span><span class="fu">t</span>(moy))</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(moy)<span class="sc">+</span><span class="fu">aes</span>(<span class="at">x=</span>M,<span class="at">y=</span>..density..)<span class="sc">+</span><span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>)<span class="sc">+</span><span class="fu">theme_classic</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="11-estimation_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="11-estimation_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div></li>
 </ol>
@@ -543,11 +582,15 @@ V6 0.3734092</code></pre>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(moy)<span class="sc">+</span><span class="fu">aes</span>(<span class="at">x=</span>M,<span class="at">y=</span>..density..)<span class="sc">+</span><span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>)<span class="sc">+</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>df,<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">color=</span><span class="st">"red"</span>,<span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span><span class="fu">xlab</span>(<span class="st">"x"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="11-estimation_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="11-estimation_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <div id="exr-exo-TCL" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 11.3 (Théorème central limite) </strong></span>Faire le même travail pour des tailles d’échantillon de 50, 100 et 500. Interpréter.</p>
+<p><span class="theorem-title"><strong>Exercice 11.3 (Théorème central limite)</strong></span> Faire le même travail pour des tailles d’échantillon de 50, 100 et 500. Interpréter.</p>
 <div class="corR">
 <p>On remarque que :</p>
 <ul>
@@ -557,7 +600,7 @@ V6 0.3734092</code></pre>
 </div>
 </div>
 <div id="exr-exo-TCL2" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 11.4 (Théorème central limite (toujours)) </strong></span>Faire le même exercice pour une loi gaussienne <span class="math inline">\(\mathcal N(1,2)\)</span> et une loi de Bernoulli <span class="math inline">\(\mathcal B(0.6)\)</span>.</p>
+<p><span class="theorem-title"><strong>Exercice 11.4 (Théorème central limite (toujours))</strong></span> Faire le même exercice pour une loi gaussienne <span class="math inline">\(\mathcal N(1,2)\)</span> et une loi de Bernoulli <span class="math inline">\(\mathcal B(0.6)\)</span>.</p>
 <div class="corR">
 <p>Pour la loi <span class="math inline">\(\mathcal N(1,2)\)</span></p>
 <p>Pour la <span class="math inline">\(\mathcal B(0.6)\)</span></p>
@@ -575,7 +618,7 @@ V6 0.3734092</code></pre>
 <h2 data-number="11.3" class="anchored" data-anchor-id="intervalles-de-confiance"><span class="header-section-number">11.3</span> Intervalles de confiance</h2>
 <p>On cherche ici à illustrer numériquement le niveau d’un intervalle de confiance. On rappelle que <span class="math inline">\([A,B]\)</span> est un IC de niveau <span class="math inline">\(1-\alpha\)</span> pour un paramètre <span class="math inline">\(\theta\)</span> si <span class="math display">\[P(\theta\in[A,B])=1-\alpha.\]</span></p>
 <div id="exr-exo-ICgaussienne" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 11.5 (IC pour l’espérance d’une gaussienne) </strong></span>On fixe ici le niveau à 0.95 (<span class="math inline">\(\alpha=0.05\)</span>). On considère <span class="math inline">\(n\)</span> observations <span class="math inline">\(x_1,\dots,x_n\)</span> i.i.d de loi <span class="math inline">\(\mathcal N(\mu,1)\)</span> et on cherche un intervalle de confiance pour <span class="math inline">\(\mu\)</span>.</p>
+<p><span class="theorem-title"><strong>Exercice 11.5 (IC pour l’espérance d’une gaussienne)</strong></span> On fixe ici le niveau à 0.95 (<span class="math inline">\(\alpha=0.05\)</span>). On considère <span class="math inline">\(n\)</span> observations <span class="math inline">\(x_1,\dots,x_n\)</span> i.i.d de loi <span class="math inline">\(\mathcal N(\mu,1)\)</span> et on cherche un intervalle de confiance pour <span class="math inline">\(\mu\)</span>.</p>
 <ol type="1">
 <li><p>Générer <span class="math inline">\(n=100\)</span> observations i.i.d. selon la loi <span class="math inline">\(\mathcal N(\mu,1)\)</span> avec <span class="math inline">\(\mu=1\)</span>.</p></li>
 <li><p>Calculer un intervalle de confiance pour <span class="math inline">\(\mu\)</span> de niveau 0.95.</p></li>
@@ -590,7 +633,7 @@ V6 0.3734092</code></pre>
 </ol>
 </div>
 <div id="exr-exo-ICiris" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 11.6 (IC pour les iris de Fisher) </strong></span>On considère les données sur les iris de Fisher. Construire un intervalle de confiance de niveau 90% pour les paramètres suivants :</p>
+<p><span class="theorem-title"><strong>Exercice 11.6 (IC pour les iris de Fisher)</strong></span> On considère les données sur les iris de Fisher. Construire un intervalle de confiance de niveau 90% pour les paramètres suivants :</p>
 <ul>
 <li><p>La longueur de Pétales moyenne</p></li>
 <li><p>La largeur de Sépales moyenne de l’espèce Setosa</p></li>
@@ -598,7 +641,7 @@ V6 0.3734092</code></pre>
 </ul>
 </div>
 <div id="exr-exo-ICproportion" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 11.7 (IC pour une proportion) </strong></span>On considère <span class="math inline">\(x_1,\dots,x_n\)</span> un échantillon i.i.d issu d’une loi de Bernoulli de paramètre <span class="math inline">\(p\in[0,1]\)</span> inconnu.</p>
+<p><span class="theorem-title"><strong>Exercice 11.7 (IC pour une proportion)</strong></span> On considère <span class="math inline">\(x_1,\dots,x_n\)</span> un échantillon i.i.d issu d’une loi de Bernoulli de paramètre <span class="math inline">\(p\in[0,1]\)</span> inconnu.</p>
 <ol type="1">
 <li><p>Proposer un estimateur <span class="math inline">\(\widehat p\)</span> pour <span class="math inline">\(p\)</span>.</p>
 <div class="corR">
@@ -625,7 +668,7 @@ V6 0.3734092</code></pre>
 </ol>
 </div>
 <div id="exr-exo-ICproportion2" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 11.8 (IC pour une proportion (suite)) </strong></span>Afin de tenter de deviner qui va gagner une élection entre deux candidats <span class="math inline">\(A\)</span> et <span class="math inline">\(B\)</span> on effectue un sondage. On demande à 100 personnes pour qui elles vont voter. Les résultats sont reportés dans le vecteur suivant.</p>
+<p><span class="theorem-title"><strong>Exercice 11.8 (IC pour une proportion (suite))</strong></span> Afin de tenter de deviner qui va gagner une élection entre deux candidats <span class="math inline">\(A\)</span> et <span class="math inline">\(B\)</span> on effectue un sondage. On demande à 100 personnes pour qui elles vont voter. Les résultats sont reportés dans le vecteur suivant.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">12345</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">100</span>,<span class="dv">1</span>,<span class="fl">0.52</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -655,7 +698,7 @@ V6 0.3734092</code></pre>
 </ol>
 </div>
 <div id="exr-exo-compmoyenne" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 11.9 (Comparaison de moyennes) </strong></span>Pour le jeu de données <code>decathlon</code> disponible ici</p>
+<p><span class="theorem-title"><strong>Exercice 11.9 (Comparaison de moyennes)</strong></span> Pour le jeu de données <code>decathlon</code> disponible ici</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FactoMineR)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(decathlon)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -741,7 +784,11 @@ V6 0.3734092</code></pre>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data2)<span class="sc">+</span><span class="fu">aes</span>(<span class="at">x=</span><span class="fu">as.factor</span>(day_num),<span class="at">y=</span>Volume,<span class="at">color=</span>groupe)<span class="sc">+</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span><span class="fu">xlab</span>(<span class="st">"Day"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="11-estimation_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="11-estimation_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Il semble que les évolutions soient différentes, notamment pour le groupe contrôle.</p>
@@ -778,7 +825,6 @@ V6 0.3734092</code></pre>
 <span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>one.way <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span> </span>
 <span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(day_num) <span class="sc">|&gt;</span> DT<span class="sc">::</span><span class="fu">datatable</span>() </span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-
 <div class="datatables html-widget html-fill-item" id="htmlwidget-62046a43780a3042490e" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-62046a43780a3042490e">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19"],[5,8,12,14,16,20,22,26,28,30,34,36,40,42,44,48,50,54,56],["groupe","groupe","groupe","groupe","groupe","groupe","groupe","groupe","groupe","groupe","groupe","groupe","groupe","groupe","groupe","groupe","groupe","groupe","groupe"],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],[45,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49],[0.431,1.845,0.359,0.399,1.04,1.558,2.006,1.292,1.934,3.655,4.292,4.326,4.918,4.961,4.866,5.478,6.851,6.912,7.798],[0.732,0.151,0.783,0.754,0.383,0.211,0.125,0.288,0.136,0.019,0.008999999999999999,0.008999999999999999,0.005,0.004,0.005,0.003,0.000604,0.000568,0.000236],["","","","","","","","","","*","*","*","*","*","*","*","*","*","*"],[0.028,0.102,0.022,0.024,0.06,0.08699999999999999,0.109,0.073,0.106,0.183,0.208,0.209,0.231,0.233,0.23,0.251,0.295,0.297,0.323],[1,1,1,1,1,1,1,1,1,0.361,0.171,0.171,0.095,0.076,0.095,0.057,0.011476,0.010792,0.004484]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>day_num<\/th>\n      <th>Effect<\/th>\n      <th>DFn<\/th>\n      <th>DFd<\/th>\n      <th>F<\/th>\n      <th>p<\/th>\n      <th>p&lt;.05<\/th>\n      <th>ges<\/th>\n      <th>p.adj<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,3,4,5,6,8,9]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
@@ -794,7 +840,6 @@ V6 0.3734092</code></pre>
 <span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>DT<span class="sc">::</span><span class="fu">datatable</span>(pwc)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-
 <div class="datatables html-widget html-fill-item" id="htmlwidget-0629593683dbe9836c1f" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-0629593683dbe9836c1f">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99","100","101","102","103","104","105","106","107","108","109","110","111","112","113","114"],["J5","J5","J5","J5","J5","J5","J8","J8","J8","J8","J8","J8","J12","J12","J12","J12","J12","J12","J14","J14","J14","J14","J14","J14","J16","J16","J16","J16","J16","J16","J20","J20","J20","J20","J20","J20","J22","J22","J22","J22","J22","J22","J26","J26","J26","J26","J26","J26","J28","J28","J28","J28","J28","J28","J30","J30","J30","J30","J30","J30","J34","J34","J34","J34","J34","J34","J36","J36","J36","J36","J36","J36","J40","J40","J40","J40","J40","J40","J42","J42","J42","J42","J42","J42","J44","J44","J44","J44","J44","J44","J48","J48","J48","J48","J48","J48","J50","J50","J50","J50","J50","J50","J54","J54","J54","J54","J54","J54","J56","J56","J56","J56","J56","J56"],["Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume","Volume"],["CTL ","CTL ","EPA ","CTL ","EPA ","ET ","CTL ","CTL ","EPA ","CTL ","EPA ","ET ","CTL ","CTL ","EPA ","CTL ","EPA ","ET ","CTL ","CTL ","EPA ","CTL ","EPA ","ET ","CTL ","CTL ","EPA ","CTL ","EPA ","ET ","CTL ","CTL ","EPA ","CTL ","EPA ","ET ","CTL ","CTL ","EPA ","CTL ","EPA ","ET ","CTL ","CTL ","EPA ","CTL ","EPA ","ET ","CTL ","CTL ","EPA ","CTL ","EPA ","ET ","CTL ","CTL ","EPA ","CTL ","EPA ","ET ","CTL ","CTL ","EPA ","CTL ","EPA ","ET ","CTL ","CTL ","EPA ","CTL ","EPA ","ET ","CTL ","CTL ","EPA ","CTL ","EPA ","ET ","CTL ","CTL ","EPA ","CTL ","EPA ","ET ","CTL ","CTL ","EPA ","CTL ","EPA ","ET ","CTL ","CTL ","EPA ","CTL ","EPA ","ET ","CTL ","CTL ","EPA ","CTL ","EPA ","ET ","CTL ","CTL ","EPA ","CTL ","EPA ","ET ","CTL ","CTL ","EPA ","CTL ","EPA ","ET "],["EPA ","ET ","ET ","EPA ET ","EPA ET ","EPA ET ","EPA ","ET ","ET ","EPA ET ","EPA ET ","EPA ET ","EPA ","ET ","ET ","EPA ET ","EPA ET ","EPA ET ","EPA ","ET ","ET ","EPA ET ","EPA ET ","EPA ET ","EPA ","ET ","ET ","EPA ET ","EPA ET ","EPA ET ","EPA ","ET ","ET ","EPA ET ","EPA ET ","EPA ET ","EPA ","ET ","ET ","EPA ET ","EPA ET ","EPA ET ","EPA ","ET ","ET ","EPA ET ","EPA ET ","EPA ET ","EPA ","ET ","ET ","EPA ET ","EPA ET ","EPA ET ","EPA ","ET ","ET ","EPA ET ","EPA ET ","EPA ET ","EPA ","ET ","ET ","EPA ET ","EPA ET ","EPA ET ","EPA ","ET ","ET ","EPA ET ","EPA ET ","EPA ET ","EPA ","ET ","ET ","EPA ET ","EPA ET ","EPA ET ","EPA ","ET ","ET ","EPA ET ","EPA ET ","EPA ET ","EPA ","ET ","ET ","EPA ET ","EPA ET ","EPA ET ","EPA ","ET ","ET ","EPA ET ","EPA ET ","EPA ET ","EPA ","ET ","ET ","EPA ET ","EPA ET ","EPA ET ","EPA ","ET ","ET ","EPA ET ","EPA ET ","EPA ET ","EPA ","ET ","ET ","EPA ET ","EPA ET ","EPA ET "],[13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],[13,13,13,14,14,14,13,13,13,14,14,14,13,13,13,14,14,14,13,13,13,14,14,14,13,13,13,14,14,14,13,13,13,14,14,14,13,13,13,14,14,14,13,13,13,14,14,14,13,13,13,14,14,14,13,13,13,14,14,14,13,13,13,14,14,14,13,13,13,14,14,14,13,13,13,14,14,14,13,13,13,14,14,14,13,13,13,14,14,14,13,13,13,14,14,14,13,13,13,14,14,14,13,13,13,14,14,14,13,13,13,14,14,14],[0.277,0.78,0.44,0.582,0.58,0.804,0.233,0.284,0.0264,0.637,0.454,0.121,0.677,0.544,0.308,0.905,0.587,0.618,0.613,0.579,0.291,0.834,0.47,0.722,0.587,0.423,0.182,0.323,0.126,0.862,0.297,0.27,0.952,0.0356,0.282,0.31,0.297,0.0898,0.501,0.0234,0.211,0.5659999999999999,0.154,0.141,0.961,0.07770000000000001,0.743,0.781,0.0917,0.103,0.952,0.0265,0.594,0.552,0.0231,0.0105,0.755,0.00446,0.556,0.786,0.0103,0.00521,0.799,0.0028,0.669,0.866,0.0106,0.00767,0.903,0.00196,0.575,0.662,0.00273,0.00537,0.8090000000000001,0.00172,0.919,0.728,0.00265,0.0044,0.857,0.00182,0.9429999999999999,0.799,0.00322,0.00376,0.956,0.00218,0.9360000000000001,0.892,0.00182,0.00357,0.8139999999999999,0.000899,0.859,0.678,0.0004,0.00108,0.745,0.000371,0.964,0.775,0.000371,0.000659,0.853,0.00052,0.859,0.992,0.000222,0.000357,0.88,0.000183,0.99,0.888],["ns","ns","ns","ns","ns","ns","ns","ns","*","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","*","ns","ns","ns","ns","ns","*","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","*","ns","ns","*","*","ns","**","ns","ns","*","**","ns","**","ns","ns","*","**","ns","**","ns","ns","**","**","ns","**","ns","ns","**","**","ns","**","ns","ns","**","**","ns","**","ns","ns","**","**","ns","***","ns","ns","***","**","ns","***","ns","ns","***","***","ns","***","ns","ns","***","***","ns","***","ns","ns"],[1,1,1,1,1,1,1,1,0.158,1,1,0.726,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0.759,1,1,1,1,0.214,1,1,1,0.539,1,0.14,1,1,0.926,0.847,1,0.466,1,1,0.55,0.62,1,0.159,1,1,0.138,0.06320000000000001,1,0.0268,1,1,0.0619,0.0313,1,0.0168,1,1,0.0635,0.046,1,0.0118,1,1,0.0164,0.0322,1,0.0103,1,1,0.0159,0.0264,1,0.0109,1,1,0.0193,0.0226,1,0.0131,1,1,0.0109,0.0214,1,0.00539,1,1,0.0024,0.00651,1,0.00222,1,1,0.00223,0.00395,1,0.00312,1,1,0.00133,0.00214,1,0.0011,1,1],["ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","ns","*","ns","ns","ns","*","ns","*","ns","ns","ns","*","ns","*","ns","ns","*","*","ns","*","ns","ns","*","*","ns","*","ns","ns","*","*","ns","*","ns","ns","*","*","ns","**","ns","ns","**","**","ns","**","ns","ns","**","**","ns","**","ns","ns","**","**","ns","**","ns","ns"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Day<\/th>\n      <th>.y.<\/th>\n      <th>group1<\/th>\n      <th>group2<\/th>\n      <th>n1<\/th>\n      <th>n2<\/th>\n      <th>p<\/th>\n      <th>p.signif<\/th>\n      <th>p.adj<\/th>\n      <th>p.adj.signif<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[5,6,7,9]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
@@ -942,7 +987,11 @@ I(day_num^2):groupeET     0.0045    0.0253 946  0.1771  0.8595</code></pre>
 <span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">moy=</span><span class="fu">mean</span>(prev))</span>
 <span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data3)<span class="sc">+</span><span class="fu">aes</span>(<span class="at">x=</span>day_num,<span class="at">y=</span>moy,<span class="at">color=</span>groupe)<span class="sc">+</span><span class="fu">geom_line</span>()<span class="sc">+</span><span class="fu">geom_point</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="11-estimation_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="11-estimation_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 
@@ -1030,10 +1079,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1043,8 +1091,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1057,6 +1114,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1100,6 +1276,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1125,6 +1302,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1186,17 +1389,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./10-shiny.html" class="pagination-link">
+      <a href="./10-shiny.html" class="pagination-link" aria-label="Applications web avec Shiny">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Applications web avec Shiny</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./12-regression.html" class="pagination-link">
+      <a href="./12-regression.html" class="pagination-link" aria-label="Régression avec R">
         <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Régression avec R</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 

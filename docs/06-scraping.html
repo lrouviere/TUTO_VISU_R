@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Visualisation avec R - 6&nbsp; Web scrapping</title>
+<title>Visualisation avec R - 6&nbsp; Web scraping</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -81,7 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "Pas de résultats",
     "search-matching-documents-text": "documents trouvés",
@@ -90,12 +96,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "correspondance de plus dans ce document",
     "search-more-matches-text": "correspondances de plus dans ce document",
     "search-clear-button-title": "Effacer",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Annuler",
     "search-submit-button-title": "Envoyer",
     "search-label": "Recherche"
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="style.css">
 </head>
@@ -106,12 +142,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-programmer.html">Outils avancés</a></li><li class="breadcrumb-item"><a href="./06-scraping.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Web scrapping</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-programmer.html">Outils avancés</a></li><li class="breadcrumb-item"><a href="./06-scraping.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Web scraping</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -121,7 +157,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Visualisation avec R</a> 
@@ -234,7 +270,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06-scraping.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Web scrapping</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Web scraping</span></span></a>
   </div>
 </li>
       </ul>
@@ -306,17 +342,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table des matières</h2>
+   
+  <ul>
+  <li><a href="#sélecteurs-css" id="toc-sélecteurs-css" class="nav-link active" data-scroll-target="#sélecteurs-css"><span class="header-section-number">6.1</span> Sélecteurs CSS</a></li>
+  <li><a href="#sélecteur-xpath" id="toc-sélecteur-xpath" class="nav-link" data-scroll-target="#sélecteur-xpath"><span class="header-section-number">6.2</span> Sélecteur xpath</a></li>
+  <li><a href="#selectorgadget" id="toc-selectorgadget" class="nav-link" data-scroll-target="#selectorgadget"><span class="header-section-number">6.3</span> SelectorGadget</a></li>
+  <li><a href="#simuler-la-navigation" id="toc-simuler-la-navigation" class="nav-link" data-scroll-target="#simuler-la-navigation"><span class="header-section-number">6.4</span> Simuler la navigation</a></li>
+  <li><a href="#exercices" id="toc-exercices" class="nav-link" data-scroll-target="#exercices"><span class="header-section-number">6.5</span> Exercices</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-programmer.html">Outils avancés</a></li><li class="breadcrumb-item"><a href="./06-scraping.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Web scraping</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-scraping" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Web scrapping</span></span></h1>
+<h1 class="title"><span id="sec-scraping" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Web scraping</span></span></h1>
 </div>
 
 
@@ -329,7 +375,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <div class="cell">
 
@@ -347,19 +395,235 @@ div.correction {
   display: none;
 }
 </style>
+<p>De nombreuses données sont disponibles sur le web</p>
+<ul>
+<li>Site interne d’entreprise ;</li>
+<li>Wikipedia ;</li>
+<li>IMDb ;</li>
+<li>etc…</li>
+</ul>
+<p>Cette information étant souvent structurée, il est possible de pouvoir la récupérer de façon semi-automatisée : on parle de <strong>web-scraping</strong>. Le package de référence pour scraper des données est <code>rvest</code> :</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Intéessons nous à la filmographie de Louis de Funès disponible sur Wikipédia : <a href="https://fr.wikipedia.org/wiki/Filmographie_de_Louis_de_Fun%C3%A8s" class="uri">https://fr.wikipedia.org/wiki/Filmographie_de_Louis_de_Fun%C3%A8s</a>. La fonction <strong>read_html</strong> permet d’importer le code <code>html</code> dans <strong>R</strong> :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>url_wikipedia <span class="ot">&lt;-</span> <span class="st">"https://fr.wikipedia.org/"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>url_filmographie <span class="ot">&lt;-</span> <span class="st">"wiki/Filmographie_de_Louis_de_Funès"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="fu">str_c</span>(url_wikipedia, url_filmographie)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>(data_html <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{html_document}
+&lt;html class="client-nojs vector-feature-language-in-header-enabled vector-feature-language-in-main-page-header-disabled vector-feature-sticky-header-disabled vector-feature-page-tools-pinned-disabled vector-feature-toc-pinned-clientpref-1 vector-feature-main-menu-pinned-disabled vector-feature-limited-width-clientpref-1 vector-feature-limited-width-content-enabled vector-feature-custom-font-size-clientpref-0 vector-feature-client-preferences-disabled vector-feature-client-prefs-pinned-disabled vector-feature-night-mode-disabled skin-night-mode-clientpref-0 vector-toc-available" lang="fr" dir="ltr"&gt;
+[1] &lt;head&gt;\n&lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8 ...
+[2] &lt;body class="skin-vector skin-vector-search-vue mediawiki ltr sitedir-ltr ...</code></pre>
+</div>
+</div>
+<p>On va ensuite très souvent utiliser la fonction <strong>html_elements</strong> qui va nous permettre de récupérer différents éléments de la page web. On peut par exemple obtenir tous les titres de section de niveau 4 avec :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>(titre4 <span class="ot">&lt;-</span> data_html <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="st">"h4"</span>))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{xml_nodeset (6)}
+[1] &lt;h4&gt;\n&lt;span id="Ann.C3.A9es_1930"&gt;&lt;/span&gt;&lt;span class="mw-headline" id="An ...
+[2] &lt;h4&gt;\n&lt;span id="Ann.C3.A9es_1940"&gt;&lt;/span&gt;&lt;span class="mw-headline" id="An ...
+[3] &lt;h4&gt;\n&lt;span id="Ann.C3.A9es_1950"&gt;&lt;/span&gt;&lt;span class="mw-headline" id="An ...
+[4] &lt;h4&gt;\n&lt;span id="Ann.C3.A9es_1960"&gt;&lt;/span&gt;&lt;span class="mw-headline" id="An ...
+[5] &lt;h4&gt;\n&lt;span id="De_1970_.C3.A0_1982"&gt;&lt;/span&gt;&lt;span class="mw-headline" id= ...
+[6] &lt;h4&gt;\n&lt;span class="mw-headline" id="Colorisations"&gt;Colorisations&lt;/span&gt;&lt;s ...</code></pre>
+</div>
+</div>
+<p>On obtient une version plus lisible avec <strong>html_text</strong> ou <strong>html_text2</strong> :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>titre4 <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text2</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Années 1930[modifier | modifier le code]"   
+[2] "Années 1940[modifier | modifier le code]"   
+[3] "Années 1950[modifier | modifier le code]"   
+[4] "Années 1960[modifier | modifier le code]"   
+[5] "De 1970 à 1982[modifier | modifier le code]"
+[6] "Colorisations[modifier | modifier le code]" </code></pre>
+</div>
+</div>
+<p>Il est souvent nécessaire d’être plus précis sur la sélection des noeuds de la page web qui nous intéressent. Cela peut s’effectuer de deux façons différentes en utilisant des sélecteurs <strong>css</strong> ou <strong>xpath</strong>.</p>
+<section id="sélecteurs-css" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="sélecteurs-css"><span class="header-section-number">6.1</span> Sélecteurs CSS</h2>
+<p>La syntaxe est basée sur des <strong>noms de balises</strong>, des classes, des identifiants, des relations entre les éléments, etc. Par exemple : <code>div</code>, <code>.classe</code>, <code>#identifiant</code>. On peut par exemple obtenir le premier film des années 1940 avec</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data_html <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="st">'#mw-content-text &gt; </span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="st">                div.mw-content-ltr.mw-parser-output &gt; </span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="st">                ul:nth-child(9) &gt; </span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="st">                li:nth-child(1) &gt; </span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="st">                i:nth-child(2) &gt; </span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="st">                a'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_attrs</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+                            href                            title 
+"/wiki/La_Tentation_de_Barbizon"       "La Tentation de Barbizon" </code></pre>
+</div>
+</div>
+<p>Le résultat obtenu correspond au chemin défini par les <strong>balises</strong> :</p>
+<ul>
+<li>div identifié par <code>mw-content-text</code> <span class="math inline">\(\Longrightarrow\)</span> <code>\#mw-content-text</code></li>
+<li>div de classe <code>mw-content-ltr.mw-parser-output</code> <span class="math inline">\(\Longrightarrow\)</span> <code>div.mw-content-ltr.mw-parser-output</code></li>
+<li>élément <strong>ul</strong> qui correspond au 9ième enfant de la balise précédente <span class="math inline">\(\Longrightarrow\)</span> <code>ul:nth-child(9)</code></li>
+<li>…</li>
+</ul>
+<p>On pourra obtenir tous les films des années 1940 avec</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data_html <span class="sc">|&gt;</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="st">'#mw-content-text &gt; </span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="st">                div.mw-content-ltr.mw-parser-output &gt; </span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="st">                ul:nth-of-type(2) &gt; li &gt; i&gt; a'</span>) <span class="sc">|&gt;</span> <span class="co">#idem nth-child(9)</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_attrs</span>() <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+                            href                            title 
+"/wiki/La_Tentation_de_Barbizon"       "La Tentation de Barbizon" 
+
+[[2]]
+                            href                            title 
+"/wiki/Six_Heures_%C3%A0_perdre"            "Six Heures à perdre" 
+
+[[3]]
+                                              href 
+"/wiki/Le_Ch%C3%A2teau_de_la_derni%C3%A8re_chance" 
+                                             title 
+                "Le Château de la dernière chance" </code></pre>
+</div>
+</div>
+</section>
+<section id="sélecteur-xpath" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="sélecteur-xpath"><span class="header-section-number">6.2</span> Sélecteur xpath</h2>
+<p>La syntaxe est basée sur des <strong>chemins</strong> et des <strong>expressions</strong>. Ce moyen est plus flexible, il permet de définir des <strong>chemins plus complexes</strong> pour accéder aux éléments, comme : <strong>/div<span class="citation" data-cites="class">(<a href="references.html#ref-class" role="doc-biblioref"><strong>class?</strong></a>, =‘classe’)</span></strong>. On obtient tous les films des années 1940 avec</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data_html <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="at">xpath =</span><span class="st">'//*[@id="mw-content-text"]</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="st">    /div/ul[</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="st">    preceding::h4[span/@id="Années_1940"]</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="st">    and</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="st">    following::h4[span/@id="Années_1950"]]</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="st">    /li/i/a'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text2</span>() <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "La Tentation de Barbizon"         "Six Heures à perdre"             
+[3] "Le Château de la dernière chance" "Dernier Refuge"                  
+[5] "Antoine et Antoinette"            "Croisière pour l'inconnu"        </code></pre>
+</div>
+</div>
+</section>
+<section id="selectorgadget" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="selectorgadget"><span class="header-section-number">6.3</span> SelectorGadget</h2>
+<p>La syntaxe pour définir les chemins css et xpath n’est pas simple. Heureusement, les navigateurs proposent des extensions qui vont nous permettre de retrouver ces chemins. On utilise souvent <strong>SelectorGadget</strong>, elle est facile à installer sur <strong>Chrome</strong>. On pourra consulter <a href="https://rvest.tidyverse.org/articles/selectorgadget.html" class="uri">https://rvest.tidyverse.org/articles/selectorgadget.html</a>.</p>
+</section>
+<section id="simuler-la-navigation" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="simuler-la-navigation"><span class="header-section-number">6.4</span> Simuler la navigation</h2>
+<p>Le package <code>rvest</code> permet également de simuler la navigation sur internet. Tout commence avec la fonction <strong>session</strong> qui simule le comportement d’un navigateur web :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>url_wiki <span class="ot">&lt;-</span> <span class="st">"https://fr.wikipedia.org/"</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>(wiki <span class="ot">&lt;-</span> <span class="fu">session</span>(url_wiki))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;session&gt; https://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Accueil_principal
+  Status: 200
+  Type:   text/html; charset=UTF-8
+  Size:   178280</code></pre>
+</div>
+</div>
+<p>On peut alors naviguer vers une url avec <strong>session_jump_to</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>RF <span class="ot">&lt;-</span> wiki <span class="sc">|&gt;</span> <span class="fu">session_jump_to</span>(<span class="st">"Roger_Federer"</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>RF <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"h2"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text</span>() <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Sommaire"                               
+[2] "Biographie[modifier | modifier le code]"
+[3] "Carrière[modifier | modifier le code]"  </code></pre>
+</div>
+</div>
+<p>et revenir à la page précédente avec la fonction <strong>session_back</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>RF <span class="sc">|&gt;</span> <span class="fu">session_back</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;session&gt; https://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Accueil_principal
+  Status: 200
+  Type:   text/html; charset=UTF-8
+  Size:   178280</code></pre>
+</div>
+</div>
+<p>Citons enfin la fonction <strong>session_follow_link</strong> qui va permettre de se déplacer sur un lien de la page de la session. Cela peut se faire en définissant le lien de trois façons différentes :</p>
+<ol type="1">
+<li><p>un <strong>entier</strong> qui correspond à l’index du lien dans la session :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>RF1 <span class="ot">&lt;-</span> RF <span class="sc">|&gt;</span> <span class="fu">pluck</span>(<span class="st">"url"</span>) <span class="sc">|&gt;</span> <span class="fu">session</span>()</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>RF1 <span class="sc">|&gt;</span> <span class="fu">session_follow_link</span>(<span class="dv">360</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;session&gt; https://fr.wikipedia.org/wiki/Surfaces_de_jeu_au_tennis#Dur
+  Status: 200
+  Type:   text/html; charset=UTF-8
+  Size:   106892</code></pre>
+</div>
+</div></li>
+<li><p>une <strong>chaine de caractères</strong> qui correspond au texte affiché entre les balises <code>&lt;a&gt;</code> et <code>&lt;/a&gt;</code> :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>RF1 <span class="sc">|&gt;</span> <span class="fu">session_follow_link</span>(<span class="st">"Djokovic"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;session&gt; https://fr.wikipedia.org/wiki/Novak_Djokovic
+  Status: 200
+  Type:   text/html; charset=UTF-8
+  Size:   1904653</code></pre>
+</div>
+</div></li>
+<li><p>un sélecteur <strong>css</strong> ou <strong>xpath</strong> :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>RF1 <span class="sc">|&gt;</span> <span class="fu">session_follow_link</span>(<span class="at">css=</span><span class="st">'p:nth-child(7) &gt; a:nth-child(6)'</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;session&gt; https://fr.wikipedia.org/wiki/Novak_Djokovic
+  Status: 200
+  Type:   text/html; charset=UTF-8
+  Size:   1904653</code></pre>
+</div>
+</div></li>
+</ol>
+</section>
+<section id="exercices" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="exercices"><span class="header-section-number">6.5</span> Exercices</h2>
+<div id="exr-scrap-defunes" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 6.1 (Filmographie de Louis de Funès)</strong></span> On s’intéresse à la filmographie de Louis de Funès présentée à l’url <a href="https://fr.wikipedia.org/wiki/Filmographie_de_Louis_de_Fun%C3%A8s" class="uri">https://fr.wikipedia.org/wiki/Filmographie_de_Louis_de_Fun%C3%A8s</a>. On lit le page <strong>html</strong> avec le code suivant :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>url_wikipedia <span class="ot">&lt;-</span> <span class="st">"https://fr.wikipedia.org/"</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>url_filmographie <span class="ot">&lt;-</span> <span class="st">"wiki/Filmographie_de_Louis_de_Funès"</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="fu">str_c</span>(url_wikipedia, url_filmographie)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>data_html <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol type="1">
+<li><p>Proposer, en inspectant le code <strong>html</strong>, un sélecteur <strong>css</strong> pour obtenir les informations sur le film <strong>La soupe aux choux</strong> en 1981.</p></li>
+<li><p>Même question en récupérant les attributs (notamment les hyperliens) du film et de son auteur. On pourra utiliser <code>html_attrs</code>.</p></li>
+<li><p>Même question en utilisant l’extension <em>SelectorGadget</em>.</p></li>
+<li><p>Même question avec un un sélecteur <code>xpath</code>.</p></li>
+</ol>
+</div>
 <div id="exr-scrap-coupedumonde2012" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 6.1 (Coupe du monde 2018) </strong></span>On s’intéresse aux résultats de la coupe du monde de football 2018 disponibles ici : <a href="https://fr.wikipedia.org/wiki/Coupe_du_monde_de_football_2018#" class="uri">https://fr.wikipedia.org/wiki/Coupe_du_monde_de_football_2018#</a>.</p>
+<p><span class="theorem-title"><strong>Exercice 6.2 (Coupe du monde 2018)</strong></span> On s’intéresse aux résultats de la coupe du monde de football 2018 disponibles ici : <a href="https://fr.wikipedia.org/wiki/Coupe_du_monde_de_football_2018#" class="uri">https://fr.wikipedia.org/wiki/Coupe_du_monde_de_football_2018#</a>.</p>
 <ol type="1">
 <li><p>Combien de tableaux sont présents sur cette page ?</p></li>
-<li><p>Scraper la table du classement final et afficher le équipes ayant atteint les 8ème de finale</p></li>
+<li><p>Scraper la table du classement final et afficher les équipes ayant atteint les 8ème de finale</p></li>
 <li><p>Construire une table qui contiennent les buteurs de la coupe du monde dans une colonne et le nombre de buts marqués dans une autre.</p></li>
 </ol>
 </div>
+<div id="exr-scrap-trampoline" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 6.3 (Trampoline)</strong></span> Le trampoline est un sport olympique depuis les jeux de Sydney en 2000. La page suivante donne accès à la liste de tous les médaillés de cette discipline :</p>
+<p><a href="https://fr.wikipedia.org/wiki/Liste_des_m%C3%A9daill%C3%A9s_olympiques_au_trampoline" class="uri">https://fr.wikipedia.org/wiki/Liste_des_m%C3%A9daill%C3%A9s_olympiques_au_trampoline</a></p>
+<ol type="1">
+<li><p>Utiliser la fonction <code>html_table</code> pour récupérer le tableau des médaillées féminines dans un tibble.</p></li>
+<li><p>À partir de ce tableau, créer un nouveau data frame contenant, pour chaque pays, le nombre de médailles d’or, d’argent et de bronze obtenues lors des différentes olympiades.</p></li>
+<li><p>Classer ce tibble dans l’ordre usuel en fonction d’abord du nombre de médailles d’or obtenues puis, pour départager les ex-æquo, en fonction du nombre de médailles d’argent et enfin du nombre de médailles de bronze.</p></li>
+<li><p>Mêmes questions pour le tableau masculin et enfin pour le tableau mixte. Le résultat pourra être comparé avec la page : <a href="https://fr.wikipedia.org/wiki/Trampoline_aux_Jeux_olympiques" class="uri">https://fr.wikipedia.org/wiki/Trampoline_aux_Jeux_olympiques</a></p></li>
+</ol>
+</div>
 <div id="exr-scrap-Peter_Jackson" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 6.2 (Peter Jackson) </strong></span>Nous nous intéressons à la page Wikipedia du réalisateur Peter Jackson : <a href="https://fr.wikipedia.org/wiki/Peter_Jackson" class="uri">https://fr.wikipedia.org/wiki/Peter_Jackson</a></p>
+<p><span class="theorem-title"><strong>Exercice 6.4 (Peter Jackson)</strong></span> Nous nous intéressons à la page Wikipedia du réalisateur Peter Jackson : <a href="https://fr.wikipedia.org/wiki/Peter_Jackson" class="uri">https://fr.wikipedia.org/wiki/Peter_Jackson</a></p>
 <ol type="1">
 <li><p>Récupérer les données au format HTML de cette page.</p></li>
 <li><p>Extraire les nœuds <code>h2</code> associés au titres de niveau 2.</p></li>
@@ -373,15 +637,35 @@ div.correction {
 </ol>
 </div>
 <div id="exr-scrap-ligue10910" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 6.3 (Ligue 1 - Saison 2009-2010) </strong></span>On considère les données proposées par le site de la ligue 1.</p>
+<p><span class="theorem-title"><strong>Exercice 6.5 (Ligue 1 - Saison 2009-2010)</strong></span> On considère les données proposées par le site de la ligue 1.</p>
 <ol type="1">
 <li><p>Scraper le classement final de la saison 2009-2010.</p></li>
 <li><p>Toujours pour la saison 2009-2010, récupérer le classement de chaque équipe à chacune des 38 journées de championnat</p></li>
 <li><p>Comparer les évolutions de classement sur la saison des clubs de Paris, Marseille et Rennes.</p></li>
 </ol>
 </div>
+<div id="exr-scrap-culturegen" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 6.6 (Se cultiver par hasard)</strong></span> Un honnête homme souhaite parfaire sa culture générale et décide à cette fin de parcourir les pages de <em>Wikipédia</em> au hasard. Sa stratégie est la suivante : tous les jours, en partant de la page d’accueil (<a href="https://fr.wikipedia.org/" class="uri">https://fr.wikipedia.org/</a>) il suivra un premier lien pris au hasard parmi les liens internes à wikipédia. Il lira attentivement la page que le sort lui aura permis de visiter puis renouvellera l’opération à partir de cette page. Curieux, il se demande combien de pages distinctes il aura lu, en moyenne, au bout de 10 ans (sous l’hypothèse que le site ne soit pas modifié durant cette période). Nous allons répondre à cette question grâce au package <code>rvest</code>.</p>
+<ol type="1">
+<li><p>Ouvrir une session vers la page d’accueil de <em>Wikipédia</em>.</p></li>
+<li><p>Construire une tabble avec tous les liens contenus dans la page (ces liens sont dans une balise <code>&lt;a&gt;</code> et l’adresse du lien est donnée par l’attribut <code>href</code>). On pourra utiliser :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>internal_links <span class="ot">&lt;-</span> <span class="st">'a[href*="/wiki/"]:not([href*="//"])'</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+<li><p>Aller sur une page prise au hasard et renouveler l’opération afin de construire un vecteur contenant les 2 pages visitées.</p></li>
+<li><p>Construire un data-frame contenant les adresses visitées pendant 10 ans (soit 3652 jours).</p>
+<div class="corR">
+<p>On écrit une fonction qui sélectionne aléatoirement un lien sur une page donnée :</p>
+</div>
+<div class="corR">
+<p>On peut ainsi en déduire les pages visitées pendant un nombre de jours donné :</p>
+</div></li>
+<li><p>En déduire le nombre de pages différentes visitées.</p></li>
+</ol>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -463,10 +747,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -476,8 +759,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -490,6 +782,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -533,6 +944,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -558,6 +970,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -619,17 +1057,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./05-bdd.html" class="pagination-link">
+      <a href="./05-bdd.html" class="pagination-link" aria-label="Base de données">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Base de données</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./07-ggplot.html" class="pagination-link">
+      <a href="./07-ggplot.html" class="pagination-link" aria-label="Visualisation avec ggplot2">
         <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Visualisation avec ggplot2</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 
