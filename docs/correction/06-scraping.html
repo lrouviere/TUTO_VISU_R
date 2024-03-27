@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Visualisation avec R - 6&nbsp; Web scraping</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./07-ggplot.html" rel="next">
+<link href="./05-bdd.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Pas de résultats",
+    "search-matching-documents-text": "documents trouvés",
+    "search-copy-link-title": "Copier le lien vers la recherche",
+    "search-hide-matches-text": "Cacher les correspondances additionnelles",
+    "search-more-match-text": "correspondance de plus dans ce document",
+    "search-more-matches-text": "correspondances de plus dans ce document",
+    "search-clear-button-title": "Effacer",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Annuler",
+    "search-submit-button-title": "Envoyer",
+    "search-label": "Recherche"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-programmer.html">Outils avancés</a></li><li class="breadcrumb-item"><a href="./06-scraping.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Web scraping</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Visualisation avec R</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Visualisation-avec-R.pdf">
+              <i class="bi bi-bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Visualisation-avec-R.epub">
+              <i class="bi bi-bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-1" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-1">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+              <i class="bi bi-bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Basculer en mode lecteur">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Recherche"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Présentation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Logiciel R - Les bases</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-objetsR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Les objets R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-dplyr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Manipuler les données avec dplyr</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Outils avancés</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-programmer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Programmer</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-bdd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Base de données</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-scraping.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Web scraping</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Visualisation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-ggplot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Visualisation avec ggplot2</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-carto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Faire des cartes avec R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-interactif.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Quelques outils de visualisation dynamique/interactive</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-shiny.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Applications web avec Shiny</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Statistique avec R</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-estimation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Estimation et intervalles de confiance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Régression avec R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Références</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table des matières</h2>
+   
+  <ul>
+  <li><a href="#sélecteurs-css" id="toc-sélecteurs-css" class="nav-link active" data-scroll-target="#sélecteurs-css"><span class="header-section-number">6.1</span> Sélecteurs CSS</a></li>
+  <li><a href="#sélecteur-xpath" id="toc-sélecteur-xpath" class="nav-link" data-scroll-target="#sélecteur-xpath"><span class="header-section-number">6.2</span> Sélecteur xpath</a></li>
+  <li><a href="#selectorgadget" id="toc-selectorgadget" class="nav-link" data-scroll-target="#selectorgadget"><span class="header-section-number">6.3</span> SelectorGadget</a></li>
+  <li><a href="#simuler-la-navigation" id="toc-simuler-la-navigation" class="nav-link" data-scroll-target="#simuler-la-navigation"><span class="header-section-number">6.4</span> Simuler la navigation</a></li>
+  <li><a href="#exercices" id="toc-exercices" class="nav-link" data-scroll-target="#exercices"><span class="header-section-number">6.5</span> Exercices</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-programmer.html">Outils avancés</a></li><li class="breadcrumb-item"><a href="./06-scraping.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Web scraping</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-scraping" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Web scraping</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+
+</div>
+<style>
+div.correction {
+  color: black;
+  background-color: #F0F0F0;
+  font-style: normal;
+  /*display: none;*/
+}
+
+.corR {
+  font-style: italic;
+  /*display: none;*/
+}
+</style>
+<p>De nombreuses données sont disponibles sur le web</p>
+<ul>
+<li>Site interne d’entreprise ;</li>
+<li>Wikipedia ;</li>
+<li>IMDb ;</li>
+<li>etc…</li>
+</ul>
+<p>Cette information étant souvent structurée, il est possible de pouvoir la récupérer de façon semi-automatisée : on parle de <strong>web-scraping</strong>. Le package de référence pour scraper des données est <code>rvest</code> :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Intéressons nous à la filmographie de Louis de Funès disponible sur Wikipédia : <a href="https://fr.wikipedia.org/wiki/Filmographie_de_Louis_de_Fun%C3%A8s" class="uri">https://fr.wikipedia.org/wiki/Filmographie_de_Louis_de_Fun%C3%A8s</a>. La fonction <strong>read_html</strong> permet d’importer le code <code>html</code> dans <strong>R</strong> :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>url_wikipedia <span class="ot">&lt;-</span> <span class="st">"https://fr.wikipedia.org/"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>url_filmographie <span class="ot">&lt;-</span> <span class="st">"wiki/Filmographie_de_Louis_de_Funès"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="fu">str_c</span>(url_wikipedia, url_filmographie)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>(data_html <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{html_document}
+&lt;html class="client-nojs vector-feature-language-in-header-enabled vector-feature-language-in-main-page-header-disabled vector-feature-sticky-header-disabled vector-feature-page-tools-pinned-disabled vector-feature-toc-pinned-clientpref-1 vector-feature-main-menu-pinned-disabled vector-feature-limited-width-clientpref-1 vector-feature-limited-width-content-enabled vector-feature-custom-font-size-clientpref-0 vector-feature-client-preferences-disabled vector-feature-client-prefs-pinned-disabled vector-feature-night-mode-disabled skin-night-mode-clientpref-0 vector-toc-available" lang="fr" dir="ltr"&gt;
+[1] &lt;head&gt;\n&lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8 ...
+[2] &lt;body class="skin-vector skin-vector-search-vue mediawiki ltr sitedir-ltr ...</code></pre>
+</div>
+</div>
+<p>On va ensuite très souvent utiliser la fonction <strong>html_elements</strong> qui va nous permettre de récupérer différents éléments de la page web. On peut par exemple obtenir tous les titres de section de niveau 4 avec :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>(titre4 <span class="ot">&lt;-</span> data_html <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="st">"h4"</span>))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{xml_nodeset (5)}
+[1] &lt;h4&gt;\n&lt;span id="Ann.C3.A9es_1940"&gt;&lt;/span&gt;&lt;span class="mw-headline" id="An ...
+[2] &lt;h4&gt;\n&lt;span id="Ann.C3.A9es_1950"&gt;&lt;/span&gt;&lt;span class="mw-headline" id="An ...
+[3] &lt;h4&gt;\n&lt;span id="Ann.C3.A9es_1960"&gt;&lt;/span&gt;&lt;span class="mw-headline" id="An ...
+[4] &lt;h4&gt;\n&lt;span id="De_1970_.C3.A0_1982"&gt;&lt;/span&gt;&lt;span class="mw-headline" id= ...
+[5] &lt;h4&gt;\n&lt;span class="mw-headline" id="Colorisations"&gt;Colorisations&lt;/span&gt;&lt;s ...</code></pre>
+</div>
+</div>
+<p>On obtient une version plus lisible avec <strong>html_text</strong> ou <strong>html_text2</strong> :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>titre4 <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text2</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Années 1940[modifier | modifier le code]"   
+[2] "Années 1950[modifier | modifier le code]"   
+[3] "Années 1960[modifier | modifier le code]"   
+[4] "De 1970 à 1982[modifier | modifier le code]"
+[5] "Colorisations[modifier | modifier le code]" </code></pre>
+</div>
+</div>
+<p>Il est souvent nécessaire d’être plus précis sur la sélection des noeuds de la page web qui nous intéressent. Cela peut s’effectuer de deux façons différentes en utilisant des sélecteurs <strong>css</strong> ou <strong>xpath</strong>.</p>
+<section id="sélecteurs-css" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="sélecteurs-css"><span class="header-section-number">6.1</span> Sélecteurs CSS</h2>
+<p>La syntaxe est basée sur des <strong>noms de balises</strong>, des classes, des identifiants, des relations entre les éléments, etc. Par exemple : <code>div</code>, <code>.classe</code>, <code>#identifiant</code>. On peut par exemple obtenir le premier film des années 1940 avec</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data_html <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="st">'#mw-content-text &gt; </span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="st">                div.mw-content-ltr.mw-parser-output &gt; </span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="st">                ul:nth-child(10) &gt; </span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="st">                li:nth-child(1) &gt; </span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="st">                i:nth-child(2) &gt; </span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="st">                a'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_attrs</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+                            href                            title 
+"/wiki/Au_revoir_monsieur_Grock"       "Au revoir monsieur Grock" </code></pre>
+</div>
+</div>
+<p>Le résultat obtenu correspond au chemin défini par les <strong>balises</strong> :</p>
+<ul>
+<li>div identifié par <code>mw-content-text</code> <span class="math inline">\(\Longrightarrow\)</span> <code>\#mw-content-text</code></li>
+<li>div de classe <code>mw-content-ltr.mw-parser-output</code> <span class="math inline">\(\Longrightarrow\)</span> <code>div.mw-content-ltr.mw-parser-output</code></li>
+<li>élément <strong>ul</strong> qui correspond au 9ième enfant de la balise précédente <span class="math inline">\(\Longrightarrow\)</span> <code>ul:nth-child(10)</code></li>
+<li>…</li>
+</ul>
+<p>On pourra obtenir tous les films des années 1940 avec</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data_html <span class="sc">|&gt;</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="st">'#mw-content-text &gt; </span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="st">                div.mw-content-ltr.mw-parser-output &gt; </span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="st">                ul:nth-of-type(2) &gt; li &gt; i&gt; a'</span>) <span class="sc">|&gt;</span> <span class="co">#idem nth-child(10)</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_attrs</span>() <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+                            href                            title 
+"/wiki/Au_revoir_monsieur_Grock"       "Au revoir monsieur Grock" 
+
+[[2]]
+                                    href 
+"/wiki/Pas_de_week-end_pour_notre_amour" 
+                                   title 
+      "Pas de week-end pour notre amour" 
+
+[[3]]
+                    href                    title 
+"/wiki/Mon_ami_Sainfoin"       "Mon ami Sainfoin" </code></pre>
+</div>
+</div>
+</section>
+<section id="sélecteur-xpath" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="sélecteur-xpath"><span class="header-section-number">6.2</span> Sélecteur xpath</h2>
+<p>La syntaxe est basée sur des <strong>chemins</strong> et des <strong>expressions</strong>. Ce moyen est plus flexible, il permet de définir des <strong>chemins plus complexes</strong> pour accéder aux éléments, comme : <strong>/div<span class="citation" data-cites="class">(<a href="references.html#ref-class" role="doc-biblioref"><strong>class?</strong></a>, =‘classe’)</span></strong>. On obtient tous les films des années 1940 avec</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data_html <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="at">xpath =</span><span class="st">'//*[@id="mw-content-text"]</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="st">    /div/ul[</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="st">    preceding::h4[span/@id="Années_1940"]</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="st">    and</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="st">    following::h4[span/@id="Années_1950"]]</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="st">    /li/i/a'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text2</span>() <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "La Tentation de Barbizon"         "Six Heures à perdre"             
+[3] "Le Château de la dernière chance" "Dernier Refuge"                  
+[5] "Antoine et Antoinette"            "Croisière pour l'inconnu"        </code></pre>
+</div>
+</div>
+</section>
+<section id="selectorgadget" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="selectorgadget"><span class="header-section-number">6.3</span> SelectorGadget</h2>
+<p>La syntaxe pour définir les chemins css et xpath n’est pas simple. Heureusement, les navigateurs proposent des extensions qui vont nous permettre de retrouver ces chemins. On utilise souvent <strong>SelectorGadget</strong>, elle est facile à installer sur <strong>Chrome</strong>. On pourra consulter <a href="https://rvest.tidyverse.org/articles/selectorgadget.html" class="uri">https://rvest.tidyverse.org/articles/selectorgadget.html</a>.</p>
+</section>
+<section id="simuler-la-navigation" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="simuler-la-navigation"><span class="header-section-number">6.4</span> Simuler la navigation</h2>
+<p>Le package <code>rvest</code> permet également de simuler la navigation sur internet. Tout commence avec la fonction <strong>session</strong> qui simule le comportement d’un navigateur web :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>url_wiki <span class="ot">&lt;-</span> <span class="st">"https://fr.wikipedia.org/"</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>(wiki <span class="ot">&lt;-</span> <span class="fu">session</span>(url_wiki))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;session&gt; https://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Accueil_principal
+  Status: 200
+  Type:   text/html; charset=UTF-8
+  Size:   179285</code></pre>
+</div>
+</div>
+<p>On peut alors naviguer vers une url avec <strong>session_jump_to</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>RF <span class="ot">&lt;-</span> wiki <span class="sc">|&gt;</span> <span class="fu">session_jump_to</span>(<span class="st">"Roger_Federer"</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>RF <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"h2"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text</span>() <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Sommaire"                               
+[2] "Biographie[modifier | modifier le code]"
+[3] "Carrière[modifier | modifier le code]"  </code></pre>
+</div>
+</div>
+<p>et revenir à la page précédente avec la fonction <strong>session_back</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>RF <span class="sc">|&gt;</span> <span class="fu">session_back</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;session&gt; https://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Accueil_principal
+  Status: 200
+  Type:   text/html; charset=UTF-8
+  Size:   179285</code></pre>
+</div>
+</div>
+<p>Citons enfin la fonction <strong>session_follow_link</strong> qui va permettre de se déplacer sur un lien de la page de la session. Cela peut se faire en définissant le lien de trois façons différentes :</p>
+<ol type="1">
+<li><p>un <strong>entier</strong> qui correspond à l’index du lien dans la session :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>RF1 <span class="ot">&lt;-</span> RF <span class="sc">|&gt;</span> <span class="fu">pluck</span>(<span class="st">"url"</span>) <span class="sc">|&gt;</span> <span class="fu">session</span>()</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>RF1 <span class="sc">|&gt;</span> <span class="fu">session_follow_link</span>(<span class="dv">360</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;session&gt; https://fr.wikipedia.org/wiki/Novak_Djokovic
+  Status: 200
+  Type:   text/html; charset=UTF-8
+  Size:   1912838</code></pre>
+</div>
+</div></li>
+<li><p>une <strong>chaine de caractères</strong> qui correspond au texte affiché entre les balises <code>&lt;a&gt;</code> et <code>&lt;/a&gt;</code> :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>RF1 <span class="sc">|&gt;</span> <span class="fu">session_follow_link</span>(<span class="st">"Djokovic"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;session&gt; https://fr.wikipedia.org/wiki/Novak_Djokovic
+  Status: 200
+  Type:   text/html; charset=UTF-8
+  Size:   1912838</code></pre>
+</div>
+</div></li>
+<li><p>un sélecteur <strong>css</strong> ou <strong>xpath</strong> :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>RF1 <span class="sc">|&gt;</span> <span class="fu">session_follow_link</span>(<span class="at">css=</span><span class="st">'p:nth-child(7) &gt; a:nth-child(6)'</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;session&gt; https://fr.wikipedia.org/wiki/Novak_Djokovic
+  Status: 200
+  Type:   text/html; charset=UTF-8
+  Size:   1912838</code></pre>
+</div>
+</div></li>
+</ol>
+</section>
+<section id="exercices" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="exercices"><span class="header-section-number">6.5</span> Exercices</h2>
+<div id="exr-scrap-defunes" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 6.1 (Filmographie de Louis de Funès)</strong></span> On s’intéresse à la filmographie de Louis de Funès présentée à l’url <a href="https://fr.wikipedia.org/wiki/Filmographie_de_Louis_de_Fun%C3%A8s" class="uri">https://fr.wikipedia.org/wiki/Filmographie_de_Louis_de_Fun%C3%A8s</a>. On lit le page <strong>html</strong> avec le code suivant :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>url_wikipedia <span class="ot">&lt;-</span> <span class="st">"https://fr.wikipedia.org/"</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>url_filmographie <span class="ot">&lt;-</span> <span class="st">"wiki/Filmographie_de_Louis_de_Funès"</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="fu">str_c</span>(url_wikipedia, url_filmographie)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>data_html <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol type="1">
+<li><p>Proposer, en inspectant le code <strong>html</strong>, un sélecteur <strong>css</strong> pour obtenir les informations sur le film <strong>La soupe aux choux</strong> en 1981.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>data_html <span class="sc">|&gt;</span> </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="st">'#mw-content-text &gt; </span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="st">                div.mw-content-ltr.mw-parser-output &gt; </span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="st">                ul:nth-child(14) &gt; </span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="st">                li:nth-child(11)'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "1981&nbsp;: La Soupe aux choux de Jean Girault&nbsp;: Claude Ratinier dit Le Glaude - également scénariste"</code></pre>
+</div>
+</div></li>
+<li><p>Même question en récupérant les attributs (notamment les hyperliens) du film et de son auteur. On pourra utiliser <code>html_attrs</code>.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>data_html <span class="sc">|&gt;</span> </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="st">'#mw-content-text &gt; </span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="st">                div.mw-content-ltr.mw-parser-output &gt; </span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="st">                ul:nth-child(14) &gt; </span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="st">                li:nth-child(11) a'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_attrs</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+                       href                       title 
+"/wiki/1981_au_cin%C3%A9ma"            "1981 au cinéma" 
+
+[[2]]
+                             href                             title 
+"/wiki/La_Soupe_aux_choux_(film)"       "La Soupe aux choux (film)" 
+
+[[3]]
+                href                title 
+"/wiki/Jean_Girault"       "Jean Girault" </code></pre>
+</div>
+</div></li>
+<li><p>Même question en utilisant l’extension <em>SelectorGadget</em>.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>data_html <span class="sc">|&gt;</span> </span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="st">'h4+ul li:nth-child(11) a+ i a'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_attrs</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+                             href                             title 
+"/wiki/La_Soupe_aux_choux_(film)"       "La Soupe aux choux (film)" </code></pre>
+</div>
+</div></li>
+<li><p>Même question avec un un sélecteur <code>xpath</code>.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>data_html <span class="sc">|&gt;</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="at">xpath =</span> <span class="st">'//ul[(((count(preceding-sibling::*) + 1) = 14) and</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="st">                parent::*)]//li[(((count(preceding-sibling::*) + 1) = 11) and </span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="st">                parent::*)]//a'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_attrs</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+                       href                       title 
+"/wiki/1981_au_cin%C3%A9ma"            "1981 au cinéma" 
+
+[[2]]
+                             href                             title 
+"/wiki/La_Soupe_aux_choux_(film)"       "La Soupe aux choux (film)" 
+
+[[3]]
+                href                title 
+"/wiki/Jean_Girault"       "Jean Girault" </code></pre>
+</div>
+</div></li>
+</ol>
+</div>
+<div id="exr-scrap-coupedumonde2012" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 6.2 (Coupe du monde 2018)</strong></span> On s’intéresse aux résultats de la coupe du monde de football 2018 disponibles ici : <a href="https://fr.wikipedia.org/wiki/Coupe_du_monde_de_football_2018#" class="uri">https://fr.wikipedia.org/wiki/Coupe_du_monde_de_football_2018#</a>.</p>
+<ol type="1">
+<li><p>Combien de tableaux sont présents sur cette page ?</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>url_CM2018 <span class="ot">&lt;-</span> <span class="st">"https://fr.wikipedia.org/wiki/Coupe_du_monde_de_football_2018#"</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>CM2018 <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url_CM2018)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>tables_CM2018 <span class="ot">&lt;-</span> CM2018 <span class="sc">|&gt;</span> </span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="st">"table"</span>)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(tables_CM2018)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 109</code></pre>
+</div>
+</div></li>
+<li><p>Scraper la table du classement final et afficher les équipes ayant atteint les 8ème de finale</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>aa <span class="ot">&lt;-</span> <span class="fu">html_table</span>(tables_CM2018) <span class="sc">|&gt;</span> <span class="fu">pluck</span>(<span class="dv">92</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>aa <span class="sc">|&gt;</span> </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Équipe,<span class="st">`</span><span class="at">Progression CM</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Progression CM</span><span class="st">`</span><span class="sc">!=</span><span class="st">"Premier tour"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 16 × 2
+   Équipe     `Progression CM`  
+   &lt;chr&gt;      &lt;chr&gt;             
+ 1 France     Vainqueur         
+ 2 Croatie    Finaliste (2e)    
+ 3 Belgique   3e                
+ 4 Angleterre 4e                
+ 5 Uruguay    Quart de finale   
+ 6 Brésil     Quart de finale   
+ 7 Suède      Quart de finale   
+ 8 Russie     Quart de finale   
+ 9 Colombie   Huitième de finale
+10 Espagne    Huitième de finale
+11 Danemark   Huitième de finale
+12 Mexique    Huitième de finale
+13 Portugal   Huitième de finale
+14 Suisse     Huitième de finale
+15 Japon      Huitième de finale
+16 Argentine  Huitième de finale</code></pre>
+</div>
+</div></li>
+<li><p>Construire une table qui contiennent les buteurs de la coupe du monde dans une colonne et le nombre de buts marqués dans une autre.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>bb <span class="ot">&lt;-</span> <span class="fu">html_table</span>(tables_CM2018) <span class="sc">|&gt;</span> <span class="fu">pluck</span>(<span class="dv">95</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>bb</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  X1                                                           X2    X3    X4   
+  &lt;chr&gt;                                                        &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+1 "6 buts        Harry Kane (dont 3 pénaltys)4 buts      Rome… "1 b… "Ken… "Vic…</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>bb <span class="sc">|&gt;</span> </span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(<span class="st">`</span><span class="at">1</span><span class="st">`</span>,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate_wider_delim</span>(X1,<span class="at">delim=</span><span class="st">"buts"</span>,<span class="at">names =</span> <span class="fu">as.character</span>(<span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">6</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">2</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(),<span class="at">names_to =</span> <span class="st">"buts"</span>,<span class="at">values_to=</span><span class="st">"joueurs"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate_longer_delim</span>(joueurs,<span class="at">delim=</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">joueurs=</span><span class="fu">str_trim</span>(joueurs)) <span class="sc">|&gt;</span> <span class="co">#enlever les espaces</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">joueurs=</span><span class="fu">str_remove</span>(joueurs,<span class="st">"[[:digit:]]*$"</span>)) <span class="co">#enlever les chiffres en fin de chaines de caractères</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 108 × 2
+   buts  joueurs                            
+   &lt;chr&gt; &lt;chr&gt;                              
+ 1 6     Harry Kane (dont 3 pénaltys)       
+ 2 4     Romelu Lukaku                      
+ 3 4     Antoine Griezmann (dont 3 pénaltys)
+ 4 4     Kylian Mbappé                      
+ 5 4     Cristiano Ronaldo (dont 1 pénalty) 
+ 6 4     Denis Cheryshev                    
+ 7 3     Eden Hazard (dont 1 pénalty)       
+ 8 3     Yerry Mina                         
+ 9 3     Mario Mandžukić                    
+10 3     Ivan Perišić                       
+# ℹ 98 more rows</code></pre>
+</div>
+</div></li>
+</ol>
+</div>
+<div id="exr-scrap-trampoline" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 6.3 (Trampoline)</strong></span> Le trampoline est un sport olympique depuis les jeux de Sydney en 2000. La page suivante donne accès à la liste de tous les médaillés de cette discipline :</p>
+<p><a href="https://fr.wikipedia.org/wiki/Liste_des_m%C3%A9daill%C3%A9s_olympiques_au_trampoline" class="uri">https://fr.wikipedia.org/wiki/Liste_des_m%C3%A9daill%C3%A9s_olympiques_au_trampoline</a></p>
+<ol type="1">
+<li><p>Utiliser la fonction <code>html_table</code> pour récupérer le tableau des médaillées féminines dans un tibble.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://fr.wikipedia.org/wiki/Liste_des_m%C3%A9daill%C3%A9s_olympiques_au_trampoline"</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>data_html <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>css_selector <span class="ot">&lt;-</span> <span class="st">"#mw-content-text &gt; div &gt; table:nth-of-type(2)"</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>df_femmes <span class="ot">&lt;-</span> data_html <span class="sc">|&gt;</span> <span class="fu">html_nodes</span>(css_selector) <span class="sc">|&gt;</span> <span class="fu">html_table</span>()</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(df_femmes[[<span class="dv">1</span>]])</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 6
+Columns: 5
+$ Édition &lt;int&gt; 2000, 2004, 2008, 2012, 2016, 2020
+$ Lieu    &lt;chr&gt; "Sydney", "Athènes", "Pékin", "Londres", "Rio de Janeiro", "To…
+$ Or      &lt;chr&gt; "Irina Karavaeva&nbsp;(RUS)", "Anna Dogonadze&nbsp;(GER)", "He Wenna&nbsp;(CH…
+$ Argent  &lt;chr&gt; "Oksana Tsyhulyeva&nbsp;(UKR)", "Karen Cockburn&nbsp;(CAN)", "Karen Cock…
+$ Bronze  &lt;chr&gt; "Karen Cockburn&nbsp;(CAN)", "Huang Shanshan&nbsp;(CHN)", "Ekaterina Khi…</code></pre>
+</div>
+</div></li>
+<li><p>À partir de ce tableau, créer un nouveau data frame contenant, pour chaque pays, le nombre de médailles d’or, d’argent et de bronze obtenues lors des différentes olympiades.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>medaille_femmes <span class="ot">&lt;-</span> df_femmes[[<span class="dv">1</span>]] <span class="sc">|&gt;</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(MédailleOr     <span class="ot">=</span> <span class="fu">str_extract</span>(Or, <span class="st">"(?&lt;=</span><span class="sc">\\</span><span class="st">().*(?=</span><span class="sc">\\</span><span class="st">))"</span>),</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>         MédailleArgent <span class="ot">=</span> <span class="fu">str_extract</span>(Argent, <span class="st">"(?&lt;=</span><span class="sc">\\</span><span class="st">().*(?=</span><span class="sc">\\</span><span class="st">))"</span>),</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>         MédailleBronze <span class="ot">=</span> <span class="fu">str_extract</span>(Bronze, <span class="st">"(?&lt;=</span><span class="sc">\\</span><span class="st">().*(?=</span><span class="sc">\\</span><span class="st">))"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"Médaille"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(),<span class="at">names_to =</span> <span class="st">"Médaille"</span>, <span class="at">values_to=</span> <span class="st">"Pays"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Pays, Médaille) <span class="sc">|&gt;</span></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"Médaille"</span>,<span class="at">values_from =</span> <span class="st">"n"</span>,<span class="at">values_fill =</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Or =</span> MédailleOr,</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">Argent =</span> MédailleArgent,</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">Bronze =</span> MédailleBronze) <span class="sc">|&gt;</span></span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(Pays, Or, Argent, Bronze)</span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>medaille_femmes</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 4
+  Pays     Or Argent Bronze
+  &lt;chr&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
+1 CAN       2      2      1
+2 CHN       2      2      3
+3 GBR       0      1      1
+4 GER       1      0      0
+5 RUS       1      0      0
+6 UKR       0      1      0
+7 UZB       0      0      1</code></pre>
+</div>
+</div></li>
+<li><p>Classer ce tibble dans l’ordre usuel en fonction d’abord du nombre de médailles d’or obtenues puis, pour départager les ex-æquo, en fonction du nombre de médailles d’argent et enfin du nombre de médailles de bronze.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>medaille_femmes <span class="sc">|&gt;</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">arrange</span>(<span class="fu">desc</span>(Or), <span class="fu">desc</span>(Argent), <span class="fu">desc</span>(Bronze))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 4
+  Pays     Or Argent Bronze
+  &lt;chr&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
+1 CHN       2      2      3
+2 CAN       2      2      1
+3 GER       1      0      0
+4 RUS       1      0      0
+5 GBR       0      1      1
+6 UKR       0      1      0
+7 UZB       0      0      1</code></pre>
+</div>
+</div></li>
+<li><p>Mêmes questions pour le tableau masculin et enfin pour le tableau mixte. Le résultat pourra être comparé avec la page : <a href="https://fr.wikipedia.org/wiki/Trampoline_aux_Jeux_olympiques" class="uri">https://fr.wikipedia.org/wiki/Trampoline_aux_Jeux_olympiques</a></p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Médailles hommes</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>css_selector <span class="ot">&lt;-</span> <span class="st">"#mw-content-text &gt; div &gt; table:nth-of-type(1)"</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>df_hommes <span class="ot">&lt;-</span> data_html <span class="sc">|&gt;</span> </span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(css_selector) <span class="sc">|&gt;</span> </span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_table</span>()</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>medaille_hommes <span class="ot">&lt;-</span> df_hommes[[<span class="dv">1</span>]] <span class="sc">|&gt;</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(MédailleOr     <span class="ot">=</span> <span class="fu">str_extract</span>(Or, <span class="st">"(?&lt;=</span><span class="sc">\\</span><span class="st">().*(?=</span><span class="sc">\\</span><span class="st">))"</span>),</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>         MédailleArgent <span class="ot">=</span> <span class="fu">str_extract</span>(Argent, <span class="st">"(?&lt;=</span><span class="sc">\\</span><span class="st">().*(?=</span><span class="sc">\\</span><span class="st">))"</span>),</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>         MédailleBronze <span class="ot">=</span> <span class="fu">str_extract</span>(Bronze, <span class="st">"(?&lt;=</span><span class="sc">\\</span><span class="st">().*(?=</span><span class="sc">\\</span><span class="st">))"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"Médaille"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(),<span class="at">names_to =</span> <span class="st">"Médaille"</span>, <span class="at">values_to =</span> <span class="st">"Pays"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Pays, Médaille) <span class="sc">|&gt;</span></span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"Médaille"</span>,<span class="at">values_from =</span> <span class="st">"n"</span>,<span class="at">values_fill =</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Or =</span> MédailleOr,</span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">Argent =</span> MédailleArgent,</span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">Bronze =</span> MédailleBronze) <span class="sc">|&gt;</span></span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(Pays, Or, Argent, Bronze)</span>
+<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a>medaille_hommes <span class="sc">|&gt;</span></span>
+<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a>   <span class="fu">arrange</span>(<span class="fu">desc</span>(Or), <span class="fu">desc</span>(Argent), <span class="fu">desc</span>(Bronze))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 4
+  Pays     Or Argent Bronze
+  &lt;chr&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
+1 CHN       2      2      3
+2 BLR       2      0      0
+3 RUS       1      2      0
+4 UKR       1      0      0
+5 CAN       0      1      1
+6 AUS       0      1      0
+7 GER       0      0      1
+8 NZL       0      0      1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Médailles mixte</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>medaille_femmes <span class="sc">|&gt;</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">full_join</span>(medaille_hommes, <span class="at">by=</span><span class="st">"Pays"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map2</span>(<span class="dv">0</span>,replace_na) <span class="sc">|&gt;</span> </span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Or=</span>Or.x<span class="sc">+</span>Or.y,</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">Argent=</span>Argent.x<span class="sc">+</span>Argent.y,</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">Bronze=</span>Bronze.x<span class="sc">+</span>Bronze.y) <span class="sc">|&gt;</span> </span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Pays,Or,Argent,Bronze) <span class="sc">|&gt;</span> </span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Or), <span class="fu">desc</span>(Argent), <span class="fu">desc</span>(Bronze))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 4
+   Pays     Or Argent Bronze
+   &lt;chr&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
+ 1 CHN       4      4      6
+ 2 CAN       2      3      2
+ 3 RUS       2      2      0
+ 4 BLR       2      0      0
+ 5 UKR       1      1      0
+ 6 GER       1      0      1
+ 7 GBR       0      1      1
+ 8 AUS       0      1      0
+ 9 UZB       0      0      1
+10 NZL       0      0      1</code></pre>
+</div>
+</div></li>
+</ol>
+</div>
+<div id="exr-scrap-Peter_Jackson" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 6.4 (Peter Jackson)</strong></span> Nous nous intéressons à la page Wikipedia du réalisateur Peter Jackson : <a href="https://fr.wikipedia.org/wiki/Peter_Jackson" class="uri">https://fr.wikipedia.org/wiki/Peter_Jackson</a></p>
+<ol type="1">
+<li><p>Récupérer les données au format HTML de cette page.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>url_wikipedia <span class="ot">&lt;-</span> <span class="st">"https://fr.wikipedia.org/"</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>url_jackson <span class="ot">&lt;-</span> <span class="st">"wiki/Peter_Jackson"</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(url_wikipedia, url_jackson)</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>data_html <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+<li><p>Extraire les nœuds <code>h2</code> associés au titres de niveau 2.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>data_html <span class="sc">|&gt;</span>  <span class="fu">html_nodes</span>(<span class="st">"h2"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text2</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Sommaire"                                        
+[2] "Biographie[modifier | modifier le code]"         
+[3] "Filmographie[modifier | modifier le code]"       
+[4] "Distinctions[modifier | modifier le code]"       
+[5] "Box-office[modifier | modifier le code]"         
+[6] "Notes et références[modifier | modifier le code]"
+[7] "Voir aussi[modifier | modifier le code]"         </code></pre>
+</div>
+</div></li>
+<li><p>Proposer un sélecteur CSS pour ne récupérer que les titres de niveau 2 des sections du sommaire. Pour information, un sélecteur de classe s’écrit avec un point <code>.</code> comme dans <code>p.ma-classe</code> pour un paragraphe <code>&lt;p class="ma-classe"&gt;...&lt;/p&gt;</code>.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>data_html <span class="sc">|&gt;</span>  <span class="fu">html_nodes</span>(<span class="st">"h2 &gt; span.mw-headline"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{xml_nodeset (6)}
+[1] &lt;span class="mw-headline" id="Biographie"&gt;Biographie&lt;/span&gt;
+[2] &lt;span class="mw-headline" id="Filmographie"&gt;Filmographie&lt;/span&gt;
+[3] &lt;span class="mw-headline" id="Distinctions"&gt;Distinctions&lt;/span&gt;
+[4] &lt;span class="mw-headline" id="Box-office"&gt;Box-office&lt;/span&gt;
+[5] &lt;span class="mw-headline" id="Notes_et_références"&gt;Notes et références&lt;/s ...
+[6] &lt;span class="mw-headline" id="Voir_aussi"&gt;Voir aussi&lt;/span&gt;</code></pre>
+</div>
+</div></li>
+<li><p>Récupérer les textes des titres avec <code>html_text</code>. Comparer avec le résultat obtenu par <code>html_attrs</code>.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>data_html <span class="sc">|&gt;</span> <span class="fu">html_nodes</span>(<span class="st">"h2 &gt; span.mw-headline"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Biographie"          "Filmographie"        "Distinctions"       
+[4] "Box-office"          "Notes et références" "Voir aussi"         </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>data_html <span class="sc">|&gt;</span> <span class="fu">html_nodes</span>(<span class="st">"h2 &gt; span.mw-headline"</span>) <span class="sc">|&gt;</span> <span class="fu">html_attrs</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+        class            id 
+"mw-headline"  "Biographie" 
+
+[[2]]
+         class             id 
+ "mw-headline" "Filmographie" 
+
+[[3]]
+         class             id 
+ "mw-headline" "Distinctions" 
+
+[[4]]
+        class            id 
+"mw-headline"  "Box-office" 
+
+[[5]]
+                class                    id 
+        "mw-headline" "Notes_et_références" 
+
+[[6]]
+        class            id 
+"mw-headline"  "Voir_aussi" </code></pre>
+</div>
+</div></li>
+<li><p>Construire un sélecteur CSS pour récupérer la liste des films de Peter Jackson en tant que réalisateur et les URL des pages Wikipedia associées.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>css_selector <span class="ot">&lt;-</span> <span class="st">"#mw-content-text &gt; div &gt; ul:nth-of-type(1) &gt; li &gt; i &gt; a"</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>data_html <span class="sc">|&gt;</span> <span class="fu">html_nodes</span>(css_selector) <span class="sc">|&gt;</span> <span class="fu">html_attrs</span>() <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+             href             title 
+"/wiki/Bad_Taste"       "Bad Taste" 
+
+[[2]]
+               href               title 
+"/wiki/Les_Feebles"       "Les Feebles" </code></pre>
+</div>
+</div></li>
+<li><p>Obtenir le même résultat avec XPath.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>xpath_str <span class="ot">&lt;-</span> <span class="st">'//*[@id="mw-content-text"]</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="st">  /div/ul[</span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="st">    preceding::h3[span/@id="En_tant_que_réalisateur"]</span></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a><span class="st">    and</span></span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a><span class="st">    following::h3[span/@id="En_tant_que_scénariste"]</span></span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a><span class="st">  ]/li/i/a'</span></span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>data_html <span class="sc">|&gt;</span> <span class="fu">html_nodes</span>(<span class="at">xpath=</span>xpath_str) <span class="sc">|&gt;</span> <span class="fu">html_attrs</span>() <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+             href             title 
+"/wiki/Bad_Taste"       "Bad Taste" 
+
+[[2]]
+               href               title 
+"/wiki/Les_Feebles"       "Les Feebles" </code></pre>
+</div>
+</div></li>
+<li><p>Construire un <code>tibble</code> contenant les titres des films réalisés par Peter Jackson ainsi que leur année de sortie et leur durée en minutes.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Récupération de la liste des films</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>data_html <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="fu">paste0</span>(url_wikipedia, url_jackson))</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>xpath_films <span class="ot">&lt;-</span> <span class="st">'//*[@id="mw-content-text"]</span></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a><span class="st">  /div/ul[</span></span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a><span class="st">    preceding::h3[span/@id="En_tant_que_réalisateur"]</span></span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a><span class="st">    and</span></span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a><span class="st">    following::h3[span/@id="En_tant_que_producteur"]</span></span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a><span class="st">  ]/li/i/a'</span></span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a>films <span class="ot">&lt;-</span> data_html <span class="sc">|&gt;</span> <span class="fu">html_nodes</span>(<span class="at">xpath=</span>xpath_films) <span class="sc">|&gt;</span> <span class="fu">html_attrs</span>()</span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Récupération des informations de chaque film</span></span>
+<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a>films_jackson <span class="ot">&lt;-</span> <span class="fu">tibble</span>()</span>
+<span id="cb66-13"><a href="#cb66-13" aria-hidden="true" tabindex="-1"></a>xpath_duree <span class="ot">&lt;-</span> <span class="st">'(//*[@id="mw-content-text"]</span></span>
+<span id="cb66-14"><a href="#cb66-14" aria-hidden="true" tabindex="-1"></a><span class="st">  //table/tbody/tr/td[</span></span>
+<span id="cb66-15"><a href="#cb66-15" aria-hidden="true" tabindex="-1"></a><span class="st">    preceding::th[text()="Durée"]</span></span>
+<span id="cb66-16"><a href="#cb66-16" aria-hidden="true" tabindex="-1"></a><span class="st">  ])[1]'</span></span>
+<span id="cb66-17"><a href="#cb66-17" aria-hidden="true" tabindex="-1"></a>xpath_sortie <span class="ot">&lt;-</span> <span class="st">'(//*[@id="mw-content-text"]</span></span>
+<span id="cb66-18"><a href="#cb66-18" aria-hidden="true" tabindex="-1"></a><span class="st">  //table/tbody/tr/td[</span></span>
+<span id="cb66-19"><a href="#cb66-19" aria-hidden="true" tabindex="-1"></a><span class="st">    preceding::th[text()="Sortie"]</span></span>
+<span id="cb66-20"><a href="#cb66-20" aria-hidden="true" tabindex="-1"></a><span class="st">  ])[1]'</span></span>
+<span id="cb66-21"><a href="#cb66-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_along</span>(films)) {</span>
+<span id="cb66-22"><a href="#cb66-22" aria-hidden="true" tabindex="-1"></a>   url_film <span class="ot">&lt;-</span> films[[i]][<span class="st">"href"</span>]</span>
+<span id="cb66-23"><a href="#cb66-23" aria-hidden="true" tabindex="-1"></a>   data_html <span class="ot">&lt;-</span> <span class="fu">paste0</span>(url_wikipedia, url_film) <span class="sc">|&gt;</span> <span class="fu">read_html</span>()</span>
+<span id="cb66-24"><a href="#cb66-24" aria-hidden="true" tabindex="-1"></a>   <span class="co"># Extraction de la durée en minutes (hors version longue)</span></span>
+<span id="cb66-25"><a href="#cb66-25" aria-hidden="true" tabindex="-1"></a>   film_duree <span class="ot">&lt;-</span> data_html <span class="sc">|&gt;</span></span>
+<span id="cb66-26"><a href="#cb66-26" aria-hidden="true" tabindex="-1"></a>      <span class="fu">html_nodes</span>(<span class="at">xpath=</span>xpath_duree) <span class="sc">|&gt;</span></span>
+<span id="cb66-27"><a href="#cb66-27" aria-hidden="true" tabindex="-1"></a>      <span class="fu">html_text</span>() <span class="sc">|&gt;</span></span>
+<span id="cb66-28"><a href="#cb66-28" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_extract</span>(<span class="st">"[0-9]+"</span>)</span>
+<span id="cb66-29"><a href="#cb66-29" aria-hidden="true" tabindex="-1"></a>   <span class="co"># Extraction de l'année de sortie</span></span>
+<span id="cb66-30"><a href="#cb66-30" aria-hidden="true" tabindex="-1"></a>   film_sortie <span class="ot">&lt;-</span> data_html <span class="sc">|&gt;</span></span>
+<span id="cb66-31"><a href="#cb66-31" aria-hidden="true" tabindex="-1"></a>      <span class="fu">html_nodes</span>(<span class="at">xpath=</span>xpath_sortie) <span class="sc">|&gt;</span></span>
+<span id="cb66-32"><a href="#cb66-32" aria-hidden="true" tabindex="-1"></a>      <span class="fu">html_text</span>() <span class="sc">|&gt;</span></span>
+<span id="cb66-33"><a href="#cb66-33" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_extract</span>(<span class="st">"[0-9]+"</span>)</span>
+<span id="cb66-34"><a href="#cb66-34" aria-hidden="true" tabindex="-1"></a>   films_jackson <span class="ot">&lt;-</span> films_jackson <span class="sc">|&gt;</span> <span class="fu">rbind</span>(<span class="fu">tibble</span>(<span class="at">titre =</span> films[[i]][<span class="st">"title"</span>],</span>
+<span id="cb66-35"><a href="#cb66-35" aria-hidden="true" tabindex="-1"></a>                                                   <span class="at">duree =</span> <span class="fu">as.integer</span>(film_duree),</span>
+<span id="cb66-36"><a href="#cb66-36" aria-hidden="true" tabindex="-1"></a>                                                   <span class="at">sortie =</span> <span class="fu">as.integer</span>(film_sortie)))</span>
+<span id="cb66-37"><a href="#cb66-37" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb66-38"><a href="#cb66-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-39"><a href="#cb66-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Résultat</span></span>
+<span id="cb66-40"><a href="#cb66-40" aria-hidden="true" tabindex="-1"></a>films_jackson</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 16 × 3
+   titre                                               duree sortie
+   &lt;chr&gt;                                               &lt;int&gt;  &lt;int&gt;
+ 1 Bad Taste                                              92   1987
+ 2 Les Feebles                                            97   1989
+ 3 Braindead                                             104   1992
+ 4 Créatures célestes                                     99   1994
+ 5 Forgotten Silver                                       53   1995
+ 6 Fantômes contre fantômes                              110   1996
+ 7 Le Seigneur des anneaux : La Communauté de l'anneau   178   2001
+ 8 Le Seigneur des anneaux : Les Deux Tours              179   2002
+ 9 Le Seigneur des anneaux : Le Retour du roi            201   2003
+10 King Kong (film, 2005)                                188   2005
+11 Lovely Bones                                          135   2009
+12 Le Hobbit : Un voyage inattendu                       169   2012
+13 Le Hobbit : La Désolation de Smaug                    161   2013
+14 Le Hobbit : La Bataille des Cinq Armées               144   2014
+15 Pour les soldats tombés                                99   2018
+16 Now and Then (chanson des Beatles)                      4      2</code></pre>
+</div>
+</div></li>
+<li><p>Utiliser les fonctions de <code>dplyr</code> pour trouver les 3 films les plus longs réalisés par Peter Jackson.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>films_jackson <span class="sc">|&gt;</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">arrange</span>(<span class="fu">desc</span>(duree)) <span class="sc">|&gt;</span></span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+  titre                                      duree sortie
+  &lt;chr&gt;                                      &lt;int&gt;  &lt;int&gt;
+1 Le Seigneur des anneaux : Le Retour du roi   201   2003
+2 King Kong (film, 2005)                       188   2005
+3 Le Seigneur des anneaux : Les Deux Tours     179   2002</code></pre>
+</div>
+</div></li>
+<li><p>Exporter le <code>tibble</code> dans un fichier au format NDJSON.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>jackson_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"data"</span>, <span class="st">"jackson.json"</span>)</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">file</span>(jackson_path, <span class="at">open =</span> <span class="st">"wb"</span>)</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="fu">stream_out</span>(films_jackson, con)</span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="fu">close</span>(con)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+</ol>
+</div>
+<div id="exr-scrap-ligue10910" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 6.5 (Ligue 1 - Saison 2009-2010)</strong></span> On considère les données proposées par le site de la ligue 1 <a href="https://www.ligue1.fr/calendrier-resultats" class="uri">https://www.ligue1.fr/calendrier-resultats</a>.</p>
+<ol type="1">
+<li><p>Scraper le classement final de la saison 2009-2010.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>url_ligue1 <span class="ot">&lt;-</span> <span class="st">"https://www.ligue1.fr/"</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>url_class0910 <span class="ot">&lt;-</span> <span class="st">"classement?seasonId=2009-2010&amp;StatsActiveTab=0&amp;matchDay=38"</span></span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>url0910 <span class="ot">&lt;-</span> <span class="fu">str_c</span>(url_ligue1,url_class0910)</span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>class0910 <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url0910)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>class0910 <span class="sc">|&gt;</span> </span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="st">'.RankPage-mobileHide+ .GeneralStats-item , .RankPage-mobileHide+ .GeneralStats-item , .GeneralStats-item:nth-child(5) , .GeneralStats-item--points+ .GeneralStats-item , .GeneralStats-item--points , .down , .up , .same , .desktop-item'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text2</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">matrix</span>(<span class="at">nrow=</span><span class="dv">20</span>,<span class="at">byrow =</span> T) <span class="sc">|&gt;</span> </span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20 × 10
+   V1    V2                      V3    V4    V5    V6    V7    V8    V9    V10  
+   &lt;chr&gt; &lt;chr&gt;                   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+ 1 1     OLYMPIQUE DE MARSEILLE  78    38    23    9     6     69    36    +33  
+ 2 2     OLYMPIQUE LYONNAIS      72    38    20    12    6     64    38    +26  
+ 3 3     AJ AUXERRE              71    38    20    11    7     42    29    +13  
+ 4 4     LOSC LILLE              70    38    21    7     10    72    40    +32  
+ 5 5     MONTPELLIER HÉRAULT SC  69    38    20    9     9     50    40    +10  
+ 6 6     FC GIRONDINS DE BORDEA… 64    38    19    7     12    58    40    +18  
+ 7 7     FC LORIENT              58    38    16    10    12    54    42    +12  
+ 8 8     AS MONACO               55    38    15    10    13    39    45    -6   
+ 9 9     STADE RENNAIS FC        53    38    14    11    13    52    41    +11  
+10 10    VALENCIENNES FC         52    38    14    10    14    50    50    0    
+11 11    RC LENS                 48    38    12    12    14    40    44    -4   
+12 12    AS NANCY LORRAINE       48    38    13    9     16    46    53    -7   
+13 13    PARIS SAINT-GERMAIN     47    38    12    11    15    50    46    +4   
+14 14    TOULOUSE FC             47    38    12    11    15    36    36    0    
+15 15    OGC NICE                44    38    11    11    16    41    57    -16  
+16 16    FC SOCHAUX-MONTBÉLIARD  41    38    11    8     19    28    52    -24  
+17 17    AS SAINT-ÉTIENNE        40    38    10    10    18    27    45    -18  
+18 18    LE MANS FC              32    38    8     8     22    36    59    -23  
+19 19    U.S. BOULOGNE COTE D'O… 31    38    7     10    21    31    62    -31  
+20 20    GRENOBLE FOOT 38        23    38    5     8     25    31    61    -30  </code></pre>
+</div>
+</div></li>
+<li><p>Toujours pour la saison 2009-2010, récupérer le classement de chaque équipe à chacune des 38 journées de championnat</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>url_ligue1 <span class="ot">&lt;-</span> <span class="st">"https://www.ligue1.fr/"</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>url_0910 <span class="ot">&lt;-</span> <span class="st">"classement?seasonId=2009-2010&amp;StatsActiveTab=0&amp;matchDay="</span></span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">class=</span><span class="cn">NULL</span>,<span class="at">club=</span><span class="cn">NULL</span>,<span class="at">journee=</span><span class="cn">NULL</span>)</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">38</span>){</span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>  urli <span class="ot">&lt;-</span> <span class="fu">str_c</span>(url_ligue1,url_0910,<span class="fu">as.character</span>(i))</span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>  classi <span class="ot">&lt;-</span> <span class="fu">read_html</span>(urli)</span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>  resi <span class="ot">&lt;-</span> classi <span class="sc">|&gt;</span> </span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_elements</span>(<span class="at">xpath =</span> <span class="st">'//*[contains(concat( " ", @class, " " ), concat( " ", "desktop-item", " " ))]'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb74-10"><a href="#cb74-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(<span class="at">class=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,<span class="at">club=</span>_,<span class="at">journee=</span>i)</span>
+<span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(res,resi)</span>
+<span id="cb74-12"><a href="#cb74-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb74-13"><a href="#cb74-13" aria-hidden="true" tabindex="-1"></a>res</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 760 × 3
+   class club                     journee
+   &lt;int&gt; &lt;chr&gt;                      &lt;int&gt;
+ 1     1 FC GIRONDINS DE BORDEAUX       1
+ 2     2 STADE RENNAIS FC               1
+ 3     3 AS NANCY LORRAINE              1
+ 4     4 OLYMPIQUE DE MARSEILLE         1
+ 5     5 OGC NICE                       1
+ 6     6 FC LORIENT                     1
+ 7     7 FC SOCHAUX-MONTBÉLIARD         1
+ 8     8 AS MONACO                      1
+ 9     9 OLYMPIQUE LYONNAIS             1
+10    10 LE MANS FC                     1
+# ℹ 750 more rows</code></pre>
+</div>
+</div></li>
+<li><p>Comparer les évolutions de classement sur la saison des clubs de Paris, Marseille et Rennes.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>res <span class="sc">|&gt;</span> </span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(club,<span class="st">"MARSEILLE|PARIS|RENNAIS"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>()<span class="sc">+</span><span class="fu">aes</span>(<span class="at">x=</span>journee,<span class="at">y=</span>class,<span class="at">color=</span>club)<span class="sc">+</span><span class="fu">geom_line</span>()<span class="sc">+</span></span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-scraping_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div></li>
+</ol>
+</div>
+<div id="exr-scrap-culturegen" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 6.6 (Se cultiver par hasard)</strong></span> Un honnête homme souhaite parfaire sa culture générale et décide à cette fin de parcourir les pages de <em>Wikipédia</em> au hasard. Sa stratégie est la suivante : tous les jours, en partant de la page d’accueil (<a href="https://fr.wikipedia.org/" class="uri">https://fr.wikipedia.org/</a>) il suivra un premier lien pris au hasard parmi les liens internes à wikipédia. Il lira attentivement la page que le sort lui aura permis de visiter puis renouvellera l’opération à partir de cette page. Curieux, il se demande combien de pages distinctes il aura lu, en moyenne, au bout de 10 ans (sous l’hypothèse que le site ne soit pas modifié durant cette période). Nous allons répondre à cette question grâce au package <code>rvest</code>.</p>
+<ol type="1">
+<li><p>Ouvrir une session vers la page d’accueil de <em>Wikipédia</em>.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>wikipedia <span class="ot">&lt;-</span> <span class="st">"https://fr.wikipedia.org/"</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>wiki <span class="ot">&lt;-</span> <span class="fu">session</span>(wikipedia)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+<li><p>Construire une tabble avec tous les liens contenus dans la page (ces liens sont dans une balise <code>&lt;a&gt;</code> et l’adresse du lien est donnée par l’attribut <code>href</code>). On pourra utiliser :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>internal_links <span class="ot">&lt;-</span> <span class="st">'a[href*="/wiki/"]:not([href*="//"])'</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>lien0 <span class="ot">&lt;-</span> wiki <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(internal_links) <span class="sc">|&gt;</span> <span class="fu">html_attr</span>(<span class="st">"href"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+<li><p>Aller sur une page prise au hasard et renouveler l’opération afin de construire un vecteur contenant les 2 pages visitées.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>(lien1 <span class="ot">&lt;-</span> lien0 <span class="sc">|&gt;</span> <span class="fu">sample</span>(<span class="dv">1</span>))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "/wiki/Fichier:Benty_grange_helm_crop.png"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>(page1 <span class="ot">&lt;-</span> wiki <span class="sc">|&gt;</span> <span class="fu">session_jump_to</span>(lien1))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;session&gt; https://fr.wikipedia.org/wiki/Fichier%3ABenty_grange_helm_crop.png
+  Status: 200
+  Type:   text/html; charset=UTF-8
+  Size:   84944</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>(lien2 <span class="ot">&lt;-</span> page1 <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(internal_links) <span class="sc">|&gt;</span> <span class="fu">html_attr</span>(<span class="st">"href"</span>) <span class="sc">|&gt;</span> <span class="fu">sample</span>(<span class="dv">1</span>))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "/wiki/Fichier:Benty_grange_helm_crop.png"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(lien1,lien2)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "/wiki/Fichier:Benty_grange_helm_crop.png"
+[2] "/wiki/Fichier:Benty_grange_helm_crop.png"</code></pre>
+</div>
+</div></li>
+<li><p>Construire un data-frame contenant les adresses visitées pendant 10 ans (soit 3652 jours).</p>
+<div class="corR">
+<p>On écrit une fonction qui sélectionne aléatoirement un lien sur une page donnée :</p>
+</div>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>select_link <span class="ot">&lt;-</span> <span class="cf">function</span>(url){</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">session</span>(url) <span class="sc">%&gt;%</span></span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(internal_links) <span class="sc">%&gt;%</span></span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_attr</span>(<span class="st">"href"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sample</span>(<span class="dv">1</span>)</span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="corR">
+<p>On peut ainsi en déduire les pages visitées pendant un nombre de jours donné :</p>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>page_visitees <span class="ot">&lt;-</span> <span class="cf">function</span>(nb_jours){</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>  liens_visites <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nb_jours){</span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(i)</span>
+<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a>    wikipedia <span class="sc">%&gt;%</span> </span>
+<span id="cb89-7"><a href="#cb89-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select_link</span>() <span class="sc">%T&gt;%</span></span>
+<span id="cb89-8"><a href="#cb89-8" aria-hidden="true" tabindex="-1"></a>      {liens_visites <span class="ot">&lt;&lt;-</span> <span class="fu">append</span>(liens_visites, .)} <span class="sc">%&gt;%</span> </span>
+<span id="cb89-9"><a href="#cb89-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_c</span>(wikipedia,.) <span class="sc">%&gt;%</span></span>
+<span id="cb89-10"><a href="#cb89-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select_link</span>() <span class="sc">%&gt;%</span>   </span>
+<span id="cb89-11"><a href="#cb89-11" aria-hidden="true" tabindex="-1"></a>      {liens_visites <span class="ot">&lt;&lt;-</span> <span class="fu">append</span>(liens_visites, .)}</span>
+<span id="cb89-12"><a href="#cb89-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb89-13"><a href="#cb89-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">unique</span>(liens_visites))</span>
+<span id="cb89-14"><a href="#cb89-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb89-15"><a href="#cb89-15" aria-hidden="true" tabindex="-1"></a>pages_10ans <span class="ot">&lt;-</span> <span class="fu">page_visitees</span>(<span class="dv">3652</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pages_10ans)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "/wiki/27_mai"                                           
+[2] "/wiki/10_juin"                                          
+[3] "/wiki/R%C3%A9volution_cubaine"                          
+[4] "/wiki/Enl%C3%A8vement_de_Kim_Dae-jung"                  
+[5] "/wiki/Op%C3%A9ration_Gardien_de_la_prosp%C3%A9rit%C3%A9"
+[6] "/wiki/Massacre_de_Netiv_HaAsara"                        </code></pre>
+</div>
+</div></li>
+<li><p>En déduire le nombre de pages différentes visitées.</p>
+<div class="cell" data-teacher="true">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(pages_10ans)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2690</code></pre>
+</div>
+</div></li>
+</ol>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copié");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copié");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./05-bdd.html" class="pagination-link" aria-label="Base de données">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Base de données</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./07-ggplot.html" class="pagination-link" aria-label="Visualisation avec ggplot2">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Visualisation avec ggplot2</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
